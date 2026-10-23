@@ -16,8 +16,9 @@ import {
   type Coat,
   type GarmentId,
   type Look,
+  type Slot,
 } from "@/lib/dress-up";
-import { GarmentIcon, TeckelFigure, VIEWBOX } from "./teckel-art";
+import { Backdrop, GarmentIcon, TeckelFigure, VIEWBOX } from "./teckel-art";
 
 const DRAG_TYPE = "application/x-teckel-garment";
 
@@ -30,6 +31,9 @@ export function DressUp({ products }: { products: Product[] }) {
   const [tab, setTab] = useState<Category>("tete");
   const [dropping, setDropping] = useState(false);
   const [flashKey, setFlashKey] = useState(0);
+  // Pièce mise en avant sur le chien quand on survole sa ligne dans « Le look ».
+  const [focus, setFocus] = useState<Slot | null>(null);
+  const [added, setAdded] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const bySlug = new Map(products.map((p) => [p.slug, p]));
@@ -61,16 +65,17 @@ export function DressUp({ products }: { products: Product[] }) {
     if (GARMENTS.some((g) => g.id === id)) wear(id);
   };
 
+  const addProduct = (product: Product) =>
+    add({
+      productId: product.id,
+      slug: product.slug,
+      name: product.name,
+      priceCents: product.price_cents,
+      color: product.color,
+    });
+
   const buyLook = () => {
-    for (const { product } of buyable) {
-      add({
-        productId: product!.id,
-        slug: product!.slug,
-        name: product!.name,
-        priceCents: product!.price_cents,
-        color: product!.color,
-      });
-    }
+    for (const { product } of buyable) addProduct(product!);
     router.push("/panier");
   };
 
@@ -97,7 +102,7 @@ export function DressUp({ products }: { products: Product[] }) {
             }}
             onDragLeave={() => setDropping(false)}
             onDrop={onDrop}
-            className={`relative overflow-hidden bg-rouge transition-[outline-color] ${
+            className={`relative overflow-hidden bg-rouge-fonce transition-[outline-color] ${
               dropping ? "outline-4 -outline-offset-4 outline-jeton" : "outline-0"
             }`}
           >
@@ -110,7 +115,8 @@ export function DressUp({ products }: { products: Product[] }) {
                 worn.length ? `, habillé avec : ${worn.map((g) => g.label.toLowerCase()).join(", ")}` : ", sans vêtement"
               }`}
             >
-              <TeckelFigure coat={coat} look={look} uid={`${uid}-scene`} />
+              <Backdrop uid={`${uid}-scene`} />
+              <TeckelFigure coat={coat} look={look} uid={`${uid}-scene`} focus={focus} />
             </svg>
             <span key={flashKey} className={`pose-flash ${flashKey ? "pose-flash-clic" : ""}`} aria-hidden />
           </div>
@@ -214,32 +220,67 @@ export function DressUp({ products }: { products: Product[] }) {
           ) : (
             <ul className="mt-4 border-t-2 border-encre" aria-live="polite">
               {wornProducts.map(({ garment: g, product }) => (
-                <li key={g.id} className="flex items-center gap-4 border-b-2 border-encre py-3">
-                  <div className="min-w-0 flex-1">
+                <li
+                  key={g.id}
+                  onMouseEnter={() => setFocus(g.slot)}
+                  onMouseLeave={() => setFocus(null)}
+                  onFocus={() => setFocus(g.slot)}
+                  onBlur={() => setFocus(null)}
+                  className="grid grid-cols-[4.5rem_1fr_auto] gap-x-4 gap-y-2 border-b-2 border-encre py-4"
+                >
+                  {/* La pièce seule, posée à plat comme sur une fiche produit */}
+                  <div className="row-span-2 grid aspect-square place-items-center rounded-lg bg-tirage-2 p-1.5">
+                    <GarmentIcon id={g.id} box={g.iconBox} uid={`${uid}-look-${g.id}`} />
+                  </div>
+                  <div className="min-w-0">
                     {product ? (
-                      <Link href={`/boutique/${product.slug}`} className="font-bold hover:text-rouge">
+                      <Link href={`/boutique/${product.slug}`} className="font-bold leading-snug hover:text-rouge">
                         {product.name}
                       </Link>
                     ) : (
                       <span className="font-bold">{g.label}</span>
                     )}
-                    <p className="text-sm text-encre-douce">
-                      {!product ? "Bientôt en boutique" : product.stock > 0 ? "En stock" : "Épuisé pour le moment"}
+                    <p className="mt-1 line-clamp-2 text-sm text-encre-douce">
+                      {product ? product.description : "Bientôt en boutique."}
                     </p>
                   </div>
-                  <span className="text-lg font-extrabold tabular-nums [font-stretch:80%]">
-                    {product ? formatPrice(product.price_cents) : "–"}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => toggle(g.id)}
-                    className="grid size-9 shrink-0 place-items-center rounded-full border-2 border-encre hover:bg-jeton"
-                    aria-label={`Retirer : ${g.label}`}
-                  >
-                    <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
-                    </svg>
-                  </button>
+                  <div className="flex items-start gap-2">
+                    <span className="pt-0.5 text-lg font-extrabold tabular-nums [font-stretch:80%]">
+                      {product ? formatPrice(product.price_cents) : "–"}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => toggle(g.id)}
+                      className="grid size-8 shrink-0 place-items-center rounded-full border-2 border-encre hover:bg-jeton"
+                      aria-label={`Retirer : ${g.label}`}
+                    >
+                      <svg viewBox="0 0 16 16" className="size-3" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="col-span-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                    {product && product.stock > 0 ? (
+                      <>
+                        <span className="legende text-encre-douce">
+                          {product.stock > 5 ? "En stock · expédié sous 48 h" : `Plus que ${product.stock} en stock`}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            addProduct(product);
+                            setAdded(g.id);
+                            setTimeout(() => setAdded((v) => (v === g.id ? null : v)), 1500);
+                          }}
+                          className={`btn px-3.5 py-1.5 text-[0.75rem] ${added === g.id ? "bg-jeton text-encre" : "btn-ligne"}`}
+                        >
+                          {added === g.id ? "Dans le panier" : "Ajouter au panier"}
+                        </button>
+                      </>
+                    ) : (
+                      <span className="legende text-encre-douce">{product ? "Épuisé pour le moment" : "Pas encore en vente"}</span>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
@@ -306,6 +347,10 @@ async function exportLook(svg: SVGSVGElement, lines: string[]) {
 
   const clone = svg.cloneNode(true) as SVGSVGElement;
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  // La photo montre tout le look, même si une pièce était mise en avant au survol.
+  clone.querySelectorAll<SVGElement>("[style]").forEach((el) => {
+    el.style.opacity = "";
+  });
   clone.setAttribute("width", String(W - PAD * 2));
   clone.setAttribute("height", String(sceneH));
   const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: "image/svg+xml" }));
