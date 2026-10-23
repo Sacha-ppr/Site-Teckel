@@ -86,7 +86,7 @@ export function DressUp({ products }: { products: Product[] }) {
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12">
       {/* La cabine : le chien pose, on y dépose les vêtements. Elle reste visible pendant qu'on choisit. */}
-      <div className="sticky top-[100px] z-10 lg:top-24 lg:col-start-1 lg:row-start-1">
+      <div className="sticky top-[100px] z-10 xl:top-24 lg:col-start-1 lg:row-start-1">
         <div className="tirage">
           <div
             onDragOver={(e) => {

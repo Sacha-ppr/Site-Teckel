@@ -8,7 +8,7 @@ const NAV = [
   { href: "/residents", label: "Résidents" },
   { href: "/boutique", label: "Boutique" },
   { href: "/ateliers", label: "Ateliers" },
-  { href: "/habille-ton-teckel", label: "Le jeu" },
+  { href: "/habille-ton-teckel", label: "Cabine d'essayage" },
 ];
 
 // L'enseigne lumineuse au-dessus de la cabine.
@@ -19,7 +19,7 @@ export function SiteHeader() {
         <Link href="/" className="enseigne shrink-0 text-[1.1rem] leading-none [font-stretch:100%] sm:[font-stretch:112%] md:text-[1.35rem]">
           Le Bar à Teckels
         </Link>
-        <nav aria-label="Navigation principale" className="hidden items-center gap-6 lg:flex">
+        <nav aria-label="Navigation principale" className="hidden items-center gap-6 xl:flex">
           {NAV.map((item) => (
             <Link key={item.href} href={item.href} className="legende text-[0.8rem] hover:text-jeton">
               {item.label}
@@ -40,7 +40,7 @@ export function SiteHeader() {
       </div>
       <nav
         aria-label="Navigation principale"
-        className="flex gap-5 overflow-x-auto border-t border-rouge-fonce px-4 py-2.5 lg:hidden"
+        className="flex gap-5 overflow-x-auto border-t border-rouge-fonce px-4 py-2.5 xl:hidden"
       >
         <Link href="/reserver" className="legende shrink-0 text-jeton sm:hidden">
           Réserver
