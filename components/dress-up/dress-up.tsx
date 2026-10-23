@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCart } from "@/components/cart-provider";
@@ -46,9 +46,14 @@ export function DressUp({ products }: { products: Product[] }) {
   const { add } = useCart();
   const [subject, setSubject] = useState<Subject>({ kind: "model", id: "fauve" });
   const [dogName, setDogName] = useState("");
-  const [layers, setLayers] = useState<Partial<Record<Slot, Layer>>>({});
-  const [selected, setSelected] = useState<Slot | null>(null);
-  const [tab, setTab] = useState<Category>("hauts");
+  // Arrivée depuis une fiche produit (?essayer=harnais) : la pièce est déjà enfilée.
+  const essayer = useSearchParams().get("essayer");
+  const tryOn = GARMENTS.find((g) => g.id === essayer) ?? null;
+  const [layers, setLayers] = useState<Partial<Record<Slot, Layer>>>(() =>
+    tryOn ? { [tryOn.slot]: { id: tryOn.id, base: placeGarment(tryOn, MODELS[0].landmarks), dx: 0, dy: 0, size: 1, length: 1, rot: 0, flip: false } } : {},
+  );
+  const [selected, setSelected] = useState<Slot | null>(tryOn?.slot ?? null);
+  const [tab, setTab] = useState<Category>(tryOn?.category ?? "hauts");
   const [flashKey, setFlashKey] = useState(0);
   const [added, setAdded] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);

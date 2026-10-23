@@ -14,7 +14,7 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
     return { status: "error", error: "Connectez-vous pour finaliser la commande.", needsLogin: true };
   }
 
-  let items: { product_id: number; quantity: number }[];
+  let items: { product_id: number; quantity: number; variant?: string | null }[];
   try {
     items = JSON.parse(String(formData.get("items") ?? "[]"));
   } catch {

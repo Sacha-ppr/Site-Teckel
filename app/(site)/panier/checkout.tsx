@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useActionState, useEffect } from "react";
 import { placeOrder, type CheckoutState } from "@/app/actions/orders";
-import { useCart } from "@/components/cart-provider";
+import { cartKey, useCart } from "@/components/cart-provider";
 import { ProductPhoto } from "@/components/product-photo";
 import { formatPrice } from "@/lib/catalog";
 
@@ -45,18 +45,21 @@ export function Checkout() {
     <div className="grid items-start gap-8 lg:grid-cols-[1.4fr_1fr]">
       <ul className="tirage divide-y-2 divide-tirage-2 p-2 sm:p-3">
         {items.map((item) => (
-          <li key={item.productId} className="flex flex-wrap items-center gap-x-4 gap-y-3 p-2 sm:flex-nowrap">
+          <li key={cartKey(item)} className="flex flex-wrap items-center gap-x-4 gap-y-3 p-2 sm:flex-nowrap">
             <ProductPhoto slug={item.slug} alt="" sizes="80px" className="aspect-square w-16 shrink-0 sm:w-20" />
             <div className="min-w-0 flex-1">
               <Link href={`/boutique/${item.slug}`} className="font-bold hover:text-rouge">{item.name}</Link>
-              <p className="text-sm text-encre-douce tabular-nums">{formatPrice(item.priceCents)}</p>
+              <p className="text-sm text-encre-douce tabular-nums">
+                {item.variant ? `Taille ${item.variant} · ` : ""}
+                {formatPrice(item.priceCents)}
+              </p>
             </div>
             <div className="flex items-center rounded-full border-2 border-encre">
-              <button type="button" className="grid size-9 place-items-center rounded-full hover:bg-jeton" onClick={() => setQuantity(item.productId, item.quantity - 1)} aria-label={`Retirer un ${item.name}`}>
+              <button type="button" className="grid size-9 place-items-center rounded-full hover:bg-jeton" onClick={() => setQuantity(cartKey(item), item.quantity - 1)} aria-label={`Retirer un ${item.name}`}>
                 <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 8h10" strokeLinecap="round" /></svg>
               </button>
               <span className="w-7 text-center font-bold tabular-nums">{item.quantity}</span>
-              <button type="button" className="grid size-9 place-items-center rounded-full hover:bg-jeton" onClick={() => setQuantity(item.productId, item.quantity + 1)} aria-label={`Ajouter un ${item.name}`}>
+              <button type="button" className="grid size-9 place-items-center rounded-full hover:bg-jeton" onClick={() => setQuantity(cartKey(item), item.quantity + 1)} aria-label={`Ajouter un ${item.name}`}>
                 <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M8 3v10M3 8h10" strokeLinecap="round" /></svg>
               </button>
             </div>
@@ -69,7 +72,7 @@ export function Checkout() {
         <input
           type="hidden"
           name="items"
-          value={JSON.stringify(items.map((i) => ({ product_id: i.productId, quantity: i.quantity })))}
+          value={JSON.stringify(items.map((i) => ({ product_id: i.productId, quantity: i.quantity, variant: i.variant ?? null })))}
         />
         <h2 className="enseigne text-[1.8rem]">Livraison</h2>
         <label className="flex flex-col gap-1 text-sm font-bold">

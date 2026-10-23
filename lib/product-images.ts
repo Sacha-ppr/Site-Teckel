@@ -22,3 +22,11 @@ export const PRODUCT_IMAGES: Record<string, ProductImage> = {
   "rampe-canape": { src: "/produits/rampe-canape.jpg", alt: "Rampe pour chien posée contre un coffre de voiture", title: "dogs and car and ramp", author: "annieb", license: "CC BY-SA 2.0", source: "https://www.flickr.com/photos/92828317@N00/6241847771" },
   "tapis-fouille": { src: "/produits/tapis-fouille.jpg", alt: "Jeu de fouille à friandises pour chien", title: "Dog puzzle for mental stimulation.jpg", author: "Jessica1954", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Dog_puzzle_for_mental_stimulation.jpg" },
 };
+
+// Vues supplémentaires d'un article (photos générées pour la boutique), affichées après la principale.
+export const PRODUCT_GALLERY: Record<string, ProductImage[]> = {};
+
+export function productGallery(slug: string): ProductImage[] {
+  const main = PRODUCT_IMAGES[slug];
+  return [...(main ? [main] : []), ...(PRODUCT_GALLERY[slug] ?? [])];
+}

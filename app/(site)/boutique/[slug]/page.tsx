@@ -1,60 +1,93 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { AddToCart } from "@/components/add-to-cart";
-import { ProductPhoto } from "@/components/product-photo";
-import { CATEGORIES, formatPrice } from "@/lib/catalog";
-import { getProduct } from "@/lib/products";
+import { ProductCard } from "@/components/product-card";
+import { ProductView } from "@/components/product-view";
+import { CATEGORIES } from "@/lib/catalog";
+import { PRODUCT_DETAILS } from "@/lib/product-details";
+import { productGallery } from "@/lib/product-images";
+import { getProduct, getProducts } from "@/lib/products";
+
+export async function generateMetadata({ params }: PageProps<"/boutique/[slug]">): Promise<Metadata> {
+  const product = await getProduct((await params).slug);
+  return product ? { title: product.name, description: product.description } : {};
+}
 
 export default function Page({ params }: PageProps<"/boutique/[slug]">) {
   return (
-    <div className="bg-tirage">
-      <div className="mx-auto max-w-[1400px] px-4 py-10 md:px-8 md:py-14">
-        <Link href="/boutique" className="legende inline-flex items-center gap-2 hover:text-rouge">
-          <svg viewBox="0 0 16 16" className="size-4" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M10 3 5 8l5 5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Retour à la boutique
-        </Link>
-        <Suspense fallback={<div className="mt-8 h-[32rem] animate-pulse bg-tirage-2" />}>
-          <ProductDetail params={params} />
-        </Suspense>
-      </div>
-    </div>
+    <Suspense fallback={<div className="mx-auto mt-10 h-[40rem] max-w-[1400px] animate-pulse bg-tirage-2" />}>
+      <ProductPage params={params} />
+    </Suspense>
   );
 }
 
-async function ProductDetail({ params }: Pick<PageProps<"/boutique/[slug]">, "params">) {
+async function ProductPage({ params }: Pick<PageProps<"/boutique/[slug]">, "params">) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const [product, products] = await Promise.all([getProduct(slug), getProducts()]);
   if (!product) notFound();
 
+  const details = PRODUCT_DETAILS[product.slug] ?? null;
+  const pairs = (details?.pairsWith ?? [])
+    .map((s) => products.find((p) => p.slug === s))
+    .filter((p) => p !== undefined)
+    .slice(0, 3);
+  const fallbackPairs = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const suggestions = pairs.length ? pairs : fallbackPairs;
+
   return (
-    <div className="mt-8 grid items-center gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
-      <figure className="tirage rotate-[-1.5deg]">
-        <ProductPhoto slug={product.slug} alt={product.name} priority sizes="(min-width: 768px) 45vw, 92vw" />
-        <figcaption className="legende px-1 pt-3 text-encre-douce">Photo indicative</figcaption>
-      </figure>
-      <div>
-        <h1 className="enseigne text-[clamp(2.4rem,5vw,4.2rem)]">{product.name}</h1>
-        <p className="mt-6 max-w-[36rem] text-[1.2rem] leading-relaxed">{product.description}</p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 border-y-2 border-encre py-6">
-          <span className="text-[3rem] leading-none font-extrabold tabular-nums [font-stretch:80%]">
-            {formatPrice(product.price_cents)}
-          </span>
-          <p className="legende text-encre-douce">
-            {CATEGORIES[product.category]} ·{" "}
-            {product.stock > 5
-              ? "En stock · expédié sous 48 h"
-              : product.stock > 0
-                ? `Plus que ${product.stock} en stock`
-                : "Épuisé pour le moment"}
-          </p>
-        </div>
-        <div className="mt-8">
-          <AddToCart product={product} />
+    <>
+      <div className="mx-auto max-w-[1400px] px-4 pt-8 pb-16 md:px-8 md:pb-24">
+        <nav aria-label="Fil d'Ariane" className="legende flex flex-wrap items-center gap-2 text-encre-douce">
+          <Link href="/boutique" className="hover:text-rouge">
+            Boutique
+          </Link>
+          <span aria-hidden>/</span>
+          <span>{CATEGORIES[product.category]}</span>
+        </nav>
+        <div className="mt-6">
+          <ProductView product={product} details={details} images={productGallery(product.slug)} />
         </div>
       </div>
-    </div>
+
+      {details ? (
+        <section className="bg-encre text-tirage">
+          <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Pensé pour un dos long</h2>
+            <ul className="mt-10 grid gap-x-10 gap-y-8 border-t border-[#333] pt-10 md:grid-cols-3">
+              {details.points.map((pt) => (
+                <li key={pt.title}>
+                  <h3 className="enseigne text-[1.5rem] text-jeton">{pt.title}</h3>
+                  <p className="mt-3 text-lg text-chrome-clair">{pt.text}</p>
+                </li>
+              ))}
+            </ul>
+            <dl className="mt-12 grid gap-6 border-t border-[#333] pt-8 sm:grid-cols-2">
+              <div>
+                <dt className="legende text-chrome">Matière</dt>
+                <dd className="mt-2 text-lg">{details.matiere}</dd>
+              </div>
+              <div>
+                <dt className="legende text-chrome">Entretien</dt>
+                <dd className="mt-2 text-lg">{details.entretien}</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+      ) : null}
+
+      {suggestions.length ? (
+        <section className="bg-tirage">
+          <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Complétez le look</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {suggestions.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+    </>
   );
 }

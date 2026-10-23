@@ -114,6 +114,7 @@ declare
   v_item jsonb;
   v_product public.products;
   v_qty integer;
+  v_variant text;
 begin
   if auth.uid() is null then
     raise exception 'Connexion requise';
@@ -128,6 +129,11 @@ begin
 
   for v_item in select * from jsonb_array_elements(items) loop
     v_qty := (v_item ->> 'quantity')::integer;
+    -- Taille choisie sur la fiche produit (XS, S, M, L…), gardée dans le libellé de la ligne.
+    v_variant := nullif(trim(coalesce(v_item ->> 'variant', '')), '');
+    if v_variant is not null and v_variant !~ '^[A-Z]{1,3}$' then
+      raise exception 'Taille invalide';
+    end if;
     select * into v_product from public.products
       where id = (v_item ->> 'product_id')::bigint and active
       for update;
@@ -140,7 +146,7 @@ begin
 
     update public.products set stock = stock - v_qty where id = v_product.id;
     insert into public.order_items (order_id, product_id, product_name, quantity, unit_price_cents)
-    values (v_order_id, v_product.id, v_product.name, v_qty, v_product.price_cents);
+    values (v_order_id, v_product.id, v_product.name || coalesce(' · taille ' || v_variant, ''), v_qty, v_product.price_cents);
     v_total := v_total + v_qty * v_product.price_cents;
   end loop;
 
