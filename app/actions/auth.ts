@@ -1,0 +1,56 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { getSupabase } from "@/lib/auth";
+
+export type FormState = { error?: string; message?: string } | undefined;
+
+function safeNext(value: FormDataEntryValue | null) {
+  const next = typeof value === "string" ? value : "";
+  // N'accepte que des chemins internes pour éviter les redirections ouvertes.
+  return next.startsWith("/") && !next.startsWith("//") ? next : null;
+}
+
+export async function signIn(_prev: FormState, formData: FormData): Promise<FormState> {
+  const supabase = await getSupabase();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: String(formData.get("email") ?? ""),
+    password: String(formData.get("password") ?? ""),
+  });
+  if (error) return { error: "Email ou mot de passe incorrect." };
+
+  const next = safeNext(formData.get("next"));
+  if (next) redirect(next);
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+  redirect(profile?.role === "admin" ? "/admin" : "/compte");
+}
+
+export async function signUp(_prev: FormState, formData: FormData): Promise<FormState> {
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 8) return { error: "Le mot de passe doit faire au moins 8 caractères." };
+
+  const supabase = await getSupabase();
+  const { data, error } = await supabase.auth.signUp({
+    email: String(formData.get("email") ?? ""),
+    password,
+    options: { data: { full_name: String(formData.get("full_name") ?? "").trim() } },
+  });
+  if (error) return { error: error.message };
+
+  // Si la confirmation par email est activée dans Supabase, pas de session tout de suite.
+  if (!data.session) {
+    return { message: "Compte créé ! Confirmez votre adresse via l'email reçu, puis connectez-vous." };
+  }
+  redirect(safeNext(formData.get("next")) ?? "/compte");
+}
+
+export async function signOut() {
+  const supabase = await getSupabase();
+  await supabase.auth.signOut();
+  redirect("/");
+}

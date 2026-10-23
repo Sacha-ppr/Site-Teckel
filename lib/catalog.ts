@@ -1,0 +1,112 @@
+// Données de référence partagées entre le site, les formulaires et l'admin.
+// Les valeurs doivent rester alignées sur les contraintes de supabase/schema.sql.
+
+export const SLOTS = ["10:00", "12:00", "14:00", "16:00", "18:00"] as const;
+export type Slot = (typeof SLOTS)[number];
+
+export const SLOT_CAPACITY = 16;
+
+export const FORMULAS = [
+  {
+    id: "cafe-calin",
+    name: "Café câlin",
+    priceCents: 1200,
+    duration: "1 h",
+    description: "Une boisson chaude, une viennoiserie et une heure avec nos teckels résidents.",
+  },
+  {
+    id: "gouter-teckel",
+    name: "Goûter teckel",
+    priceCents: 1800,
+    duration: "1 h 30",
+    description: "Pâtisserie maison, boisson au choix et séance de jeux guidée par un soigneur.",
+  },
+  {
+    id: "apero-saucisse",
+    name: "Apéro saucisse",
+    priceCents: 2400,
+    duration: "1 h 30",
+    description: "Planche apéritive, un verre et une friandise offerte pour votre teckel.",
+  },
+] as const;
+export type FormulaId = (typeof FORMULAS)[number]["id"];
+
+export const CATEGORIES = {
+  vetements: "Vêtements",
+  jouets: "Jouets",
+  friandises: "Friandises",
+  accessoires: "Accessoires",
+} as const;
+export type Category = keyof typeof CATEGORIES;
+
+export const RESERVATION_STATUS = {
+  confirmee: "Confirmée",
+  arrivee: "Arrivée",
+  annulee: "Annulée",
+  absente: "Absente",
+} as const;
+export type ReservationStatus = keyof typeof RESERVATION_STATUS;
+
+export const ORDER_STATUS = {
+  payee: "Payée",
+  preparation: "En préparation",
+  expediee: "Expédiée",
+  annulee: "Annulée",
+} as const;
+export type OrderStatus = keyof typeof ORDER_STATUS;
+
+export type Product = {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  category: Category;
+  price_cents: number;
+  stock: number;
+  color: string;
+  active: boolean;
+};
+
+export type Reservation = {
+  id: number;
+  user_id: string;
+  contact_name: string;
+  phone: string | null;
+  date: string;
+  slot: Slot;
+  guests: number;
+  formula: FormulaId;
+  with_own_dog: boolean;
+  notes: string | null;
+  status: ReservationStatus;
+  created_at: string;
+};
+
+export type Order = {
+  id: number;
+  user_id: string;
+  status: OrderStatus;
+  total_cents: number;
+  shipping_cents: number;
+  shipping_name: string;
+  shipping_address: string;
+  created_at: string;
+  order_items: { product_name: string; quantity: number; unit_price_cents: number }[];
+};
+
+export function formatPrice(cents: number) {
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
+}
+
+export function formatDate(isoDate: string) {
+  return new Intl.DateTimeFormat("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+  }).format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+export function formulaName(id: string) {
+  return FORMULAS.find((f) => f.id === id)?.name ?? id;
+}
