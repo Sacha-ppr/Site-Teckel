@@ -34,6 +34,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
             <Link href="/residents" className="hover:text-jeton">Nos résidents</Link>
             <Link href="/boutique" className="hover:text-jeton">Boutique</Link>
             <Link href="/ateliers" className="hover:text-jeton">Ateliers & événements</Link>
+            <Link href="/habille-ton-teckel" className="hover:text-jeton">Habille ton teckel</Link>
             <Link href="/compte" className="hover:text-jeton">Mon compte</Link>
             <Link href="/credits" className="hover:text-jeton">Crédits photo</Link>
           </nav>

@@ -14,6 +14,12 @@ const BY_SLUG: Record<string, PhotoId> = {
   "rampe-canape": "canape",
   "gamelle-ceramique": "seuil",
   "panier-terrier": "sieste",
+  "beret-parisien": "guinguette",
+  "casquette-teckel": "rue",
+  "lunettes-soleil": "regard",
+  "pull-torsade": "praline",
+  "foulard-rouge": "poil-long",
+  "noeud-papillon": "attente",
 };
 
 const FALLBACK: PhotoId[] = ["poil-long", "attente", "guinguette"];

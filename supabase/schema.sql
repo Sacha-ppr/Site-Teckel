@@ -345,5 +345,11 @@ insert into public.products (slug, name, description, category, price_cents, sto
   ('harnais-h', 'Harnais en H dos long', 'Répartit la traction sans peser sur la colonne. Cuir végétal.', 'accessoires', 4400, 30, '#6b3b1f'),
   ('rampe-canape', 'Rampe de canapé', 'Ménagez le dos de votre teckel : finis les sauts du canapé.', 'accessoires', 8900, 10, '#8a7356'),
   ('gamelle-ceramique', 'Gamelle céramique surélevée', 'Hauteur étudiée pour les pattes courtes, émail sans plomb.', 'accessoires', 2700, 35, '#3f6e6a'),
-  ('panier-terrier', 'Panier « terrier »', 'Panier couvert pour les teckels qui aiment s''enfouir.', 'accessoires', 6900, 12, '#7d4e57')
+  ('panier-terrier', 'Panier « terrier »', 'Panier couvert pour les teckels qui aiment s''enfouir.', 'accessoires', 6900, 12, '#7d4e57'),
+  ('beret-parisien', 'Béret parisien', 'Béret en laine bouillie avec élastique sous le menton, pour ne pas le perdre en balade.', 'vetements', 2200, 30, '#1a1a1a'),
+  ('casquette-teckel', 'Casquette à oreilles', 'Casquette en coton avec deux ouvertures pour laisser passer les oreilles. Protège du soleil.', 'vetements', 1900, 25, '#2c4a6b'),
+  ('lunettes-soleil', 'Lunettes de soleil canines', 'Verres filtrants anti-UV et sangle réglable, pour les teckels sensibles à la lumière.', 'accessoires', 2400, 15, '#111111'),
+  ('pull-torsade', 'Pull en laine torsadée', 'Pull à torsades en laine mérinos, coupé long pour couvrir tout le dos sans gêner les pattes.', 'vetements', 4200, 20, '#e9dcc3'),
+  ('foulard-rouge', 'Foulard rouge', 'Bandana en coton à nouer au cou, lavable en machine.', 'accessoires', 1400, 50, '#b3122a'),
+  ('noeud-papillon', 'Nœud papillon', 'Nœud papillon à clipser sur le collier, pour les grandes occasions.', 'accessoires', 1200, 40, '#111111')
 on conflict (slug) do nothing;

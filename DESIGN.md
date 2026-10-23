@@ -249,7 +249,7 @@ Toute photo est une Pose : fond encre, photo recadrée en `object-cover`, filtre
 - **Do** couper toute animation de flash sous `prefers-reduced-motion`.
 
 ### Don't:
-- **Don't** utiliser d'illustration, de dessin ou de mascotte : seulement des photos réelles.
+- **Don't** utiliser d'illustration, de dessin ou de mascotte : seulement des photos réelles. Seule exception, voulue : le mini-jeu `/habille-ton-teckel`, où le teckel et ses vêtements sont des aplats SVG superposés, posés sur le rideau rouge et dans un tirage.
 - **Don't** afficher de photo de teckel en couleur dans le site public.
 - **Don't** glisser vers le café chaleureux crème, serif et caramel, ni vers le héros « titre + bouton + cartes ».
 - **Don't** arrondir les tirages ni les sections : l'arrondi appartient au matériel (boutons, panneau, cases, champs).
