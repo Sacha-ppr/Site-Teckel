@@ -58,3 +58,4 @@ where id = (select id from auth.users where email = 'vous@exemple.fr');         
 - Les prix d'une commande sont relus en base (`place_order`), jamais pris du navigateur.
 - La capacité des créneaux est vérifiée par un trigger avec verrou, ce qui empêche le surbooking.
 - Chaque action serveur de l'espace pro revérifie le rôle admin.
+
