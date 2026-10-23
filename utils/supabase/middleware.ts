@@ -25,7 +25,16 @@ export const updateSession = async (request: NextRequest) => {
 
   // Touching auth is what triggers the token refresh and the setAll() above.
   // Don't run code between createServerClient and this call.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+
+  // Premier filtre pour les zones privées ; le rôle admin est revérifié côté serveur.
+  const { pathname } = request.nextUrl;
+  if (!data?.claims && (pathname.startsWith("/admin") || pathname.startsWith("/compte"))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/connexion";
+    url.search = `?next=${encodeURIComponent(pathname)}`;
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 };

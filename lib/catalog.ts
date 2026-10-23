@@ -116,3 +116,18 @@ export function isOpenOn(isoDate: string) {
   const day = new Date(`${isoDate}T00:00:00Z`).getUTCDay();
   return day !== 1 && day !== 2;
 }
+
+// Date du jour à Paris, au format AAAA-MM-JJ.
+export function parisToday() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(new Date());
+}
+
+export function addDays(isoDate: string, days: number) {
+  const d = new Date(`${isoDate}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+export function formulaPriceCents(id: string) {
+  return FORMULAS.find((f) => f.id === id)?.priceCents ?? 0;
+}

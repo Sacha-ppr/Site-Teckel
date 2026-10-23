@@ -10,6 +10,7 @@ import {
   formatDate,
   formatPrice,
   formulaName,
+  parisToday,
   type Order,
   type Reservation,
 } from "@/lib/catalog";
@@ -37,7 +38,7 @@ async function Account() {
       .eq("user_id", user.id)
       .order("created_at", { ascending: false }),
   ]);
-  const today = new Date().toISOString().slice(0, 10);
+  const today = parisToday();
 
   return (
     <>
