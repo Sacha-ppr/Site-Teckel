@@ -36,7 +36,7 @@ Not a generic cat/dog café: everything is built around one breed. Resident dach
 
 - Stack: Next.js 16 (App Router, Cache Components, Partial Prefetching), Tailwind CSS 4, Supabase (Auth + Postgres with RLS). Deployed on Vercel.
 - French-language site (fr-FR), prices in euros.
-- Admin role is granted by email via `public.admin_emails` (default `admin@bar-a-teckels.fr`).
+- Admin role is granted by email via `public.admin_emails` (defaults `josephhalle992@gmail.com`, `josephhalle@hotmail.com`).
 
 ## Brand Commitments
 

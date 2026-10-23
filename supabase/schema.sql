@@ -19,7 +19,7 @@ create table if not exists public.admin_emails (
 );
 
 insert into public.admin_emails (email)
-values ('admin@bar-a-teckels.fr')
+values ('josephhalle992@gmail.com'), ('josephhalle@hotmail.com')
 on conflict do nothing;
 
 create or replace function public.is_admin()

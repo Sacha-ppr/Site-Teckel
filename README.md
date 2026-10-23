@@ -35,10 +35,10 @@ Stack : Next.js 16 (App Router, Cache Components), Tailwind CSS 4, Supabase (Aut
 
 ## Compte administrateur
 
-Le script SQL déclare `admin@bar-a-teckels.fr` comme email administrateur : tout compte créé avec cet
-email reçoit le rôle `admin` automatiquement.
+Le script SQL déclare `josephhalle992@gmail.com` et `josephhalle@hotmail.com` comme emails administrateur : tout compte créé avec l'un de ces
+emails reçoit le rôle `admin` automatiquement.
 
-1. Aller sur `/inscription` et créer le compte avec `admin@bar-a-teckels.fr`.
+1. Aller sur `/inscription` et créer le compte avec l'une de ces adresses.
 2. Si la confirmation par email est activée dans Supabase (Authentication > Providers > Email),
    confirmer l'utilisateur depuis Authentication > Users, ou désactiver la confirmation en développement.
 3. Se connecter sur `/connexion` : redirection vers `/admin`.

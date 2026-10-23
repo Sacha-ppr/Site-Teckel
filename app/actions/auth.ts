@@ -18,6 +18,9 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
   });
+  if (error?.code === "email_not_confirmed") {
+    return { error: "Adresse email pas encore confirmée : ouvrez le lien reçu par email avant de vous connecter." };
+  }
   if (error) return { error: "Email ou mot de passe incorrect." };
 
   const next = safeNext(formData.get("next"));
