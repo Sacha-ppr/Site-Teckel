@@ -1,145 +1,20 @@
-// Le teckel et ses vêtements en SVG, dans un repère commun (viewBox 0 0 420 260, chien tourné vers la droite).
-// Rendu « matière » : dégradés de volume, textures de tissu, coutures et ombres portées, pour que chaque
-// pièce se lise comme le vrai article. Ordre des calques : corps, haut, pattes avant, manches, harnais,
-// tête, cou, lunettes, chapeau.
+// Les vêtements de la cabine d'essayage en SVG, dessinés dans le repère d'un gabarit de teckel
+// (viewBox 0 0 420 260, tête à droite). Rendu « matière » : volume, textures de tissu, coutures, ombres.
+// Posés sur une photo détourée, les hauts et le harnais sont découpés par la vraie silhouette du chien.
 
-import type { Coat, GarmentId, Look, Slot } from "@/lib/dress-up";
+import type { GarmentId } from "@/lib/dress-up";
 
-export const VIEWBOX = "0 0 420 260";
-
-type Palette = { base: string; light: string; shade: string; deep: string; tan?: string; nose: string };
-
-const PALETTES: Record<Coat, Palette> = {
-  fauve: { base: "#c46f2c", light: "#e09a55", shade: "#93501f", deep: "#6e3a16", nose: "#22150d" },
-  "noir-feu": { base: "#2a221d", light: "#4a3d34", shade: "#17110e", deep: "#0c0806", tan: "#b8692b", nose: "#050403" },
-  "poil-long": { base: "#8e5226", light: "#b8763f", shade: "#683a19", deep: "#4a280f", nose: "#1f1209" },
-};
-
-// Silhouette du tronc et du cou : sert de masque aux hauts et au harnais.
+// Silhouette du tronc et du cou du gabarit : sert de masque aux hauts et au harnais
+// quand aucune photo détourée ne donne la vraie silhouette.
 const TORSO = "M111 104 H279 C290 92 302 78 316 70 L348 96 C338 122 322 142 306 154 L304 182 H111 A39 39 0 0 1 111 104 Z";
 
-type Props = { coat: Coat; look: Look; uid: string; focus?: Slot | null };
+// Bord avant d'un haut porté sur une photo : il s'arrête au poitrail.
+const FRONT = "M316 88 C321 112 320 140 306 162";
 
-export function TeckelFigure({ coat, look, uid, focus }: Props) {
-  const p = PALETTES[coat];
-  const long = coat === "poil-long";
-  const id = (name: string) => `${uid}-${name}`;
-  const layer = (slot: Slot) => {
-    const g = look[slot];
-    if (!g) return null;
-    return (
-      <g style={{ opacity: focus && focus !== slot ? 0.28 : 1, transition: "opacity 200ms" }}>
-        <Garment id={g} uid={uid} />
-      </g>
-    );
-  };
-  const sleeves = look.haut ? (
-    <g style={{ opacity: focus && focus !== "haut" ? 0.28 : 1, transition: "opacity 200ms" }}>
-      <Sleeve id={look.haut} uid={uid} />
-    </g>
-  ) : null;
+// Zone d'un haut posé sur une photo : du dos jusqu'au ventre, le bas remonte avant les pattes avant.
+const AMPLE = "M96 88 H316 C321 112 320 140 306 162 C280 178 220 182 160 180 C126 179 104 176 96 172 Z";
 
-  return (
-    <g>
-      <SharedDefs uid={uid} />
-      <defs>
-        <linearGradient id={id("pelage")} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor={p.light} />
-          <stop offset="0.38" stopColor={p.base} />
-          <stop offset="1" stopColor={p.shade} />
-        </linearGradient>
-        <radialGradient id={id("tete")} cx="0.42" cy="0.32" r="0.8">
-          <stop offset="0" stopColor={p.light} />
-          <stop offset="0.55" stopColor={p.base} />
-          <stop offset="1" stopColor={p.shade} />
-        </radialGradient>
-        <linearGradient id={id("oreille")} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={p.shade} />
-          <stop offset="1" stopColor={p.deep} />
-        </linearGradient>
-        <linearGradient id={id("patte")} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor={p.shade} />
-          <stop offset="0.45" stopColor={p.base} />
-          <stop offset="1" stopColor={p.shade} />
-        </linearGradient>
-      </defs>
-
-      {/* Ombre au sol */}
-      <ellipse cx="205" cy="236" rx="158" ry="10" fill="#000" opacity="0.22" filter={`url(#${id("flou")})`} />
-
-      {/* Queue */}
-      {long ? (
-        <path d="M88 124 C66 116 46 98 36 74 C50 86 58 84 52 96 C66 104 74 98 72 110 C80 114 86 114 92 120 Z" fill={`url(#${id("pelage")})`} />
-      ) : (
-        <path d="M88 126 C62 118 46 100 36 78" stroke={p.base} strokeWidth="12" strokeLinecap="round" fill="none" />
-      )}
-
-      {/* Pattes arrière-plan */}
-      <rect x="112" y="158" width="20" height="68" rx="10" fill={p.deep} />
-      <rect x="264" y="158" width="20" height="68" rx="10" fill={p.deep} />
-
-      {/* Corps et cou */}
-      <path d={TORSO} fill={`url(#${id("pelage")})`} />
-      {long ? (
-        <path
-          d="M104 176 C112 196 120 184 128 198 C136 186 146 200 154 188 C162 200 172 188 180 198 C188 186 198 200 206 188 C214 200 224 188 232 198 C240 186 250 200 258 188 C266 198 276 190 290 182 L290 170 L104 170 Z"
-          fill={p.shade}
-        />
-      ) : null}
-      {p.tan ? <path d="M300 150 C310 160 318 156 322 140 C314 146 306 148 300 150 Z" fill={p.tan} /> : null}
-
-      {layer("haut")}
-
-      {/* Pattes avant-plan */}
-      <Leg x={94} uid={uid} p={p} />
-      <Leg x={284} uid={uid} p={p} />
-      {sleeves}
-
-      {layer("harnais")}
-
-      {/* Tête */}
-      <circle cx="330" cy="86" r="38" fill={`url(#${id("tete")})`} />
-      <path d="M342 72 C370 70 396 82 404 96 C409 106 400 116 386 116 L344 114 Z" fill={`url(#${id("tete")})`} />
-      <path d="M346 108 C362 114 380 116 396 112" stroke={p.shade} strokeWidth="2" fill="none" opacity="0.6" />
-      {p.tan ? (
-        <>
-          <path d="M348 104 C364 112 382 116 396 112 C390 118 370 120 352 116 Z" fill={p.tan} />
-          <ellipse cx="356" cy="70" rx="6" ry="3.6" fill={p.tan} />
-        </>
-      ) : null}
-      {long ? <path d="M384 114 C388 124 376 128 372 120 C366 128 356 124 356 116 Z" fill={p.shade} /> : null}
-      <ellipse cx="403" cy="99" rx="8" ry="7" fill={p.nose} />
-      <ellipse cx="405" cy="96.5" rx="2.6" ry="1.6" fill="#fff" opacity="0.35" />
-      <path d="M386 112 C380 116 372 116 366 113" stroke={p.nose} strokeWidth="2.5" strokeLinecap="round" fill="none" />
-      <circle cx="352" cy="80" r="5.4" fill={p.nose} />
-      <circle cx="354" cy="78.3" r="1.7" fill="#fff" />
-
-      {/* Oreille */}
-      {long ? (
-        <path
-          d="M318 64 C296 68 286 100 290 132 C292 150 300 158 306 150 C310 160 320 156 320 146 C328 150 332 140 326 128 C330 106 332 82 318 64 Z"
-          fill={`url(#${id("oreille")})`}
-        />
-      ) : (
-        <path d="M318 64 C298 68 290 100 294 128 C298 146 316 146 322 128 C326 108 330 84 318 64 Z" fill={`url(#${id("oreille")})`} />
-      )}
-
-      {layer("cou")}
-      {layer("lunettes")}
-      {layer("chapeau")}
-    </g>
-  );
-}
-
-function Leg({ x, uid, p }: { x: number; uid: string; p: Palette }) {
-  return (
-    <g>
-      <rect x={x} y="160" width="22" height="68" rx="11" fill={`url(#${uid}-patte)`} />
-      <ellipse cx={x + 15} cy="228" rx="15" ry="6.5" fill={p.tan ?? p.base} />
-      <path d={`M${x + 8} 231 v-4 M${x + 15} 232 v-4 M${x + 22} 231 v-4`} stroke={p.deep} strokeWidth="1.4" strokeLinecap="round" opacity="0.6" />
-    </g>
-  );
-}
+export type Fit = "gabarit" | "photo";
 
 // Textures et effets partagés par tous les vêtements d'une scène.
 function SharedDefs({ uid }: { uid: string }) {
@@ -150,6 +25,10 @@ function SharedDefs({ uid }: { uid: string }) {
         <path d={TORSO} />
       </clipPath>
       {/* Ourlet arrière arrondi : le vêtement suit la croupe au lieu de s'arrêter net. */}
+      {/* Zone large d'un haut posé sur une photo : la silhouette réelle du chien fait le reste. */}
+      <clipPath id={id("ample")}>
+        <path d={AMPLE} />
+      </clipPath>
       <clipPath id={id("ourlet")}>
         <path d="M150 88 C134 116 132 160 146 198 H420 V60 H150 Z" />
       </clipPath>
@@ -253,9 +132,10 @@ function Stripes({ from, to }: { from: number; to: number }) {
 }
 
 // Un vêtement seul, dans le même repère que le chien.
-export function Garment({ id, uid }: { id: GarmentId; uid: string }) {
+export function Garment({ id, uid, fit = "gabarit" }: { id: GarmentId; uid: string; fit?: Fit }) {
   const u = (name: string) => `url(#${uid}-${name})`;
-  const clip = u("torse");
+  const photo = fit === "photo";
+  const clip = photo ? u("ample") : u("torse");
   switch (id) {
     case "mariniere":
       return (
@@ -269,8 +149,14 @@ export function Garment({ id, uid }: { id: GarmentId; uid: string }) {
           <g clipPath={clip}>
             <path d="M150 88 C134 116 132 160 146 198" stroke={u("cotes-blanc")} strokeWidth="16" fill="none" />
           </g>
-          <path d="M308 72 L344 112" stroke={u("cotes-blanc")} strokeWidth="11" strokeLinecap="round" />
-          <path d="M308 72 L344 112" stroke="#1f3a5f" strokeWidth="2" strokeLinecap="round" transform="translate(-4 3)" />
+          {photo ? (
+            <path d={FRONT} stroke={u("cotes-blanc")} strokeWidth="12" fill="none" />
+          ) : (
+            <>
+              <path d="M308 72 L344 112" stroke={u("cotes-blanc")} strokeWidth="11" strokeLinecap="round" />
+              <path d="M308 72 L344 112" stroke="#1f3a5f" strokeWidth="2" strokeLinecap="round" transform="translate(-4 3)" />
+            </>
+          )}
         </g>
       );
     case "manteau":
@@ -295,11 +181,14 @@ export function Garment({ id, uid }: { id: GarmentId; uid: string }) {
           {/* Étiquette du bar */}
           <rect x="116" y="132" width="16" height="10" rx="1.5" fill="#b3122a" />
           {/* Col en fausse fourrure */}
+          {photo ? <path d={FRONT} stroke="#efe6d4" strokeWidth="14" fill="none" clipPath={clip} /> : null}
+          {photo ? null : (
           <path
             d="M282 94 C288 86 296 80 304 76 C306 70 312 70 314 74 C318 70 324 72 324 78 C328 78 330 84 326 88 C318 96 308 104 296 112 C292 114 286 110 288 106 C282 106 280 100 282 94 Z"
             fill="#efe6d4"
           />
-          <path d="M290 100 C298 94 308 86 318 80" stroke="#d8ccb3" strokeWidth="2" fill="none" />
+          )}
+          {photo ? null : <path d="M290 100 C298 94 308 86 318 80" stroke="#d8ccb3" strokeWidth="2" fill="none" />}
         </g>
       );
     case "pull-torsade":
@@ -314,9 +203,15 @@ export function Garment({ id, uid }: { id: GarmentId; uid: string }) {
             <rect x="140" y="172" width="230" height="14" fill={u("cotes")} />
           </g>
           {/* Col roulé côtelé, épais */}
-          <path d="M302 76 L330 62 L352 96 L326 114 Z" fill={u("cotes")} />
-          <path d="M302 76 L330 62 L352 96 L326 114 Z" fill={u("pli")} />
-          <path d="M304 80 C316 86 326 98 330 112" stroke="#b9a681" strokeWidth="2" fill="none" />
+          {photo ? (
+            <path d={FRONT} stroke={u("cotes")} strokeWidth="14" fill="none" />
+          ) : (
+            <>
+              <path d="M302 76 L330 62 L352 96 L326 114 Z" fill={u("cotes")} />
+              <path d="M302 76 L330 62 L352 96 L326 114 Z" fill={u("pli")} />
+              <path d="M304 80 C316 86 326 98 330 112" stroke="#b9a681" strokeWidth="2" fill="none" />
+            </>
+          )}
         </g>
       );
     case "harnais":
@@ -449,13 +344,77 @@ export function Backdrop({ uid }: { uid: string }) {
   );
 }
 
-// Vignette d'un vêtement pour le dressing.
-export function GarmentIcon({ id, box, uid }: { id: GarmentId; box: string; uid: string }) {
+// Ombres et reflets de la vraie photo, recalés dans le repère de la pièce.
+export type Shade = { href: string; x: number; y: number; width: number; height: number; transform?: string; gain: number };
+
+// Une pièce seule, en SVG autonome : vignette du dressing, calque de la cabine ou image d'export.
+export function GarmentSvg({
+  id,
+  box,
+  uid,
+  fit = "gabarit",
+  stretch = false,
+  sleeves = false,
+  className,
+  svgRef,
+  shade,
+}: {
+  shade?: Shade;
+  id: GarmentId;
+  box: [number, number, number, number];
+  uid: string;
+  fit?: Fit;
+  stretch?: boolean;
+  sleeves?: boolean;
+  className?: string;
+  svgRef?: (el: SVGSVGElement | null) => void;
+}) {
   return (
-    <svg viewBox={box} className="h-full w-full" aria-hidden>
+    <svg
+      ref={svgRef}
+      viewBox={box.join(" ")}
+      preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
+      className={className}
+      aria-hidden
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <SharedDefs uid={uid} />
-      <Garment id={id} uid={uid} />
-      <Sleeve id={id} uid={uid} />
+      <Garment id={id} uid={uid} fit={fit} />
+      {sleeves ? <Sleeve id={id} uid={uid} /> : null}
+      {shade ? (
+        <>
+          <defs>
+            {/* La photo en niveaux de gris, éclaircie pour les pelages sombres. */}
+            <filter id={`${uid}-gris`} colorInterpolationFilters="sRGB">
+              <feColorMatrix type="saturate" values="0" />
+              <feComponentTransfer>
+                <feFuncR type="linear" slope={shade.gain} />
+                <feFuncG type="linear" slope={shade.gain} />
+                <feFuncB type="linear" slope={shade.gain} />
+              </feComponentTransfer>
+            </filter>
+          </defs>
+          {/* Découpe portée par l'image elle-même : un groupe isolerait le mélange et couvrirait le tissu. */}
+          <defs>
+            <clipPath id={`${uid}-ombre`} clipPath={`url(#${uid}-ample)`}>
+              <path d={id === "manteau" ? "M118 88 C102 116 100 160 114 198 H420 V60 H118 Z" : "M150 88 C134 116 132 160 146 198 H420 V60 H150 Z"} />
+            </clipPath>
+          </defs>
+              <image
+                clipPath={`url(#${uid}-ombre)`}
+                href={shade.href}
+                x={shade.x}
+                y={shade.y}
+                width={shade.width}
+                height={shade.height}
+                preserveAspectRatio="none"
+                transform={shade.transform}
+                filter={`url(#${uid}-gris)`}
+                opacity="0.75"
+                style={{ mixBlendMode: "soft-light" }}
+              />
+        </>
+      ) : null}
     </svg>
   );
 }
