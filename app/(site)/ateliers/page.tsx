@@ -1,29 +1,47 @@
 import type { Metadata } from "next";
+import { Pose } from "@/components/pose";
 import { WORKSHOPS } from "@/lib/events";
 
 export const metadata: Metadata = { title: "Ateliers & événements" };
 
 export default function Page() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14">
-      <h1 className="font-display text-5xl font-semibold">Ateliers & événements</h1>
-      <p className="mt-3 max-w-2xl text-lg text-ink-soft">
-        Le bar vit aussi en dehors des créneaux : éducation, santé, sorties et fêtes. Inscriptions au
-        comptoir ou par email à <a href="mailto:ateliers@bar-a-teckels.fr" className="font-semibold text-caramel">ateliers@bar-a-teckels.fr</a>.
-      </p>
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {WORKSHOPS.map((w) => (
-          <article key={w.title} className="flex flex-col rounded-2xl border border-line bg-paper p-6">
-            <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full bg-moss/15 px-3 py-1 text-xs font-semibold text-moss">{w.tag}</span>
-              <span className="text-sm font-semibold text-caramel">{w.priceLabel}</span>
+    <>
+      <section className="bg-rouge text-tirage">
+        <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-20">
+          <h1 className="enseigne text-[clamp(2.8rem,7vw,6rem)]">Ateliers & événements</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-rose">
+            Le bar vit aussi en dehors des créneaux : éducation, santé, sorties et fêtes. Inscriptions au comptoir ou
+            par email à{" "}
+            <a href="mailto:ateliers@bar-a-teckels.fr" className="font-bold text-tirage underline hover:text-jeton">
+              ateliers@bar-a-teckels.fr
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+
+      <ul className="mx-auto max-w-[1400px] px-4 py-10 md:px-8 md:py-16">
+        {WORKSHOPS.map((w, i) => (
+          <li
+            key={w.title}
+            className="grid gap-x-10 gap-y-5 border-b-2 border-encre py-10 last:border-b-0 sm:grid-cols-[10rem_1fr] md:grid-cols-[13rem_1fr_auto] md:items-start"
+          >
+            <div className={`tirage w-40 sm:w-full ${i % 2 ? "rotate-[1.5deg]" : "rotate-[-1.5deg]"}`}>
+              <Pose photo={w.photo} alt="" sizes="(min-width: 768px) 208px, 160px" className="aspect-[4/5]" />
+              <p className="legende px-0.5 pt-2.5 text-rouge">{w.tag}</p>
             </div>
-            <h2 className="mt-4 font-display text-2xl font-semibold">{w.title}</h2>
-            <p className="mt-1 text-sm font-medium text-ink-soft">{w.when}</p>
-            <p className="mt-3 text-ink-soft">{w.description}</p>
-          </article>
+            <div className="md:pt-2">
+              <h2 className="enseigne text-[clamp(1.8rem,3.4vw,2.8rem)]">{w.title}</h2>
+              <p className="mt-2 font-bold">{w.when}</p>
+              <p className="mt-2 max-w-[42rem] text-lg text-encre-douce">{w.description}</p>
+            </div>
+            <p className="justify-self-start rounded-full bg-encre px-4 py-2 text-[0.95rem] font-extrabold whitespace-nowrap text-jeton sm:col-start-2 md:col-start-auto md:mt-3 md:justify-self-end">
+              {w.priceLabel}
+            </p>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </>
   );
 }

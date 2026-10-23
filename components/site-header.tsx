@@ -2,44 +2,58 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { CartLink } from "./cart-link";
-import { Teckel } from "./teckel";
 
 const NAV = [
   { href: "/bar", label: "Le bar" },
-  { href: "/reserver", label: "Réserver" },
+  { href: "/residents", label: "Résidents" },
   { href: "/boutique", label: "Boutique" },
-  { href: "/residents", label: "Nos résidents" },
   { href: "/ateliers", label: "Ateliers" },
 ];
 
+// L'enseigne lumineuse au-dessus de la cabine.
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-cream/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <Teckel className="h-8 w-auto" />
-          <span className="font-display text-xl font-semibold tracking-tight">Le Bar à Teckels</span>
+    <header className="sticky top-0 z-30 bg-rouge text-tirage shadow-[0_1px_0_rgb(0_0_0/0.25)]">
+      <div className="mx-auto flex max-w-[1400px] items-center gap-6 px-4 py-3 md:px-8">
+        <Link href="/" className="enseigne shrink-0 text-[1.1rem] leading-none [font-stretch:100%] sm:[font-stretch:112%] md:text-[1.35rem]">
+          Le Bar à Teckels
         </Link>
-        <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-ink-soft">
+        <nav aria-label="Navigation principale" className="hidden items-center gap-6 lg:flex">
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href} className="hover:text-caramel">
+            <Link key={item.href} href={item.href} className="legende text-[0.8rem] hover:text-jeton">
               {item.label}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-3 text-sm">
-          <Suspense fallback={<span className="w-20" />}>
-            <UserMenu />
-          </Suspense>
+        <div className="ml-auto flex items-center gap-4">
+          <div className="hidden sm:block">
+            <Suspense fallback={<span className="w-20" />}>
+              <UserMenu />
+            </Suspense>
+          </div>
           <CartLink />
+          <Link href="/reserver" className="btn btn-jeton hidden px-5 py-2.5 sm:inline-flex">
+            Réserver
+          </Link>
         </div>
       </div>
-      <nav className="md:hidden flex gap-4 overflow-x-auto px-4 pb-3 text-sm font-medium text-ink-soft">
+      <nav
+        aria-label="Navigation principale"
+        className="flex gap-5 overflow-x-auto border-t border-rouge-fonce px-4 py-2.5 lg:hidden"
+      >
+        <Link href="/reserver" className="legende shrink-0 text-jeton sm:hidden">
+          Réserver
+        </Link>
         {NAV.map((item) => (
-          <Link key={item.href} href={item.href} className="shrink-0 hover:text-caramel">
+          <Link key={item.href} href={item.href} className="legende shrink-0 hover:text-jeton">
             {item.label}
           </Link>
         ))}
+        <div className="shrink-0 sm:hidden">
+          <Suspense fallback={null}>
+            <UserMenu />
+          </Suspense>
+        </div>
       </nav>
     </header>
   );
@@ -49,19 +63,19 @@ async function UserMenu() {
   const user = await getCurrentUser();
   if (!user) {
     return (
-      <Link href="/connexion" className="font-medium hover:text-caramel">
+      <Link href="/connexion" className="legende hover:text-jeton">
         Connexion
       </Link>
     );
   }
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
       {user.role === "admin" ? (
-        <Link href="/admin" className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-cream">
+        <Link href="/admin" className="legende rounded-full bg-encre px-3 py-1.5 text-tirage hover:bg-rouge-fonce">
           Espace pro
         </Link>
       ) : null}
-      <Link href="/compte" className="font-medium hover:text-caramel">
+      <Link href="/compte" className="legende hover:text-jeton">
         Mon compte
       </Link>
     </div>

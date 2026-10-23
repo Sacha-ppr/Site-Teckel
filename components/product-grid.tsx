@@ -7,25 +7,26 @@ import { ProductCard } from "./product-card";
 export function ProductGrid({ products }: { products: Product[] }) {
   const [category, setCategory] = useState<Category | "all">("all");
   const visible = category === "all" ? products : products.filter((p) => p.category === category);
-  const tabs: [Category | "all", string][] = [["all", "Tout"], ...Object.entries(CATEGORIES) as [Category, string][]];
+  const tabs: [Category | "all", string][] = [["all", "Tout"], ...(Object.entries(CATEGORIES) as [Category, string][])];
 
   return (
     <>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer par rayon">
         {tabs.map(([id, label]) => (
           <button
             key={id}
             type="button"
             onClick={() => setCategory(id)}
-            className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
-              category === id ? "border-ink bg-ink text-cream" : "border-line bg-paper hover:border-ink/40"
+            aria-pressed={category === id}
+            className={`btn px-5 py-2.5 text-[0.85rem] ${
+              category === id ? "bg-encre text-jeton" : "border-2 border-encre hover:bg-tirage"
             }`}
           >
             {label}
           </button>
         ))}
       </div>
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {visible.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

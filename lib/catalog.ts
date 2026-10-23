@@ -131,3 +131,25 @@ export function addDays(isoDate: string, days: number) {
 export function formulaPriceCents(id: string) {
   return FORMULAS.find((f) => f.id === id)?.priceCents ?? 0;
 }
+
+// Les prochains jours d'ouverture à partir d'aujourd'hui (heure locale du navigateur).
+export function nextOpenDays(count: number) {
+  const days: string[] = [];
+  const cursor = new Date();
+  while (days.length < count) {
+    const iso = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, "0")}-${String(cursor.getDate()).padStart(2, "0")}`;
+    if (isOpenOn(iso)) days.push(iso);
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return days;
+}
+
+export function slotLabel(slot: string) {
+  return slot.replace(":00", " h").replace(":", " h ");
+}
+
+export function shortDate(isoDate: string) {
+  return new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", timeZone: "UTC" }).format(
+    new Date(`${isoDate}T00:00:00Z`),
+  );
+}

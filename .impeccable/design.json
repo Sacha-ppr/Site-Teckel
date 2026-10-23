@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T00:00:00Z",
+  "title": "Design System: Le Bar à Teckels",
+  "extensions": {
+    "colorMeta": {
+      "rouge": { "role": "primary", "displayName": "Rouge rideau", "canonical": "#b3122a", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.10 20)", "oklch(35% 0.14 20)", "oklch(45% 0.18 20)", "oklch(55% 0.19 20)", "oklch(65% 0.16 20)", "oklch(80% 0.09 20)", "oklch(95% 0.025 20)"] },
+      "rouge-fonce": { "role": "primary", "displayName": "Rouge rideau foncé", "canonical": "#8c0c1f", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.10 20)", "oklch(35% 0.14 20)", "oklch(45% 0.18 20)", "oklch(55% 0.19 20)", "oklch(65% 0.16 20)", "oklch(80% 0.09 20)", "oklch(95% 0.025 20)"] },
+      "jeton": { "role": "secondary", "displayName": "Jaune jeton", "canonical": "#ffd400", "tonalRamp": ["oklch(15% 0.04 95)", "oklch(25% 0.06 95)", "oklch(35% 0.08 95)", "oklch(45% 0.10 95)", "oklch(55% 0.12 95)", "oklch(65% 0.14 95)", "oklch(80% 0.17 95)", "oklch(95% 0.08 95)"] },
+      "jeton-clair": { "role": "secondary", "displayName": "Jaune jeton vif", "canonical": "#ffe14d", "tonalRamp": ["oklch(15% 0.04 98)", "oklch(25% 0.06 98)", "oklch(35% 0.08 98)", "oklch(45% 0.10 98)", "oklch(55% 0.12 98)", "oklch(65% 0.14 98)", "oklch(80% 0.16 98)", "oklch(95% 0.07 98)"] },
+      "rose": { "role": "tertiary", "displayName": "Rose rideau", "canonical": "#f6d3d8", "tonalRamp": ["oklch(15% 0.03 10)", "oklch(25% 0.04 10)", "oklch(35% 0.05 10)", "oklch(45% 0.05 10)", "oklch(55% 0.05 10)", "oklch(65% 0.05 10)", "oklch(80% 0.045 10)", "oklch(95% 0.02 10)"] },
+      "tirage": { "role": "neutral", "displayName": "Blanc tirage", "canonical": "#f7f5f0", "tonalRamp": ["oklch(15% 0.006 85)", "oklch(25% 0.006 85)", "oklch(35% 0.007 85)", "oklch(45% 0.007 85)", "oklch(55% 0.007 85)", "oklch(65% 0.007 85)", "oklch(80% 0.007 85)", "oklch(97% 0.007 85)"] },
+      "tirage-2": { "role": "neutral", "displayName": "Tirage ombré", "canonical": "#ebe7de", "tonalRamp": ["oklch(15% 0.01 85)", "oklch(25% 0.01 85)", "oklch(35% 0.012 85)", "oklch(45% 0.012 85)", "oklch(55% 0.012 85)", "oklch(65% 0.012 85)", "oklch(80% 0.012 85)", "oklch(93% 0.012 85)"] },
+      "papier": { "role": "neutral", "displayName": "Papier photo", "canonical": "#fffefa", "tonalRamp": ["oklch(15% 0.004 95)", "oklch(25% 0.004 95)", "oklch(35% 0.004 95)", "oklch(45% 0.004 95)", "oklch(55% 0.004 95)", "oklch(65% 0.004 95)", "oklch(80% 0.004 95)", "oklch(99.6% 0.004 95)"] },
+      "encre": { "role": "neutral", "displayName": "Encre", "canonical": "#111111", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(80% 0 0)", "oklch(95% 0 0)"] },
+      "encre-douce": { "role": "neutral", "displayName": "Encre douce", "canonical": "#57534c", "tonalRamp": ["oklch(15% 0.01 80)", "oklch(25% 0.01 80)", "oklch(35% 0.01 80)", "oklch(44% 0.011 80)", "oklch(55% 0.01 80)", "oklch(65% 0.01 80)", "oklch(80% 0.008 80)", "oklch(95% 0.005 80)"] },
+      "chrome": { "role": "neutral", "displayName": "Chrome", "canonical": "#b9bcc0", "tonalRamp": ["oklch(15% 0.005 250)", "oklch(25% 0.005 250)", "oklch(35% 0.005 250)", "oklch(45% 0.005 250)", "oklch(55% 0.005 250)", "oklch(65% 0.005 250)", "oklch(78% 0.006 250)", "oklch(95% 0.003 250)"] },
+      "chrome-clair": { "role": "neutral", "displayName": "Chrome clair", "canonical": "#dfe1e3", "tonalRamp": ["oklch(15% 0.003 250)", "oklch(25% 0.003 250)", "oklch(35% 0.003 250)", "oklch(45% 0.003 250)", "oklch(55% 0.003 250)", "oklch(65% 0.003 250)", "oklch(80% 0.003 250)", "oklch(91% 0.003 250)"] },
+      "panneau": { "role": "neutral", "displayName": "Panneau", "canonical": "#1a1a1a", "tonalRamp": ["oklch(15% 0 0)", "oklch(21% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(80% 0 0)", "oklch(95% 0 0)"] },
+      "case": { "role": "neutral", "displayName": "Case du monnayeur", "canonical": "#2a2a2a", "tonalRamp": ["oklch(15% 0 0)", "oklch(27% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(80% 0 0)", "oklch(95% 0 0)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Enseigne (display)", "purpose": "H1 de page, capitales 900 larges (wdth 112), text-wrap balance." },
+      "headline": { "displayName": "Enseigne (headline)", "purpose": "Titres de section." },
+      "title": { "displayName": "Enseigne (title)", "purpose": "Noms de résidents, formules, titres de panneau, 1.35–2rem." },
+      "body": { "displayName": "Texte", "purpose": "Paragraphes, 36–44rem max, interligne relâché." },
+      "label": { "displayName": "Légende", "purpose": "Navigation, légendes sous tirage, termes de définition, état de stock ; capitales étroites espacées." },
+      "compteur": { "displayName": "Compteur", "purpose": "Places restantes, prix de formule, numéro de commande ; jaune jeton, chiffres tabulaires, wdth 75." }
+    },
+    "shadows": [
+      { "name": "jeton", "value": "inset 0 -3px 0 rgb(0 0 0 / 0.18), 0 6px 14px -6px rgb(0 0 0 / 0.45)", "purpose": "Relief de pièce du bouton principal." },
+      { "name": "panneau", "value": "inset 0 0 0 2px #5d6064, 0 28px 50px -24px rgb(0 0 0 / 0.6)", "purpose": "Liseré intérieur et ombre portée du monnayeur chromé." },
+      { "name": "tirage", "value": "0 18px 34px -18px rgb(0 0 0 / 0.55)", "purpose": "Papier photo posé sur la surface." },
+      { "name": "enseigne", "value": "0 1px 0 rgb(0 0 0 / 0.25)", "purpose": "Filet sous l'en-tête collant." }
+    ],
+    "motion": [
+      { "name": "ease-flash", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Ease-out exponentiel du flash et du développement." },
+      { "name": "flash", "value": "900ms, opacité 0 → 0.95 à 8% → 0, délai 350ms + rang × 650ms", "purpose": "Éclair blanc sur chaque pose d'une bande, à l'arrivée." },
+      { "name": "developpe", "value": "1400ms, filtre surexposé → grayscale(1) contrast(1.12) brightness(1.02)", "purpose": "Développement de la photo sous l'éclair." },
+      { "name": "etat", "value": "150ms", "purpose": "Transitions de couleur, ombre et enfoncement (translateY 2px) des boutons." },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: no-preference", "purpose": "Le flash et le développement ne jouent que hors préférence de mouvement réduit." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton jeton",
+      "kind": "button",
+      "refersTo": "button-jeton",
+      "description": "Action principale : réserver, valider, payer.",
+      "html": "<button class=\"ds-btn ds-btn-jeton\">Réserver jeu. 24 oct.<svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" aria-hidden=\"true\"><path d=\"M6 3l5 5-5 5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; border: 0; border-radius: 999px; padding: 0.85rem 1.6rem; font-family: var(--font-archivo), system-ui, sans-serif; font-weight: 800; font-stretch: 105%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; transition: background-color 150ms, color 150ms, box-shadow 150ms, transform 150ms; } .ds-btn:active { transform: translateY(2px); } .ds-btn:focus-visible { outline: 3px solid var(--jeton, #ffd400); outline-offset: 3px; } .ds-btn-jeton { background: var(--jeton, #ffd400); color: var(--encre, #111111); box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.18), 0 6px 14px -6px rgb(0 0 0 / 0.45); } .ds-btn-jeton:hover { background: #ffe14d; }"
+    },
+    {
+      "name": "Bouton encre",
+      "kind": "button",
+      "refersTo": "button-encre",
+      "description": "Action secondaire sur fond clair, vire au rouge au survol.",
+      "html": "<button class=\"ds-btn-encre\">Ajouter au panier</button>",
+      "css": ".ds-btn-encre { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; padding: 0.85rem 1.6rem; font-family: var(--font-archivo), system-ui, sans-serif; font-weight: 800; font-stretch: 105%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; background: var(--encre, #111111); color: var(--tirage, #f7f5f0); cursor: pointer; transition: background-color 150ms, transform 150ms; } .ds-btn-encre:hover { background: var(--rouge, #b3122a); } .ds-btn-encre:active { transform: translateY(2px); } .ds-btn-encre:focus-visible { outline: 3px solid var(--jeton, #ffd400); outline-offset: 3px; }"
+    },
+    {
+      "name": "Bouton ligne",
+      "kind": "button",
+      "refersTo": "button-ligne",
+      "description": "Lien de section ou action discrète, contour de la couleur du texte.",
+      "html": "<div style=\"background:#b3122a;color:#f7f5f0;padding:24px\"><a href=\"#\" class=\"ds-btn-ligne\">Tout le catalogue</a></div>",
+      "css": ".ds-btn-ligne { display: inline-flex; align-items: center; justify-content: center; border: 2px solid currentColor; border-radius: 999px; padding: 0.85rem 1.6rem; color: inherit; text-decoration: none; font-family: var(--font-archivo), system-ui, sans-serif; font-weight: 800; font-stretch: 105%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; transition: background-color 150ms, transform 150ms; } .ds-btn-ligne:hover { background: color-mix(in srgb, currentColor 12%, transparent); } .ds-btn-ligne:active { transform: translateY(2px); } .ds-btn-ligne:focus-visible { outline: 3px solid var(--jeton, #ffd400); outline-offset: 3px; }"
+    },
+    {
+      "name": "Champ",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Champ de formulaire, bordure encre, focus jaune collé.",
+      "html": "<label class=\"ds-field-label\">Email<input class=\"ds-field\" type=\"email\" placeholder=\"vous@exemple.fr\"></label>",
+      "css": ".ds-field-label { display: flex; flex-direction: column; gap: 0.375rem; font-family: var(--font-archivo), system-ui, sans-serif; font-size: 0.875rem; font-weight: 700; color: var(--encre, #111111); } .ds-field { width: 100%; border-radius: 10px; border: 2px solid var(--encre, #111111); background: #ffffff; color: var(--encre, #111111); padding: 0.65rem 0.85rem; font: inherit; font-weight: 400; font-size: 1rem; } .ds-field::placeholder { color: #6d6962; } .ds-field:focus { outline: 3px solid var(--jeton, #ffd400); outline-offset: 0; }"
+    },
+    {
+      "name": "En-tête enseigne",
+      "kind": "nav",
+      "refersTo": "enseigne-header",
+      "description": "En-tête collant rouge rideau : logotype en enseigne, liens en légende, bouton jeton.",
+      "html": "<header class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-logo\">Le Bar à Teckels</a><nav class=\"ds-nav-links\"><a href=\"#\">Le bar</a><a href=\"#\">Résidents</a><a href=\"#\">Boutique</a><a href=\"#\">Ateliers</a></nav><a href=\"#\" class=\"ds-nav-cta\">Réserver</a></header>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 24px; padding: 12px 32px; background: var(--rouge, #b3122a); color: var(--tirage, #f7f5f0); box-shadow: 0 1px 0 rgb(0 0 0 / 0.25); font-family: var(--font-archivo), system-ui, sans-serif; } .ds-nav a { color: inherit; text-decoration: none; } .ds-nav-logo { font-weight: 900; font-stretch: 112%; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; font-size: 1.35rem; } .ds-nav-links { display: flex; gap: 24px; } .ds-nav-links a { font-weight: 700; font-stretch: 80%; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.8rem; } .ds-nav-links a:hover { color: var(--jeton, #ffd400); } .ds-nav a:focus-visible { outline: 3px solid var(--jeton, #ffd400); outline-offset: 3px; } .ds-nav-cta { margin-left: auto; border-radius: 999px; padding: 0.625rem 1.25rem; background: var(--jeton, #ffd400); color: var(--encre, #111111) !important; font-weight: 800; font-stretch: 105%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.18), 0 6px 14px -6px rgb(0 0 0 / 0.45); } .ds-nav-cta:hover { background: #ffe14d; }"
+    },
+    {
+      "name": "Pastille panier",
+      "kind": "chip",
+      "refersTo": "button-jeton",
+      "description": "Compteur d'articles en pilule jaune à côté du lien Panier.",
+      "html": "<div style=\"background:#b3122a;color:#f7f5f0;padding:16px\"><a href=\"#\" class=\"ds-cart\">Panier <span class=\"ds-cart-count\">2</span></a></div>",
+      "css": ".ds-cart { display: inline-flex; align-items: center; gap: 0.5rem; color: inherit; text-decoration: none; font-family: var(--font-archivo), system-ui, sans-serif; font-weight: 700; font-stretch: 80%; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.78rem; } .ds-cart:hover { color: var(--jeton, #ffd400); } .ds-cart-count { display: grid; place-items: center; height: 28px; min-width: 28px; padding: 0 6px; border-radius: 999px; background: var(--jeton, #ffd400); color: var(--encre, #111111); font-size: 0.8rem; letter-spacing: normal; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Tirage",
+      "kind": "card",
+      "refersTo": "tirage",
+      "description": "Photo N&B dans un cadre papier à marge épaisse, légèrement incliné.",
+      "html": "<figure class=\"ds-tirage\"><div class=\"ds-pose\"></div><p class=\"ds-tirage-nom\">Chorizo</p><p class=\"ds-tirage-legende\">4 ans · mer. – dim.</p></figure>",
+      "css": ".ds-tirage { margin: 0; width: 200px; background: #fffefa; padding: 10px 10px 14px; box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.55); transform: rotate(-1.5deg); color: var(--encre, #111111); font-family: var(--font-archivo), system-ui, sans-serif; } .ds-pose { aspect-ratio: 7 / 9; background: linear-gradient(160deg, #8a8a8a, #2a2a2a); filter: grayscale(1) contrast(1.12) brightness(1.02); } .ds-tirage-nom { margin: 12px 0 0; font-weight: 900; font-stretch: 112%; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.92; font-size: 1.35rem; } .ds-tirage-legende { margin: 4px 0 0; font-weight: 700; font-stretch: 80%; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.78rem; color: var(--encre-douce, #57534c); }"
+    },
+    {
+      "name": "Monnayeur",
+      "kind": "custom",
+      "refersTo": "panneau",
+      "description": "Panneau chromé des créneaux : cases à compteurs jaunes, case sélectionnée en jaune.",
+      "html": "<div class=\"ds-panneau\"><div class=\"ds-cases\"><button class=\"ds-case\"><span class=\"ds-l\">10 h</span><span class=\"ds-c\">12</span><span class=\"ds-l\">Places</span></button><button class=\"ds-case ds-case-on\" aria-pressed=\"true\"><span class=\"ds-l\">12 h</span><span class=\"ds-c\">04</span><span class=\"ds-l\">Places</span></button><button class=\"ds-case\" disabled><span class=\"ds-l\">14 h</span><span class=\"ds-c ds-c-off\">00</span><span class=\"ds-l\">Complet</span></button></div></div>",
+      "css": ".ds-panneau { background: var(--panneau, #1a1a1a); color: var(--tirage, #f7f5f0); border: 6px solid var(--chrome, #b9bcc0); border-radius: 20px; box-shadow: inset 0 0 0 2px #5d6064, 0 28px 50px -24px rgb(0 0 0 / 0.6); padding: 24px; font-family: var(--font-archivo), system-ui, sans-serif; } .ds-cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; } .ds-case { display: flex; flex-direction: column; align-items: center; border: 0; border-radius: 12px; padding: 10px 4px 8px; background: var(--case, #2a2a2a); color: var(--chrome-clair, #dfe1e3); cursor: pointer; transition: background-color 150ms; } .ds-case:hover:not(:disabled) { background: #363636; } .ds-case:focus-visible { outline: 3px solid var(--jeton, #ffd400); outline-offset: 3px; } .ds-case:disabled { cursor: not-allowed; } .ds-case-on, .ds-case-on:hover:not(:disabled) { background: var(--jeton, #ffd400); color: var(--encre, #111111); } .ds-l { font-weight: 700; font-stretch: 80%; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; } .ds-c { margin: 4px 0; font-weight: 800; font-stretch: 75%; font-variant-numeric: tabular-nums; line-height: 0.9; font-size: 3rem; color: var(--jeton, #ffd400); } .ds-case-on .ds-c { color: var(--encre, #111111); } .ds-c-off { color: #6b6b6b; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La cabine Photomaton",
+    "overview": "Le site public (`app/(site)`) est une cabine photo parisienne : rideau rouge en aplats de sections entières, bandes de tirages noir et blanc à marge épaisse, monnayeur chromé noir où s'affichent en gros chiffres jaunes les places restantes. Chaque teckel, créneau et produit est cadré comme une pose. Le monde est franc, graphique et dense en contrastes, jamais chaleureux au sens « café crème » : pas de serif, pas de caramel, pas de beige feutré.\n\nUne seule famille, Archivo variable auto-hébergée, porte toute la voix en jouant sur ses axes de graisse et de largeur : capitales larges très grasses pour l'enseigne, étroites espacées pour les légendes, très étroites pour les chiffres. Les surfaces sont plates ; seuls les objets physiques de la cabine (jeton, panneau, tirage) ont une ombre. La signature est le flash : à l'arrivée, les poses d'une bande s'exposent une à une sous un éclair blanc.\n\nL'espace d'administration `/admin` est exclu de ce système : c'est un outil Operate sobre en ardoise, documenté à part s'il le faut.",
+    "keyCharacteristics": [
+      "Sections pleine largeur alternant rouge rideau, noir encre et blanc tirage, séparées par des filets de 6px rouge foncé.",
+      "Photos réelles de teckels, toujours en noir et blanc contrasté, dans des tirages blancs à marge épaisse, légèrement inclinés.",
+      "Jaune jeton réservé aux chiffres, à l'action principale, au focus et à la sélection.",
+      "Archivo seule, la largeur de l'axe `wdth` distingue les rôles.",
+      "Le flash comme unique mouvement de mise en scène, coupé sous `prefers-reduced-motion`."
+    ],
+    "rules": [
+      { "name": "The Rideau Rule", "body": "Le rouge arrive en aplat de section entière, bord à bord. Sur papier, il se limite au survol et aux petites légendes ; jamais en grand bloc décoratif à l'intérieur d'une section claire.", "section": "colors" },
+      { "name": "The Jeton Rule", "body": "Le jaune signale ce qu'on compte ou ce qu'on actionne : chiffres, action principale, sélection, focus. Jamais en fond décoratif ni en texte courant.", "section": "colors" },
+      { "name": "The Largeur Rule", "body": "L'axe de largeur porte le rôle : 112% pour l'enseigne, 100% pour le texte, 80% pour légendes et prix, 75% pour les compteurs. Pas de seconde famille de police.", "section": "typography" },
+      { "name": "The Enseigne Rule", "body": "Tout titre est en capitales Archivo 900 larges ; le texte courant n'est jamais en capitales.", "section": "typography" },
+      { "name": "The Objet Physique Rule", "body": "Une ombre signifie un objet qu'on pourrait tenir : pièce, monnayeur, tirage. Les sections, listes et textes restent plats.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do montrer de vraies photographies de teckels, passées par la Pose noir et blanc et cadrées dans un tirage.",
+      "Do poser le rouge rideau en sections pleine largeur, séparées par un filet de 6px rouge foncé.",
+      "Do afficher les chiffres qui comptent (places, prix de formule, numéro de commande) en compteur jaune étroit à chiffres tabulaires.",
+      "Do n'utiliser qu'Archivo et faire varier la largeur selon la Largeur Rule.",
+      "Do réserver les ombres aux objets de la cabine (jeton, panneau, tirage).",
+      "Do couper toute animation de flash sous `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "Don't utiliser d'illustration, de dessin ou de mascotte : seulement des photos réelles.",
+      "Don't afficher de photo de teckel en couleur dans le site public.",
+      "Don't glisser vers le café chaleureux crème, serif et caramel, ni vers le héros « titre + bouton + cartes ».",
+      "Don't arrondir les tirages ni les sections : l'arrondi appartient au matériel (boutons, panneau, cases, champs).",
+      "Don't employer le jaune jeton en décor ou en texte courant.",
+      "Don't ajouter d'ombre décalée en dur ou d'ombre sur des sections et listes plates."
+    ]
+  }
+}
