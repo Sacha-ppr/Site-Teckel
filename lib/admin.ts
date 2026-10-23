@@ -304,3 +304,245 @@ export function bookedCount(db: AdminDb, teckelId: string, iso: string): number 
     (b) => b.teckelId === teckelId && b.date === iso && b.status !== "cancelled",
   ).length;
 }
+
+export const TECKEL_IMAGES: Record<string, string> = {
+  gratin: "/img/gratin.jpg",
+  pistache: "/img/pistache.jpg",
+  berna: "/img/bernadette.jpg",
+  australe: "/img/australe.jpg",
+  mousson: "/img/mousson.jpg",
+};
+
+export type ProductItem = {
+  id: string;
+  name: string;
+  category: "merch" | "chiens" | "snacks" | "coffrets";
+  categoryLabel: string;
+  price: number;
+  description: string;
+  humor: string;
+  image: string;
+};
+
+export const CATALOG: ProductItem[] = [
+  {
+    id: "tshirt-patouille",
+    name: "T-shirt « Patouille béarnaise »",
+    category: "merch",
+    categoryLabel: "Merch du bar",
+    price: 26,
+    description: "Coton bio épais 220g avec illustration sérigraphiée d'un teckel en pleine pause câlin.",
+    humor: "Résiste à 40 lavages et à 800 coups de langue affectueux.",
+    image: "/img/boutique_tshirt.jpg",
+  },
+  {
+    id: "mug-teckel",
+    name: "Mug teckel allongé",
+    category: "merch",
+    categoryLabel: "Merch du bar",
+    price: 15,
+    description: "Céramique émaillée, l'anse représente la queue et le corps s'étire sur toute la circonférence.",
+    humor: "Capacité 350ml de caféine ou de réconfort pur.",
+    image: "/img/boutique_mug.jpg",
+  },
+  {
+    id: "tote-bag",
+    name: "Tote bag « 6 pattes »",
+    category: "merch",
+    categoryLabel: "Merch du bar",
+    price: 12,
+    description: "Toile de coton robuste pour transporter vos croquettes ou vos livres de chevet.",
+    humor: "Supporte jusqu'à 8 kg, soit exactement le poids de Bernadette.",
+    image: "/img/boutique_tshirt.jpg",
+  },
+  {
+    id: "affiche-gratin",
+    name: "Affiche d'art « Le Gratin »",
+    category: "merch",
+    categoryLabel: "Merch du bar",
+    price: 19,
+    description: "Tirage d'art A3 sur papier texturé 250g, portrait de maître façon aristocratie canine.",
+    humor: "Donne immédiatement 3 étoiles Michelin à votre salon.",
+    image: "/img/gratin.jpg",
+  },
+  {
+    id: "collier-tartan",
+    name: "Collier tartan XXS / S",
+    category: "chiens",
+    categoryLabel: "Pour chiens",
+    price: 22,
+    description: "Tissu écossais doublé cuir végan souple, bouclerie laiton doré anti-oxydation.",
+    humor: "Spécialement taillé pour les cous fins et les ambitions démesurées.",
+    image: "/img/boutique_leash.jpg",
+  },
+  {
+    id: "laisse-cuir",
+    name: "Laiss'pote cuir souple",
+    category: "chiens",
+    categoryLabel: "Pour chiens",
+    price: 29,
+    description: "Cuir véritable pleine fleur souple, longueur 1m50 avec poignée molletonnée.",
+    humor: "Garantie anti-traction (sauf en cas d'écureuil ou de pigeon distrait).",
+    image: "/img/boutique_leash.jpg",
+  },
+  {
+    id: "jouet-korekoke",
+    name: "Jouet couineur Korékoké",
+    category: "chiens",
+    categoryLabel: "Pour chiens",
+    price: 11,
+    description: "Peluche renforcée en forme de saucisse avec double couineur basse fréquence.",
+    humor: "Testé et validé par Mousson : 42 minutes de couinements ininterrompus.",
+    image: "/img/boutique_treats.jpg",
+  },
+  {
+    id: "friandises-saucisson",
+    name: "Friandises saucisson canin",
+    category: "chiens",
+    categoryLabel: "Pour chiens",
+    price: 9,
+    description: "Friandises 100% bœuf séché artisanal sans additif, sans céréales, fabriquées en France.",
+    humor: "Rend instantanément sourd à l'ordre 'Assis' tant que le sachet n'est pas ouvert.",
+    image: "/img/boutique_treats.jpg",
+  },
+  {
+    id: "gamelles-inox",
+    name: "Gamelles duo inox & bois",
+    category: "chiens",
+    categoryLabel: "Pour chiens",
+    price: 34,
+    description: "Support en chêne massif surélevé à ras du sol, deux bols inox amovibles lavables.",
+    humor: "Hauteur ergonomique conçue pour la morphologie longiligne des bassets.",
+    image: "/img/boutique_mug.jpg",
+  },
+  {
+    id: "biere-tripe-sale",
+    name: "Bière artisanale « Tripe Sale » 33cl",
+    category: "snacks",
+    categoryLabel: "Snacks & boissons",
+    price: 6,
+    description: "Blonde légère houblonnée aux notes d'agrumes, brassée localement pour les maîtres.",
+    humor: "À consommer pendant que Pistache tente de vous voler une cacahuète.",
+    image: "/img/hero_cafe.jpg",
+  },
+  {
+    id: "sirop-grenadine",
+    name: "Sirop grenadine maison 50cl",
+    category: "snacks",
+    categoryLabel: "Snacks & boissons",
+    price: 8,
+    description: "Fruits rouges frais pressés, sucre de canne bio, sans colorant artificiel.",
+    humor: "Doux comme le regard d'Australe quand elle réclame une gratouille.",
+    image: "/img/hero_cafe.jpg",
+  },
+  {
+    id: "gateau-teckel",
+    name: "Gâteau d'anniversaire croûté",
+    category: "snacks",
+    categoryLabel: "Snacks & boissons",
+    price: 14,
+    description: "Mini gâteau moelleux carotte, courge et foie de volaille avec bougie comestible.",
+    humor: "Fait rugir de plaisir toute la meute à 10 mètres à la ronde.",
+    image: "/img/boutique_treats.jpg",
+  },
+  {
+    id: "coffee-beans",
+    name: "Coffee beans « Cri du cœur » 250g",
+    category: "snacks",
+    categoryLabel: "Snacks & boissons",
+    price: 13,
+    description: "Café de spécialité torréfié à Paris, notes chocolat noir et noisette grillée.",
+    humor: "Le carburant officiel de l'équipe pour suivre le rythme des petits bassets.",
+    image: "/img/boutique_mug.jpg",
+  },
+  {
+    id: "coffret-grattant",
+    name: "Coffret « Après-midi grattant »",
+    category: "coffrets",
+    categoryLabel: "Coffrets & cartes",
+    price: 49,
+    description: "Contient 1 séance réservée 60 min avec le teckel de votre choix + 1 boisson + 1 tote bag + friandises.",
+    humor: "Le cadeau qui fait pleurer d'émotion tout amateur de chiens bas sur pattes.",
+    image: "/img/hero_cafe.jpg",
+  },
+  {
+    id: "carte-cadeau-creneau",
+    name: "Carte cadeau créneau patouilles",
+    category: "coffrets",
+    categoryLabel: "Coffrets & cartes",
+    price: 25,
+    description: "Bon cadeau valable 1 an pour un créneau câlins avec consommation offerte.",
+    humor: "Valable sans date d'expiration pour le bonheur de son destinataire.",
+    image: "/img/boutique_tshirt.jpg",
+  },
+];
+
+export function createBooking(data: {
+  teckelId: string;
+  date: string;
+  time: string;
+  duration: 30 | 60;
+  people: number;
+  extras: string[];
+  customer: string;
+  total: number;
+}): Booking {
+  const db = loadDb();
+  const id = `B-${String(db.bookings.length + 1).padStart(4, "0")}`;
+  const newBooking: Booking = {
+    ...data,
+    id,
+    status: "confirmed",
+  };
+  db.bookings.unshift(newBooking);
+  saveDb(db);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("bar-a-teckel:db-change"));
+  }
+  return newBooking;
+}
+
+export function createOrder(data: {
+  customer: string;
+  items: string[];
+  mode: "livraison" | "retrait";
+  total: number;
+}): Order {
+  const db = loadDb();
+  const today = toISO(new Date());
+  const id = `C-${today}-${String(db.orders.length + 1).padStart(3, "0")}`;
+  const newOrder: Order = {
+    ...data,
+    id,
+    date: today,
+    status: "pending",
+  };
+  db.orders.unshift(newOrder);
+  saveDb(db);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("bar-a-teckel:db-change"));
+  }
+  return newOrder;
+}
+
+export function createDonation(data: {
+  donor: string;
+  amount: number;
+  association: "30 Millions d'Amis" | "SPA" | "Refuge de marchepied";
+}): Donation {
+  const db = loadDb();
+  const today = toISO(new Date());
+  const id = `D-${String(db.donations.length + 1).padStart(3, "0")}`;
+  const newDonation: Donation = {
+    ...data,
+    id,
+    date: today,
+  };
+  db.donations.unshift(newDonation);
+  saveDb(db);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("bar-a-teckel:db-change"));
+  }
+  return newDonation;
+}
+
