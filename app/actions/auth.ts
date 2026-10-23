@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSupabase } from "@/lib/auth";
 
@@ -34,11 +35,19 @@ export async function signUp(_prev: FormState, formData: FormData): Promise<Form
   const password = String(formData.get("password") ?? "");
   if (password.length < 8) return { error: "Le mot de passe doit faire au moins 8 caractères." };
 
+  // Le lien de confirmation doit revenir sur le domaine courant (localhost, preview ou production).
+  const h = await headers();
+  const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("x-forwarded-host") ?? h.get("host")}`;
+  const next = safeNext(formData.get("next"));
+
   const supabase = await getSupabase();
   const { data, error } = await supabase.auth.signUp({
     email: String(formData.get("email") ?? ""),
     password,
-    options: { data: { full_name: String(formData.get("full_name") ?? "").trim() } },
+    options: {
+      data: { full_name: String(formData.get("full_name") ?? "").trim() },
+      emailRedirectTo: `${origin}/auth/confirm${next ? `?next=${encodeURIComponent(next)}` : ""}`,
+    },
   });
   if (error) return { error: error.message };
 
@@ -46,7 +55,7 @@ export async function signUp(_prev: FormState, formData: FormData): Promise<Form
   if (!data.session) {
     return { message: "Compte créé ! Confirmez votre adresse via l'email reçu, puis connectez-vous." };
   }
-  redirect(safeNext(formData.get("next")) ?? "/compte");
+  redirect(next ?? "/compte");
 }
 
 export async function signOut() {

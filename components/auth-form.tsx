@@ -7,7 +7,9 @@ import { signIn, signUp } from "@/app/actions/auth";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [state, action, pending] = useActionState(mode === "signin" ? signIn : signUp, undefined);
-  const next = useSearchParams().get("next") ?? "";
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "";
+  const linkError = searchParams.get("erreur") === "lien";
   const nextQuery = next ? `?next=${encodeURIComponent(next)}` : "";
 
   return (
@@ -34,6 +36,11 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
           autoComplete={mode === "signup" ? "new-password" : "current-password"}
         />
       </label>
+      {linkError && !state ? (
+        <p className="rounded-lg bg-red-50 p-3 text-sm text-red-800">
+          Ce lien de confirmation est invalide ou expiré. Connectez-vous, ou réinscrivez-vous si besoin.
+        </p>
+      ) : null}
       {state?.error ? <p className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{state.error}</p> : null}
       {state?.message ? <p className="rounded-lg bg-green-50 p-3 text-sm text-green-800">{state.message}</p> : null}
       <button disabled={pending} className="btn bg-caramel text-white hover:bg-caramel-dark">
