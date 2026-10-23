@@ -1,179 +1,97 @@
-"use client";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
+import { setReservationStatus } from "@/app/actions/admin";
+import { StatusSelect } from "@/components/admin/status-select";
+import { Kpi, PageTitle, Panel, Skeleton, Table } from "@/components/admin/ui";
+import { listReservations, parseReservationFilters } from "@/lib/admin-data";
+import { RESERVATION_STATUS, formatDate, formatPrice, formulaName, formulaPriceCents } from "@/lib/catalog";
 
-import { useEffect, useMemo, useState } from "react";
-import { dateFr, dateFrFull, euros, loadDb, bookedCount, type BookingStatus, type AdminDb } from "@/lib/admin";
+export const metadata: Metadata = { title: "Réservations" };
 
-const STATUS_LABEL: Record<BookingStatus, string> = {
-  pending: "En attente",
-  confirmed: "Confirmée",
-  cancelled: "Annulée",
-  honored: "Honorée",
-};
+export default function Page({ searchParams }: PageProps<"/admin/reservations">) {
+  return (
+    <>
+      <PageTitle title="Réservations" subtitle="Suivi des créneaux du bar" />
+      <Suspense fallback={<Skeleton />}>
+        <Reservations searchParams={searchParams} />
+      </Suspense>
+    </>
+  );
+}
 
-const STATUS_STYLE: Record<BookingStatus, string> = {
-  pending: "bg-amber-100 text-amber-800",
-  confirmed: "bg-teal-100 text-teal-800",
-  cancelled: "bg-stone-200 text-stone-500 line-through decoration-1",
-  honored: "bg-stone-100 text-stone-700",
-};
+async function Reservations({ searchParams }: Pick<PageProps<"/admin/reservations">, "searchParams">) {
+  const params = await searchParams;
+  const filters = parseReservationFilters(params);
+  const reservations = await listReservations(filters);
 
-/** transition autorisée : statut courant → liste de statuts acessibles */
-const NEXT: Record<BookingStatus, BookingStatus[]> = {
-  pending: ["confirmed", "cancelled"],
-  confirmed: ["honored", "cancelled"],
-  honored: [],
-  cancelled: [],
-};
-
-export default function AdminReservations() {
-  const [db, setDb] = useState<AdminDb | null>(null);
-  const [tab, setTab] = useState<BookingStatus | "all">("all");
-
-  useEffect(() => {
-    setDb(loadDb());
-    const on = () => setDb(loadDb());
-    window.addEventListener("bar-a-teckel:db-change", on);
-    return () => window.removeEventListener("bar-a-teckel:db-change", on);
-  }, []);
-
-  const rows = useMemo(() => {
-    if (!db) return [];
-    const list = [...db.bookings].sort((a, b) => (a.date < b.date ? 1 : -1));
-    return tab === "all" ? list : list.filter((b) => b.status === tab);
-  }, [db, tab]);
-
-  const counts = useMemo(() => {
-    if (!db) return null;
-    const c: Record<string, number> = { all: db.bookings.length };
-    for (const s of ["pending", "confirmed", "cancelled", "honored"] as BookingStatus[]) {
-      c[s] = db.bookings.filter((b) => b.status === s).length;
-    }
-    return c;
-  }, [db]);
-
-  const setStatus = (id: string, status: BookingStatus) => {
-    const fresh = loadDb();
-    const clone: AdminDb = JSON.parse(JSON.stringify(fresh));
-    const booking = clone.bookings.find((b) => b.id === id);
-    if (booking) booking.status = status;
-    localStorage.setItem("bar-a-teckel-db-v1", JSON.stringify(clone));
-    window.dispatchEvent(new CustomEvent("bar-a-teckel:db-change"));
-  };
-
-  if (!db || !counts) return <p className="p-8 text-stone-400">Le planning se déroule sans griffer…</p>;
-
-  const tabs: { key: BookingStatus | "all"; label: string }[] = [
-    { key: "all", label: "Toutes" },
-    { key: "pending", label: "En attente" },
-    { key: "confirmed", label: "Confirmées" },
-    { key: "honored", label: "Honorées" },
-    { key: "cancelled", label: "Annulées" },
-  ];
+  const active = reservations.filter((r) => r.status !== "annulee");
+  const guests = active.reduce((n, r) => n + r.guests, 0);
+  const revenue = active.reduce((n, r) => n + r.guests * formulaPriceCents(r.formula), 0);
+  const withDog = active.filter((r) => r.with_own_dog).length;
+  const exportQuery = new URLSearchParams(
+    Object.entries(filters).filter((entry): entry is [string, string] => Boolean(entry[1])),
+  ).toString();
 
   return (
-    <div>
-      <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Réservations</h1>
-          <p className="mt-1 text-sm text-stone-500">
-            {counts.pending} en attente de confirmation — un chien n&apos;attend pas éternellement devant la gamelle.
-          </p>
-        </div>
-      </header>
+    <div className="mt-6 flex flex-col gap-6">
+      <form className="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm">
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-slate-500">Date</span>
+          <input type="date" name="date" defaultValue={filters.date} className="rounded-md border border-slate-300 px-2 py-1.5" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-slate-500">Statut</span>
+          <select name="status" defaultValue={filters.status ?? ""} className="rounded-md border border-slate-300 px-2 py-1.5">
+            <option value="">Tous</option>
+            {Object.entries(RESERVATION_STATUS).map(([k, v]) => (
+              <option key={k} value={k}>{v}</option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-slate-500">Nom</span>
+          <input name="q" defaultValue={filters.q} placeholder="Rechercher…" className="rounded-md border border-slate-300 px-2 py-1.5" />
+        </label>
+        <button className="rounded-md bg-slate-900 px-4 py-1.5 font-medium text-white hover:bg-slate-700">Filtrer</button>
+        <Link href="/admin/reservations" className="px-2 py-1.5 text-slate-500 hover:text-slate-900">Réinitialiser</Link>
+        <a
+          href={`/admin/reservations/export${exportQuery ? `?${exportQuery}` : ""}`}
+          className="ml-auto rounded-md border border-slate-300 px-4 py-1.5 font-medium hover:bg-slate-50"
+        >
+          Exporter CSV
+        </a>
+      </form>
 
-      <div className="mb-4 flex flex-wrap gap-1.5">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-              tab === t.key
-                ? "bg-stone-900 text-white"
-                : "bg-white text-stone-600 ring-1 ring-stone-200 hover:ring-stone-400"
-            }`}
-          >
-            {t.label}
-            <span className="ml-1.5 text-xs opacity-60 tabular-nums">{counts[t.key]}</span>
-          </button>
-        ))}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <Kpi label="Réservations" value={String(active.length)} hint={filters.date ? formatDate(filters.date) : "À venir"} />
+        <Kpi label="Couverts" value={String(guests)} />
+        <Kpi label="CA estimé" value={formatPrice(revenue)} />
+        <Kpi label="Chiens visiteurs" value={String(withDog)} />
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-stone-200 text-left text-[11px] uppercase tracking-wider text-stone-400">
-              <th className="px-4 py-3 font-semibold">Réf.</th>
-              <th className="px-4 py-3 font-semibold">Quand</th>
-              <th className="px-4 py-3 font-semibold">Teckel</th>
-              <th className="px-4 py-3 font-semibold">Client</th>
-              <th className="px-4 py-3 font-semibold">Créneau</th>
-              <th className="px-4 py-3 text-right font-semibold">Total</th>
-              <th className="px-4 py-3 font-semibold">Statut</th>
-              <th className="px-4 py-3 text-right font-semibold">Actions</th>
+      <Panel title={`${reservations.length} réservation${reservations.length > 1 ? "s" : ""}`}>
+        <Table
+          head={["Date", "Créneau", "Nom", "Téléphone", "Pers.", "Formule", "Chien", "Notes", "Statut"]}
+          empty={reservations.length === 0}
+        >
+          {reservations.map((r) => (
+            <tr key={r.id} className={r.status === "annulee" ? "text-slate-400" : undefined}>
+              <td className="whitespace-nowrap px-4 py-2 capitalize">{formatDate(r.date)}</td>
+              <td className="px-4 py-2 tabular-nums">{r.slot}</td>
+              <td className="px-4 py-2 font-medium">{r.contact_name}</td>
+              <td className="whitespace-nowrap px-4 py-2 tabular-nums">{r.phone ?? "—"}</td>
+              <td className="px-4 py-2 tabular-nums">{r.guests}</td>
+              <td className="px-4 py-2">{formulaName(r.formula)}</td>
+              <td className="px-4 py-2">{r.with_own_dog ? "Oui" : "—"}</td>
+              <td className="max-w-56 truncate px-4 py-2 text-slate-500" title={r.notes ?? ""}>{r.notes ?? ""}</td>
+              <td className="px-4 py-2">
+                <StatusSelect id={r.id} value={r.status} options={RESERVATION_STATUS} action={setReservationStatus} />
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {rows.slice(0, 60).map((b) => {
-              const dog = db.teckels.find((t) => t.id === b.teckelId);
-              const full = dog && b.date ? `${bookedCount(db, b.teckelId, b.date)}/${dog.maxPerDay}` : "";
-              return (
-                <tr key={b.id} className="border-b border-stone-100 last:border-0 hover:bg-stone-50/70">
-                  <td className="px-4 py-3 font-mono text-xs text-stone-400">{b.id}</td>
-                  <td className="px-4 py-3">
-                    <div className="font-medium">{dateFrFull(b.date)}</div>
-                    <div className="text-xs text-stone-400">{dateFr(b.date)} · {b.time}</div>
-                  </td>
-                  <td className="px-4 py-3">{dog?.name ?? "?"}<div className="text-[11px] text-stone-400">{full} rempli ce jour</div></td>
-                  <td className="px-4 py-3">{b.customer}</td>
-                  <td className="px-4 py-3">
-                    {b.duration} min · {b.people} pers.
-                    {b.extras.length > 0 && (
-                      <div className="text-[11px] text-stone-400">+ {b.extras.join(", ")}</div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right font-semibold tabular-nums">{euros(b.total)}</td>
-                  <td className="px-4 py-3">
-                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLE[b.status]}`}>
-                      {STATUS_LABEL[b.status]}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-1.5">
-                      {NEXT[b.status].map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => {
-                            setStatus(b.id, s);
-                            setDb(loadDb());
-                          }}
-                          className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
-                            s === "cancelled"
-                              ? "text-stone-400 hover:bg-stone-100 hover:text-rose-700"
-                              : "text-amber-800 hover:bg-amber-50"
-                          }`}
-                        >
-                          {s === "cancelled" ? "Annuler" : s === "confirmed" ? "Confirmer" : "Marquer honorée"}
-                        </button>
-                      ))}
-                      {NEXT[b.status].length === 0 && <span className="text-xs text-stone-300">—</span>}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={8} className="px-4 py-12 text-center text-sm text-stone-400">
-                  Rien dans cette pile. Les teckels font la sieste.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      {rows.length > 60 && (
-        <p className="mt-3 text-xs text-stone-400">60 premières lignes affichées sur {rows.length}.</p>
-      )}
+          ))}
+        </Table>
+      </Panel>
     </div>
   );
 }

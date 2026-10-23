@@ -1,58 +1,44 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { signOut } from "@/app/actions/auth";
+
+export const metadata: Metadata = {
+  title: { default: "Espace pro", template: "%s · Espace pro" },
+  robots: { index: false },
+};
 
 const NAV = [
-  { href: "/admin", label: "Traqué le CA", icon: "💰" },
-  { href: "/admin/reservations", label: "Réservations", icon: "🗓" },
-  { href: "/admin/commandes", label: "Commandes", icon: "📦" },
-  { href: "/admin/teckels", label: "Teckels", icon: "🌭" },
+  { href: "/admin", label: "Tableau de bord" },
+  { href: "/admin/reservations", label: "Réservations" },
+  { href: "/admin/commandes", label: "Commandes" },
+  { href: "/admin/produits", label: "Produits & stock" },
 ];
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
-    <div className="min-h-screen bg-stone-100 text-stone-900">
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 lg:px-8">
-        <aside className="sticky top-6 hidden h-fit w-56 shrink-0 md:block">
-          <Link href="/" className="mb-8 block px-3 text-sm text-stone-400 transition hover:text-amber-800" title="Retour au site">
-            ← Bar à Teckel
-          </Link>
-          <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-widest text-stone-400">
-            Back-office
-          </p>
-          <nav className="flex flex-col">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[15px] font-medium text-stone-700 transition hover:bg-white hover:text-amber-900"
-              >
-                <span aria-hidden>{item.icon}</span>
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <p className="mt-8 px-3 text-xs leading-relaxed text-stone-400">
-            Données de démonstration, rien n'est réel.
-            <br />
-            Les teckels non plus, d'ailleurs.
-          </p>
-        </aside>
-        <main className="min-w-0 flex-1">{children}</main>
-      </div>
-
-      {/* nav mobile */}
-      <nav className="sticky bottom-0 z-10 flex border-t border-stone-200 bg-white/95 backdrop-blur md:hidden">
-        {NAV.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium text-stone-500"
-          >
-            <span aria-hidden className="text-base">{item.icon}</span>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
+    <div className="flex min-h-full flex-1 flex-col bg-slate-50 text-slate-800 md:flex-row">
+      <aside className="border-b border-slate-200 bg-slate-900 text-slate-300 md:w-60 md:shrink-0 md:border-b-0">
+        <div className="px-5 py-5">
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Bar à Teckels</p>
+          <p className="text-lg font-semibold text-white">Espace pro</p>
+        </div>
+        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 text-sm md:flex-col md:pb-0">
+          {NAV.map((item) => (
+            <Link key={item.href} href={item.href} className="shrink-0 rounded-md px-3 py-2 hover:bg-slate-800 hover:text-white">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="hidden border-t border-slate-800 px-5 py-4 text-sm md:mt-6 md:block">
+          <Link href="/" className="block hover:text-white">← Voir le site</Link>
+          <form action={signOut} className="mt-2">
+            <button className="hover:text-white">Se déconnecter</button>
+          </form>
+        </div>
+      </aside>
+      <main className="flex-1 px-4 py-8 md:px-10">
+        <div className="mx-auto max-w-6xl">{children}</div>
+      </main>
     </div>
   );
 }
