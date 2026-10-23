@@ -250,7 +250,7 @@ Toute photo est une Pose : fond encre, photo recadrée en `object-cover`, filtre
 
 ### Don't:
 - **Don't** utiliser d'illustration, de dessin ou de mascotte : seulement des photos réelles. Seule exception, voulue : le mini-jeu `/habille-ton-teckel`, où le teckel et ses vêtements sont des aplats SVG superposés, posés sur le rideau rouge et dans un tirage.
-- **Don't** afficher de photo de teckel en couleur dans le site public.
+- **Don't** afficher de photo de teckel en couleur dans le site public. Exceptions : les photos d'articles de la boutique (`ProductPhoto`) restent en couleur pour montrer matière et coloris, et la cabine d'essayage montre de vrais teckels détourés en couleur.
 - **Don't** glisser vers le café chaleureux crème, serif et caramel, ni vers le héros « titre + bouton + cartes ».
 - **Don't** arrondir les tirages ni les sections : l'arrondi appartient au matériel (boutons, panneau, cases, champs).
 - **Don't** employer le jaune jeton en décor ou en texte courant.

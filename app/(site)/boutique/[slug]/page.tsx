@@ -2,9 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AddToCart } from "@/components/add-to-cart";
-import { Pose } from "@/components/pose";
+import { ProductPhoto } from "@/components/product-photo";
 import { CATEGORIES, formatPrice } from "@/lib/catalog";
-import { productPhoto } from "@/lib/product-photos";
 import { getProduct } from "@/lib/products";
 
 export default function Page({ params }: PageProps<"/boutique/[slug]">) {
@@ -33,8 +32,8 @@ async function ProductDetail({ params }: Pick<PageProps<"/boutique/[slug]">, "pa
   return (
     <div className="mt-8 grid items-center gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
       <figure className="tirage rotate-[-1.5deg]">
-        <Pose photo={productPhoto(product.slug)} priority sizes="(min-width: 768px) 45vw, 92vw" className="aspect-square" />
-        <figcaption className="legende px-1 pt-3 text-encre-douce">Photo d&apos;ambiance</figcaption>
+        <ProductPhoto slug={product.slug} alt={product.name} priority sizes="(min-width: 768px) 45vw, 92vw" />
+        <figcaption className="legende px-1 pt-3 text-encre-douce">Photo indicative</figcaption>
       </figure>
       <div>
         <h1 className="enseigne text-[clamp(2.4rem,5vw,4.2rem)]">{product.name}</h1>

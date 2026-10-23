@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useActionState, useEffect } from "react";
 import { placeOrder, type CheckoutState } from "@/app/actions/orders";
 import { useCart } from "@/components/cart-provider";
-import { Pose } from "@/components/pose";
+import { ProductPhoto } from "@/components/product-photo";
 import { formatPrice } from "@/lib/catalog";
-import { productPhoto } from "@/lib/product-photos";
 
 const FREE_SHIPPING_CENTS = 6000;
 const SHIPPING_CENTS = 590;
@@ -47,7 +46,7 @@ export function Checkout() {
       <ul className="tirage divide-y-2 divide-tirage-2 p-2 sm:p-3">
         {items.map((item) => (
           <li key={item.productId} className="flex flex-wrap items-center gap-x-4 gap-y-3 p-2 sm:flex-nowrap">
-            <Pose photo={productPhoto(item.slug)} alt="" sizes="80px" className="aspect-square w-16 shrink-0 sm:w-20" />
+            <ProductPhoto slug={item.slug} alt="" sizes="80px" className="aspect-square w-16 shrink-0 sm:w-20" />
             <div className="min-w-0 flex-1">
               <Link href={`/boutique/${item.slug}`} className="font-bold hover:text-rouge">{item.name}</Link>
               <p className="text-sm text-encre-douce tabular-nums">{formatPrice(item.priceCents)}</p>

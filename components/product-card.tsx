@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { CATEGORIES, formatPrice, type Product } from "@/lib/catalog";
-import { productPhoto } from "@/lib/product-photos";
 import { AddToCart } from "./add-to-cart";
-import { Pose } from "./pose";
+import { ProductPhoto } from "./product-photo";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="tirage flex flex-col">
       <Link href={`/boutique/${product.slug}`} className="group block" aria-label={product.name}>
-        <Pose
-          photo={productPhoto(product.slug)}
+        <ProductPhoto
+          slug={product.slug}
           alt=""
           sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 90vw"
           className="aspect-square transition-transform duration-300 group-hover:scale-[1.015]"

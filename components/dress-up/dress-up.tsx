@@ -19,6 +19,8 @@ import {
   type Placement,
   type Slot,
 } from "@/lib/dress-up";
+import { ProductPhoto } from "@/components/product-photo";
+import { PRODUCT_IMAGES } from "@/lib/product-images";
 import { Backdrop, GarmentSvg } from "./garment-art";
 
 // Une pièce posée sur la scène : sa place de départ, puis les réglages du visiteur.
@@ -452,9 +454,14 @@ export function DressUp({ products }: { products: Product[] }) {
                   onMouseEnter={() => setSelected(g.slot)}
                   className={`grid grid-cols-[4.5rem_1fr_auto] gap-x-4 gap-y-2 border-b-2 border-encre py-4 ${selected === g.slot ? "bg-jeton/15" : ""}`}
                 >
-                  <div className="row-span-2 grid aspect-square place-items-center rounded-lg bg-tirage-2 p-1.5">
-                    <GarmentSvg id={g.id} box={g.box} uid={`${uid}-look-${g.id}`} sleeves className="h-full w-full" />
-                  </div>
+                  {/* La vraie photo de l'article quand on l'a : c'est elle qui donne envie. */}
+                  {PRODUCT_IMAGES[g.productSlug] ? (
+                    <ProductPhoto slug={g.productSlug} sizes="72px" className="row-span-2 aspect-square rounded-lg" alt="" />
+                  ) : (
+                    <div className="row-span-2 grid aspect-square place-items-center rounded-lg bg-tirage-2 p-1.5">
+                      <GarmentSvg id={g.id} box={g.box} uid={`${uid}-look-${g.id}`} sleeves className="h-full w-full" />
+                    </div>
+                  )}
                   <div className="min-w-0">
                     {product ? (
                       <Link href={`/boutique/${product.slug}`} className="leading-snug font-bold hover:text-rouge">
