@@ -110,3 +110,9 @@ export function formatDate(isoDate: string) {
 export function formulaName(id: string) {
   return FORMULAS.find((f) => f.id === id)?.name ?? id;
 }
+
+// Le bar est fermé le lundi et le mardi.
+export function isOpenOn(isoDate: string) {
+  const day = new Date(`${isoDate}T00:00:00Z`).getUTCDay();
+  return day !== 1 && day !== 2;
+}
