@@ -11,6 +11,7 @@ import {
   formatPrice,
   formulaName,
   parisToday,
+  slotLabel,
   type Order,
   type Reservation,
 } from "@/lib/catalog";
@@ -19,8 +20,8 @@ export const metadata: Metadata = { title: "Mon compte" };
 
 export default function Page() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-14">
-      <Suspense fallback={<div className="h-96 animate-pulse rounded-2xl bg-paper" />}>
+    <div className="mx-auto max-w-5xl px-4 py-14 md:px-8">
+      <Suspense fallback={<div className="h-96 animate-pulse bg-tirage-2" />}>
         <Account />
       </Suspense>
     </div>
@@ -44,68 +45,68 @@ async function Account() {
     <>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-semibold">Bonjour {user.fullName ?? ""} 👋</h1>
-          <p className="mt-1 text-ink-soft">{user.email}</p>
+          <h1 className="enseigne text-[clamp(2.4rem,6vw,4.2rem)]">Bonjour {user.fullName ?? ""}</h1>
+          <p className="mt-2 text-encre-douce">{user.email}</p>
         </div>
         <form action={signOut}>
-          <button className="text-sm font-semibold text-ink-soft hover:text-caramel">Se déconnecter</button>
+          <button className="btn btn-ligne px-5 py-2 text-[0.8rem]">Se déconnecter</button>
         </form>
       </div>
 
-      <section className="mt-12">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">Mes réservations</h2>
-          <Link href="/reserver" className="text-sm font-semibold text-caramel">Nouvelle réservation →</Link>
+      <section className="mt-14">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h2 className="enseigne text-[2rem]">Mes réservations</h2>
+          <Link href="/reserver" className="btn btn-jeton px-5 py-2.5 text-[0.8rem]">Nouvelle réservation</Link>
         </div>
         {(reservations as Reservation[] | null)?.length ? (
-          <ul className="mt-4 divide-y divide-line rounded-2xl border border-line bg-paper">
+          <ul className="mt-5 border-t-2 border-encre">
             {(reservations as Reservation[]).map((r) => (
-              <li key={r.id} className="flex flex-wrap items-center gap-4 p-4">
+              <li key={r.id} className="flex flex-wrap items-center gap-4 border-b-2 border-encre py-4">
                 <div className="flex-1">
-                  <p className="font-semibold capitalize">{formatDate(r.date)} · {r.slot}</p>
-                  <p className="text-sm text-ink-soft">
+                  <p className="text-lg font-extrabold first-letter:uppercase">{formatDate(r.date)} · {slotLabel(r.slot)}</p>
+                  <p className="text-encre-douce">
                     {formulaName(r.formula)} · {r.guests} pers.{r.with_own_dog ? " · avec mon teckel" : ""}
                   </p>
                 </div>
-                <span className="rounded-full bg-cream px-3 py-1 text-xs font-semibold">{RESERVATION_STATUS[r.status]}</span>
+                <span className={`legende rounded-full px-3 py-1.5 ${r.status === "confirmee" ? "bg-jeton" : r.status === "annulee" ? "bg-tirage-2 text-encre-douce" : "bg-encre text-tirage"}`}>{RESERVATION_STATUS[r.status]}</span>
                 {r.status === "confirmee" && r.date >= today ? (
                   <form action={cancelMyReservation}>
                     <input type="hidden" name="id" value={r.id} />
-                    <button className="text-sm font-semibold text-red-700 hover:underline">Annuler</button>
+                    <button className="text-sm font-bold text-rouge underline hover:no-underline">Annuler</button>
                   </form>
                 ) : null}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-ink-soft">Aucune réservation pour l&apos;instant.</p>
+          <p className="mt-5 border-y-2 border-encre py-6 text-lg text-encre-douce">Aucune réservation pour l&apos;instant. Les teckels vous attendent.</p>
         )}
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-semibold">Mes commandes</h2>
+      <section className="mt-14">
+        <h2 className="enseigne text-[2rem]">Mes commandes</h2>
         {(orders as Order[] | null)?.length ? (
-          <ul className="mt-4 divide-y divide-line rounded-2xl border border-line bg-paper">
+          <ul className="mt-5 border-t-2 border-encre">
             {(orders as Order[]).map((o) => (
-              <li key={o.id} className="p-4">
+              <li key={o.id} className="border-b-2 border-encre py-4">
                 <div className="flex flex-wrap items-center gap-4">
-                  <p className="flex-1 font-semibold">
+                  <p className="flex-1 text-lg font-extrabold">
                     Commande n° {o.id}
-                    <span className="ml-2 text-sm font-normal text-ink-soft">
+                    <span className="ml-2 text-sm font-normal text-encre-douce">
                       {new Date(o.created_at).toLocaleDateString("fr-FR")}
                     </span>
                   </p>
-                  <span className="rounded-full bg-cream px-3 py-1 text-xs font-semibold">{ORDER_STATUS[o.status]}</span>
-                  <span className="font-semibold tabular-nums">{formatPrice(o.total_cents)}</span>
+                  <span className={`legende rounded-full px-3 py-1.5 ${o.status === "annulee" ? "bg-tirage-2 text-encre-douce" : "bg-encre text-tirage"}`}>{ORDER_STATUS[o.status]}</span>
+                  <span className="text-lg font-extrabold tabular-nums">{formatPrice(o.total_cents)}</span>
                 </div>
-                <p className="mt-1 text-sm text-ink-soft">
+                <p className="mt-1 text-encre-douce">
                   {o.order_items.map((i) => `${i.quantity} × ${i.product_name}`).join(", ")}
                 </p>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-ink-soft">Aucune commande pour l&apos;instant.</p>
+          <p className="mt-5 border-y-2 border-encre py-6 text-lg text-encre-douce">Aucune commande pour l&apos;instant.</p>
         )}
       </section>
     </>

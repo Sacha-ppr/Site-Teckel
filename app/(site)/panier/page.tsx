@@ -5,10 +5,12 @@ export const metadata: Metadata = { title: "Panier" };
 
 export default function Page() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14">
-      <h1 className="font-display text-5xl font-semibold">Votre panier</h1>
-      <div className="mt-10">
-        <Checkout />
+    <div className="bg-tirage">
+      <div className="mx-auto max-w-[1400px] px-4 py-14 md:px-8">
+        <h1 className="enseigne text-[clamp(2.8rem,7vw,5rem)]">Votre panier</h1>
+        <div className="mt-10">
+          <Checkout />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,8 @@
+import type { PhotoId } from "./photos";
+
 export type Workshop = {
   title: string;
+  photo: PhotoId;
   when: string;
   priceLabel: string;
   description: string;
@@ -9,6 +12,7 @@ export type Workshop = {
 export const WORKSHOPS: Workshop[] = [
   {
     title: "Teckel Parade du dimanche",
+    photo: "balade",
     when: "Premier dimanche du mois · 11 h",
     priceLabel: "Gratuit",
     tag: "Rencontre",
@@ -17,6 +21,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Atelier éducation : le rappel",
+    photo: "chiot",
     when: "Samedis · 9 h – 10 h",
     priceLabel: "35 € la séance",
     tag: "Éducation",
@@ -25,6 +30,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Prendre soin du dos long",
+    photo: "canape",
     when: "Un jeudi sur deux · 19 h",
     priceLabel: "20 €",
     tag: "Santé",
@@ -33,6 +39,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Anniversaire de votre teckel",
+    photo: "rire",
     when: "Sur réservation",
     priceLabel: "À partir de 120 €",
     tag: "Privatisation",
@@ -41,6 +48,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Initiation au pistage",
+    photo: "flair",
     when: "Dimanches · 9 h, en forêt de Vincennes",
     priceLabel: "40 €",
     tag: "Sport",
@@ -49,6 +57,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Club des futurs adoptants",
+    photo: "enfant",
     when: "Dernier mercredi du mois · 18 h 30",
     priceLabel: "Gratuit",
     tag: "Adoption",

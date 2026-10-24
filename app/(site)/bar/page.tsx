@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Teckel } from "@/components/teckel";
+import { Pose } from "@/components/pose";
 import { FORMULAS, formatPrice } from "@/lib/catalog";
+import type { PhotoId } from "@/lib/photos";
 
 export const metadata: Metadata = { title: "Le bar" };
 
-const RULES = [
-  { title: "On laisse venir", text: "Les teckels choisissent leurs humains. Asseyez-vous, ils viendront." },
-  { title: "Pas de nourriture humaine", text: "Même devant le regard de Knacki. Surtout devant le regard de Knacki." },
-  { title: "On les porte correctement", text: "Une main sous le poitrail, une sous l'arrière-train : leur dos vous remercie." },
-  { title: "Les siestes sont sacrées", text: "Un teckel qui dort dans son panier ne se dérange pas." },
+const RULES: { title: string; text: string; photo: PhotoId }[] = [
+  { title: "On laisse venir", text: "Les teckels choisissent leurs humains. Asseyez-vous, ils viendront.", photo: "attente" },
+  { title: "Pas de nourriture humaine", text: "Même devant le regard de Knacki. Surtout devant le regard de Knacki.", photo: "regard" },
+  { title: "On les porte correctement", text: "Une main sous le poitrail, une sous l'arrière-train : leur dos vous remercie.", photo: "enfant" },
+  { title: "Les siestes sont sacrées", text: "Un teckel qui dort dans son panier ne se dérange pas.", photo: "sieste" },
 ];
 
 const FAQ = [
@@ -22,65 +23,74 @@ const FAQ = [
 export default function Page() {
   return (
     <>
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-caramel">Le concept</p>
-          <h1 className="mt-3 font-display text-5xl font-semibold leading-tight">
-            Un café où les clients ont quatre pattes courtes.
-          </h1>
-          <p className="mt-6 text-lg text-ink-soft">
-            Inspiré des cafés à chats de Tokyo, le Bar à Teckels réunit six teckels résidents dans un salon
-            chaleureux du 11e arrondissement. On y vient pour un café, un goûter ou un apéro, et on repart
-            avec des poils sur le pantalon et le sourire.
-          </p>
-          <Link href="/reserver" className="btn mt-8 bg-caramel text-white hover:bg-caramel-dark">
-            Réserver un créneau
-          </Link>
-        </div>
-        <div className="rounded-[2rem] bg-moss p-10">
-          <Teckel color="#f6efe4" className="w-full" />
-        </div>
-      </section>
-
-      <section className="border-y border-line bg-paper">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="font-display text-3xl font-semibold">Formules & tarifs</h2>
-          <div className="mt-6 divide-y divide-line">
-            {FORMULAS.map((f) => (
-              <div key={f.id} className="flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5">
-                <h3 className="font-display text-xl font-semibold">{f.name}</h3>
-                <span className="text-sm text-ink-soft">{f.duration}</span>
-                <p className="w-full text-ink-soft md:order-last">{f.description}</p>
-                <span className="ml-auto font-semibold text-caramel">{formatPrice(f.priceCents)} / pers.</span>
-              </div>
-            ))}
+      <section className="bg-rouge text-tirage">
+        <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-4 py-16 md:px-8 md:py-20 lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <h1 className="enseigne text-[clamp(2.8rem,6.4vw,5.5rem)]">Un café où les clients ont des pattes courtes</h1>
+            <p className="mt-6 max-w-[38rem] text-lg leading-relaxed text-rose">
+              Inspiré des cafés à chats de Tokyo, le Bar à Teckels réunit six teckels résidents dans un salon du 11e
+              arrondissement. On y vient pour un café, un goûter ou un apéro, et on repart avec des poils sur le
+              pantalon et le sourire.
+            </p>
+            <Link href="/reserver" className="btn btn-jeton mt-8">
+              Réserver un créneau
+            </Link>
+          </div>
+          <div className="tirage mx-auto w-full max-w-[460px] rotate-[2deg]">
+            <Pose photo="guinguette" priority sizes="(min-width: 1024px) 440px, 90vw" className="aspect-[4/3]" />
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="font-display text-3xl font-semibold">La charte du bar</h2>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {RULES.map((r, i) => (
-            <div key={r.title} className="rounded-2xl border border-line bg-paper p-6">
-              <span className="font-display text-3xl font-semibold text-caramel">{i + 1}</span>
-              <h3 className="mt-2 font-semibold">{r.title}</h3>
-              <p className="mt-1 text-sm text-ink-soft">{r.text}</p>
-            </div>
-          ))}
+      <section className="bg-encre text-tirage">
+        <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-20">
+          <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Formules & tarifs</h2>
+          <ul className="mt-10 grid gap-x-10 gap-y-8 border-t border-[#333] pt-10 md:grid-cols-3">
+            {FORMULAS.map((f) => (
+              <li key={f.id}>
+                <span className="compteur text-[4.5rem]">{formatPrice(f.priceCents).replace(",00", "")}</span>
+                <h3 className="enseigne mt-3 text-[1.7rem]">{f.name}</h3>
+                <p className="legende mt-2 text-chrome-clair">{f.duration} · par personne</p>
+                <p className="mt-3 text-chrome-clair">{f.description}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 pb-20">
-        <h2 className="font-display text-3xl font-semibold">Questions fréquentes</h2>
-        <div className="mt-6 divide-y divide-line rounded-2xl border border-line bg-paper">
+      <section className="bg-tirage">
+        <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+          <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">La charte du bar</h2>
+          <p className="mt-4 max-w-xl text-lg text-encre-douce">Quatre règles, quatre poses. Nos teckels comptent sur vous.</p>
+          <ol className="tirage mt-12 grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
+            {RULES.map((r, i) => (
+              <li key={r.title} className="flex flex-col">
+                <Pose photo={r.photo} sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw" className="aspect-[4/5]" index={i} />
+                <h3 className="enseigne mt-4 text-[1.35rem]">{r.title}</h3>
+                <p className="mt-2 pb-2 text-encre-douce">{r.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[56rem] px-4 py-16 md:py-24">
+        <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Questions fréquentes</h2>
+        <div className="mt-10 border-t-2 border-encre">
           {FAQ.map((item) => (
-            <details key={item.q} className="group p-5">
-              <summary className="cursor-pointer list-none font-semibold marker:hidden">
-                <span className="mr-2 inline-block text-caramel transition-transform group-open:rotate-45">+</span>
+            <details key={item.q} className="group border-b-2 border-encre">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[1.2rem] font-bold marker:hidden hover:text-rouge [&::-webkit-details-marker]:hidden">
                 {item.q}
+                <span
+                  aria-hidden
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-jeton text-encre transition-transform group-open:rotate-45"
+                >
+                  <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M8 2v12M2 8h12" strokeLinecap="round" />
+                  </svg>
+                </span>
               </summary>
-              <p className="mt-2 text-ink-soft">{item.a}</p>
+              <p className="max-w-[44rem] pb-6 text-lg text-encre-douce">{item.a}</p>
             </details>
           ))}
         </div>

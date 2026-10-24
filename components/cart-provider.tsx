@@ -9,15 +9,22 @@ export type CartItem = {
   name: string;
   priceCents: number;
   color: string;
+  // Taille choisie sur la fiche produit, pour les articles qui en ont.
+  variant?: string;
   quantity: number;
 };
+
+// Une ligne de panier par article et par taille.
+export function cartKey(item: Pick<CartItem, "productId" | "variant">) {
+  return `${item.productId}:${item.variant ?? ""}`;
+}
 
 type CartContextValue = {
   items: CartItem[];
   count: number;
   totalCents: number;
   add: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  setQuantity: (productId: number, quantity: number) => void;
+  setQuantity: (key: string, quantity: number) => void;
   clear: () => void;
 };
 
@@ -50,21 +57,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const add = useCallback<CartContextValue["add"]>((item, quantity = 1) => {
     setItems((current) => {
-      const existing = current.find((i) => i.productId === item.productId);
+      const key = cartKey(item);
+      const existing = current.find((i) => cartKey(i) === key);
       if (existing) {
-        return current.map((i) =>
-          i.productId === item.productId ? { ...i, quantity: i.quantity + quantity } : i,
-        );
+        return current.map((i) => (cartKey(i) === key ? { ...i, quantity: i.quantity + quantity } : i));
       }
       return [...current, { ...item, quantity }];
     });
   }, []);
 
-  const setQuantity = useCallback((productId: number, quantity: number) => {
+  const setQuantity = useCallback((key: string, quantity: number) => {
     setItems((current) =>
       quantity <= 0
-        ? current.filter((i) => i.productId !== productId)
-        : current.map((i) => (i.productId === productId ? { ...i, quantity } : i)),
+        ? current.filter((i) => cartKey(i) !== key)
+        : current.map((i) => (cartKey(i) === key ? { ...i, quantity } : i)),
     );
   }, []);
 

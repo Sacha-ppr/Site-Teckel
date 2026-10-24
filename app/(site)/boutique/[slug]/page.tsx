@@ -1,50 +1,93 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { AddToCart } from "@/components/add-to-cart";
-import { Teckel } from "@/components/teckel";
-import { CATEGORIES, formatPrice } from "@/lib/catalog";
-import { getProduct } from "@/lib/products";
+import { ProductCard } from "@/components/product-card";
+import { ProductView } from "@/components/product-view";
+import { CATEGORIES } from "@/lib/catalog";
+import { PRODUCT_DETAILS } from "@/lib/product-details";
+import { productGallery } from "@/lib/product-images";
+import { getProduct, getProducts } from "@/lib/products";
+
+export async function generateMetadata({ params }: PageProps<"/boutique/[slug]">): Promise<Metadata> {
+  const product = await getProduct((await params).slug);
+  return product ? { title: product.name, description: product.description } : {};
+}
 
 export default function Page({ params }: PageProps<"/boutique/[slug]">) {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14">
-      <Link href="/boutique" className="text-sm font-semibold text-caramel">← Retour à la boutique</Link>
-      <Suspense fallback={<div className="mt-8 h-96 animate-pulse rounded-2xl bg-paper" />}>
-        <ProductDetail params={params} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div className="mx-auto mt-10 h-[40rem] max-w-[1400px] animate-pulse bg-tirage-2" />}>
+      <ProductPage params={params} />
+    </Suspense>
   );
 }
 
-async function ProductDetail({ params }: Pick<PageProps<"/boutique/[slug]">, "params">) {
+async function ProductPage({ params }: Pick<PageProps<"/boutique/[slug]">, "params">) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const [product, products] = await Promise.all([getProduct(slug), getProducts()]);
   if (!product) notFound();
 
+  const details = PRODUCT_DETAILS[product.slug] ?? null;
+  const pairs = (details?.pairsWith ?? [])
+    .map((s) => products.find((p) => p.slug === s))
+    .filter((p) => p !== undefined)
+    .slice(0, 3);
+  const fallbackPairs = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const suggestions = pairs.length ? pairs : fallbackPairs;
+
   return (
-    <div className="mt-8 grid gap-10 md:grid-cols-2">
-      <div className="rounded-[2rem] p-12" style={{ backgroundColor: `${product.color}22` }}>
-        <Teckel color={product.color} className="w-full" title={product.name} />
-      </div>
-      <div className="flex flex-col justify-center">
-        <p className="text-sm font-semibold uppercase tracking-wider text-ink-soft">
-          {CATEGORIES[product.category]}
-        </p>
-        <h1 className="mt-2 font-display text-4xl font-semibold">{product.name}</h1>
-        <p className="mt-4 text-2xl font-semibold text-caramel">{formatPrice(product.price_cents)}</p>
-        <p className="mt-6 text-lg text-ink-soft">{product.description}</p>
-        <p className="mt-4 text-sm text-ink-soft">
-          {product.stock > 5
-            ? "En stock — expédié sous 48 h"
-            : product.stock > 0
-              ? `Plus que ${product.stock} en stock`
-              : "Épuisé pour le moment"}
-        </p>
-        <div className="mt-8">
-          <AddToCart product={product} />
+    <>
+      <div className="mx-auto max-w-[1400px] px-4 pt-8 pb-16 md:px-8 md:pb-24">
+        <nav aria-label="Fil d'Ariane" className="legende flex flex-wrap items-center gap-2 text-encre-douce">
+          <Link href="/boutique" className="hover:text-rouge">
+            Boutique
+          </Link>
+          <span aria-hidden>/</span>
+          <span>{CATEGORIES[product.category]}</span>
+        </nav>
+        <div className="mt-6">
+          <ProductView product={product} details={details} images={productGallery(product.slug)} />
         </div>
       </div>
-    </div>
+
+      {details ? (
+        <section className="bg-encre text-tirage">
+          <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Pensé pour un dos long</h2>
+            <ul className="mt-10 grid gap-x-10 gap-y-8 border-t border-[#333] pt-10 md:grid-cols-3">
+              {details.points.map((pt) => (
+                <li key={pt.title}>
+                  <h3 className="enseigne text-[1.5rem] text-jeton">{pt.title}</h3>
+                  <p className="mt-3 text-lg text-chrome-clair">{pt.text}</p>
+                </li>
+              ))}
+            </ul>
+            <dl className="mt-12 grid gap-6 border-t border-[#333] pt-8 sm:grid-cols-2">
+              <div>
+                <dt className="legende text-chrome">Matière</dt>
+                <dd className="mt-2 text-lg">{details.matiere}</dd>
+              </div>
+              <div>
+                <dt className="legende text-chrome">Entretien</dt>
+                <dd className="mt-2 text-lg">{details.entretien}</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+      ) : null}
+
+      {suggestions.length ? (
+        <section className="bg-tirage">
+          <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">Complétez le look</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {suggestions.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+    </>
   );
 }

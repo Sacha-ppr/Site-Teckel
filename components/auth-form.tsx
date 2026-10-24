@@ -16,16 +16,16 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="next" value={next} />
       {mode === "signup" ? (
-        <label className="flex flex-col gap-1 text-sm font-medium">
+        <label className="flex flex-col gap-1.5 text-sm font-bold">
           Nom complet
           <input name="full_name" required className="field" autoComplete="name" />
         </label>
       ) : null}
-      <label className="flex flex-col gap-1 text-sm font-medium">
+      <label className="flex flex-col gap-1.5 text-sm font-bold">
         Email
         <input name="email" type="email" required className="field" autoComplete="email" />
       </label>
-      <label className="flex flex-col gap-1 text-sm font-medium">
+      <label className="flex flex-col gap-1.5 text-sm font-bold">
         Mot de passe
         <input
           name="password"
@@ -37,27 +37,27 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
         />
       </label>
       {linkError && !state ? (
-        <p className="rounded-lg bg-red-50 p-3 text-sm text-red-800">
+        <p role="alert" className="rounded-lg bg-rose p-3 text-sm font-bold text-rouge-fonce">
           Ce lien de confirmation est invalide ou expiré. Connectez-vous, ou réinscrivez-vous si besoin.
         </p>
       ) : null}
-      {state?.error ? <p className="rounded-lg bg-red-50 p-3 text-sm text-red-800">{state.error}</p> : null}
-      {state?.message ? <p className="rounded-lg bg-green-50 p-3 text-sm text-green-800">{state.message}</p> : null}
-      <button disabled={pending} className="btn bg-caramel text-white hover:bg-caramel-dark">
+      {state?.error ? <p role="alert" className="rounded-lg bg-rose p-3 text-sm font-bold text-rouge-fonce">{state.error}</p> : null}
+      {state?.message ? <p role="status" className="rounded-lg bg-jeton p-3 text-sm font-bold text-encre">{state.message}</p> : null}
+      <button disabled={pending} className="btn btn-jeton mt-2 py-4">
         {pending ? "Un instant…" : mode === "signin" ? "Se connecter" : "Créer mon compte"}
       </button>
-      <p className="text-center text-sm text-ink-soft">
+      <p className="text-center text-sm text-chrome-clair">
         {mode === "signin" ? (
           <>
             Pas encore de compte ?{" "}
-            <Link href={`/inscription${nextQuery}`} className="font-semibold text-caramel">
+            <Link href={`/inscription${nextQuery}`} className="font-bold text-jeton underline hover:no-underline">
               Inscrivez-vous
             </Link>
           </>
         ) : (
           <>
             Déjà inscrit·e ?{" "}
-            <Link href={`/connexion${nextQuery}`} className="font-semibold text-caramel">
+            <Link href={`/connexion${nextQuery}`} className="font-bold text-jeton underline hover:no-underline">
               Connectez-vous
             </Link>
           </>

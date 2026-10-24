@@ -24,11 +24,12 @@ export function AddToCart({ product, compact = false }: { product: Product; comp
         setAdded(true);
         setTimeout(() => setAdded(false), 1500);
       }}
-      className={`btn ${compact ? "px-4 py-2 text-sm" : ""} ${
-        added ? "bg-moss text-white" : "bg-ink text-cream hover:bg-caramel"
+      aria-live="polite"
+      className={`btn ${compact ? "px-4 py-2 text-[0.8rem]" : "w-full py-4 sm:w-auto"} ${
+        added ? "bg-jeton text-encre" : "btn-encre"
       }`}
     >
-      {soldOut ? "Épuisé" : added ? "Ajouté ✓" : "Ajouter au panier"}
+      {soldOut ? "Épuisé" : added ? "Dans le panier" : compact ? "Ajouter" : "Ajouter au panier"}
     </button>
   );
 }
