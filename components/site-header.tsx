@@ -8,7 +8,6 @@ const NAV = [
   { href: "/residents", label: "Résidents" },
   { href: "/boutique", label: "Boutique" },
   { href: "/ateliers", label: "Ateliers" },
-  { href: "/habille-ton-teckel", label: "Cabine d'essayage" },
 ];
 
 // L'enseigne lumineuse au-dessus de la cabine.

@@ -41,7 +41,7 @@ Not a generic cat/dog café: everything is built around one breed. Resident dach
 ## Brand Commitments
 
 - Name: "Le Bar à Teckels". Playful French tone with sausage puns (Chorizo, Merguez, Apéro saucisse), warm and welcoming, never childish.
-- Imagery must be **real photographs of dachshunds** (free-licensed stock or AI-generated). **No illustrations.** Binding user requirement. Single exception requested by the user: the « Habille ton teckel » mini-game (`/habille-ton-teckel`) draws its dog and garments in flat SVG so the clothes can be layered.
+- Imagery must be **real photographs of dachshunds** (free-licensed stock or AI-generated). **No illustrations.** Binding user requirement.
 
 ## Evidence on Hand
 

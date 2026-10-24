@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { useCart } from "@/components/cart-provider";
 import { formatPrice, type Product } from "@/lib/catalog";
-import { GARMENTS } from "@/lib/dress-up";
 import { SIZES, recommendSize, type ProductDetails, type SizeId } from "@/lib/product-details";
 import type { ProductImage } from "@/lib/product-images";
 
@@ -21,7 +20,6 @@ export function ProductView({ product, details, images }: Props) {
   const ctaRef = useRef<HTMLDivElement>(null);
   const soldOut = product.stock <= 0;
   const needsSize = Boolean(details?.sizes);
-  const tryOn = GARMENTS.find((g) => g.productSlug === product.slug);
 
   // Barre d'achat collante sur mobile, dès que le bouton principal sort de l'écran.
   useEffect(() => {
@@ -90,16 +88,6 @@ export function ProductView({ product, details, images }: Props) {
               Voir le panier
             </Link>
           </div>
-        ) : null}
-
-        {tryOn ? (
-          <Link href={`/habille-ton-teckel?essayer=${tryOn.id}`} className="btn btn-ligne mt-4 w-full">
-            <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <path d="M4 8h3l2-2.5h6L17 8h3v11H4z" strokeLinejoin="round" />
-              <circle cx="12" cy="13" r="3.5" />
-            </svg>
-            Essayer sur mon teckel en cabine
-          </Link>
         ) : null}
 
         <ul className="mt-6 flex flex-col gap-1.5 text-encre-douce">
@@ -254,7 +242,7 @@ function Gallery({ images, name }: { images: ProductImage[]; name: string }) {
   );
 }
 
-// ——— Guide des tailles : on mesure son teckel, la cabine conseille ———
+// ——— Guide des tailles : on mesure son teckel, la fiche conseille ———
 
 function SizePicker({ rule, size, onChange }: { rule: "dos" | "poitrail"; size: SizeId | null; onChange: (s: SizeId) => void }) {
   const [open, setOpen] = useState(false);
@@ -296,8 +284,8 @@ function SizePicker({ rule, size, onChange }: { rule: "dos" | "poitrail"; size: 
           <p className="enseigne text-[1.2rem]">Mesurez votre teckel</p>
           {/* Le gabarit de mesure : une vraie photo de teckel avec les deux mesures tracées dessus. */}
           <div className="relative mt-3 aspect-[3/2] overflow-hidden rounded-lg bg-case">
-            {/* eslint-disable-next-line @next/next/no-img-element -- photo détourée de la cabine, superposée aux repères */}
-            <img src="/cabine/fauve.webp" alt="Teckel de profil avec les repères de mesure" className="absolute inset-0 h-full w-full" />
+            {/* eslint-disable-next-line @next/next/no-img-element -- photo détourée, superposée aux repères */}
+            <img src="/guide/teckel-profil.webp" alt="Teckel de profil avec les repères de mesure" className="absolute inset-0 h-full w-full" />
             <svg viewBox="0 0 150 100" className="absolute inset-0 h-full w-full" aria-hidden>
               <g stroke="#ffd400" strokeWidth="0.9" fill="none" strokeLinecap="round">
                 <path d="M68 44 C52 49 34 50 21 52" strokeDasharray="2 1.5" />
