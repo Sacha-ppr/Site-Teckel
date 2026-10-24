@@ -1,32 +1,51 @@
-// Photos des articles de la boutique (licences libres, créditées sur /credits).
-// Elles montrent le type d'article, pas forcément le modèle exact vendu au bar.
-export type ProductImage = { src: string; alt: string; title: string; author: string; license: string; source: string };
+// Photos des articles de la boutique, générées pour le site (Google Gemini) puis retouchées.
+// Vue 1 : l'article seul. Vue 2 : l'article porté ou utilisé par notre teckel modèle.
+export type ProductImage = { src: string; alt: string };
+
+const photo = (slug: string, vue: 1 | 2, alt: string): ProductImage => ({ src: `/produits/${slug}-${vue}.webp`, alt });
 
 export const PRODUCT_IMAGES: Record<string, ProductImage> = {
-  "balle-terrier": { src: "/produits/balle-terrier.jpg", alt: "Chien couché devant une balle", title: "DOG&BALL", author: "helenacazaerck", license: "CC BY 2.0", source: "https://www.flickr.com/photos/128526349@N07/15752853307" },
-  "beret-parisien": { src: "/produits/beret-parisien.jpg", alt: "Chien endormi coiffé d'un béret noir", title: "Pekingese Love to Sleep.jpg", author: "Anees Jillani", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:Pekingese_Love_to_Sleep.jpg" },
-  "biscuits-saucisse": { src: "/produits/biscuits-saucisse.jpg", alt: "Biscuit pour chien en forme d'os", title: "Ice cream pup cups with dog biscuits from Dairy Queen (cropped).jpg", author: "J Wynia from Minneapolis, United States", license: "CC BY 2.0", source: "https://commons.wikimedia.org/wiki/File:Ice_cream_pup_cups_with_dog_biscuits_from_Dairy_Queen_(cropped).jpg" },
-  "casquette-teckel": { src: "/produits/casquette-teckel.jpg", alt: "Casquette bleu marine", title: "Baseball cap.jpg", author: "TexasRebel", license: "Public domain", source: "https://commons.wikimedia.org/wiki/File:Baseball_cap.jpg" },
-  "foulard-rouge": { src: "/produits/foulard-rouge.jpg", alt: "Bandanas rouges et colorés", title: "Bunte Tuecher.jpg", author: "Erkaha", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Bunte_Tuecher.jpg" },
-  "gamelle-ceramique": { src: "/produits/gamelle-ceramique.jpg", alt: "Gamelle en céramique blanche", title: "Gamelle anti-glouton - 1.jpg", author: "Lionel Allorge", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:Gamelle_anti-glouton_-_1.jpg" },
-  "harnais-h": { src: "/produits/harnais-h.jpg", alt: "Teckel noir et feu en harnais dans la rue", title: "Dog on Hradčanské náměstí.jpg", author: "Tiia Monto", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Dog_on_Hrad%C4%8Dansk%C3%A9_n%C3%A1m%C4%9Bst%C3%AD.jpg" },
-  "impermeable-jaune": { src: "/produits/impermeable-jaune.jpg", alt: "Chien blanc en imperméable jaune à bande réfléchissante", title: "Alfie the dog in an orange vest.jpg", author: "Thomo16 at English Wikibooks", license: "Public domain", source: "https://commons.wikimedia.org/wiki/File:Alfie_the_dog_in_an_orange_vest.jpg" },
-  "lunettes-soleil": { src: "/produits/lunettes-soleil.jpg", alt: "Lunettes de soleil rondes à monture écaille", title: "Arcwang.jpg", author: "Emefey49", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Arcwang.jpg" },
-  "manteau-saucisse": { src: "/produits/manteau-saucisse.jpg", alt: "Petit chien en manteau matelassé orange", title: "009186 - Perro (12052906184).jpg", author: "M.Peinado from Alcalá de Henares, España", license: "CC BY 2.0", source: "https://commons.wikimedia.org/wiki/File:009186_-_Perro_(12052906184).jpg" },
-  "noeud-papillon": { src: "/produits/noeud-papillon.jpg", alt: "Nœud papillon en velours noir", title: "BOWTIE red velvet pretied clipon.JPG", author: "PJ McNally", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:BOWTIE_red_velvet_pretied_clipon.JPG" },
-  "os-moelle": { src: "/produits/os-moelle.jpg", alt: "Friandises à mâcher naturelles", title: "PizzleTreat.jpg", author: "Minataurus", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:PizzleTreat.jpg" },
-  "panier-terrier": { src: "/produits/panier-terrier.jpg", alt: "Niche couverte et petit chien sur un carrelage", title: "Hundehütte - Yorkie.jpg", author: "Sciencia58", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Hundeh%C3%BCtte_-_Yorkie.jpg" },
-  "peluche-blaireau": { src: "/produits/peluche-blaireau.jpg", alt: "Peluche blaireau", title: "Badger!", author: "janetmck", license: "CC BY 2.0", source: "https://www.flickr.com/photos/43188309@N00/4279556895" },
-  "pull-marin": { src: "/produits/pull-marin.jpg", alt: "Chihuahua en pull rayé", title: "Styling...", author: "Nieve44/Luz", license: "CC BY 2.0", source: "https://www.flickr.com/photos/20978349@N00/388758984" },
-  "pull-torsade": { src: "/produits/pull-torsade.jpg", alt: "Maille torsadée grise en gros plan", title: "Zopfmuster 2.jpg", author: "Ryj", license: "Public domain", source: "https://commons.wikimedia.org/wiki/File:Zopfmuster_2.jpg" },
-  "rampe-canape": { src: "/produits/rampe-canape.jpg", alt: "Rampe pour chien posée contre un coffre de voiture", title: "dogs and car and ramp", author: "annieb", license: "CC BY-SA 2.0", source: "https://www.flickr.com/photos/92828317@N00/6241847771" },
-  "tapis-fouille": { src: "/produits/tapis-fouille.jpg", alt: "Jeu de fouille à friandises pour chien", title: "Dog puzzle for mental stimulation.jpg", author: "Jessica1954", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Dog_puzzle_for_mental_stimulation.jpg" },
+  "balle-terrier": photo("balle-terrier", 1, "Balle en caoutchouc rouge brique"),
+  "beret-parisien": photo("beret-parisien", 1, "Béret noir en laine bouillie avec son élastique"),
+  "biscuits-saucisse": photo("biscuits-saucisse", 1, "Biscuits en forme de saucisse devant leur sachet kraft"),
+  "casquette-teckel": photo("casquette-teckel", 1, "Casquette bleu marine avec ouvertures pour les oreilles"),
+  "foulard-rouge": photo("foulard-rouge", 1, "Bandana rouge à motif cachemire plié en triangle"),
+  "gamelle-ceramique": photo("gamelle-ceramique", 1, "Gamelle en céramique vert-de-gris sur support en bois"),
+  "harnais-h": photo("harnais-h", 1, "Harnais en H en cuir marron, boucles en laiton"),
+  "impermeable-jaune": photo("impermeable-jaune", 1, "Ciré jaune moutarde et sa capuche amovible"),
+  "lunettes-soleil": photo("lunettes-soleil", 1, "Lunettes de soleil pour chien à sangle réglable"),
+  "manteau-saucisse": photo("manteau-saucisse", 1, "Manteau matelassé rouille à col polaire"),
+  "noeud-papillon": photo("noeud-papillon", 1, "Nœud papillon en velours noir à clipser"),
+  "os-moelle": photo("os-moelle", 1, "Trois os de bœuf séchés"),
+  "panier-terrier": photo("panier-terrier", 1, "Panier couvert vieux rose en forme de terrier"),
+  "peluche-blaireau": photo("peluche-blaireau", 1, "Peluche blaireau gris"),
+  "pull-marin": photo("pull-marin", 1, "Pull marinière rayé bleu marine et écru"),
+  "pull-torsade": photo("pull-torsade", 1, "Pull crème en laine torsadée"),
+  "rampe-canape": photo("rampe-canape", 1, "Rampe en bois clair à surface moquettée"),
+  "tapis-fouille": photo("tapis-fouille", 1, "Tapis de fouille en feutre vert sauge"),
 };
 
-// Vues supplémentaires d'un article (photos générées pour la boutique), affichées après la principale.
-export const PRODUCT_GALLERY: Record<string, ProductImage[]> = {};
+// L'article en situation : c'est la vue qui aide à se projeter.
+export const PRODUCT_WORN: Record<string, ProductImage> = {
+  "balle-terrier": photo("balle-terrier", 2, "Teckel couché, la balle entre les pattes"),
+  "beret-parisien": photo("beret-parisien", 2, "Teckel coiffé du béret, porté penché"),
+  "biscuits-saucisse": photo("biscuits-saucisse", 2, "Teckel assis devant un biscuit"),
+  "casquette-teckel": photo("casquette-teckel", 2, "Teckel portant la casquette, oreilles passées dans les ouvertures"),
+  "foulard-rouge": photo("foulard-rouge", 2, "Teckel portant le bandana rouge noué au cou"),
+  "gamelle-ceramique": photo("gamelle-ceramique", 2, "Teckel mangeant dans la gamelle surélevée, dos droit"),
+  "harnais-h": photo("harnais-h", 2, "Teckel en harnais en H, laisse en cuir"),
+  "impermeable-jaune": photo("impermeable-jaune", 2, "Teckel en ciré jaune, capuche relevée"),
+  "lunettes-soleil": photo("lunettes-soleil", 2, "Teckel portant les lunettes de soleil"),
+  "manteau-saucisse": photo("manteau-saucisse", 2, "Teckel de profil en manteau matelassé rouille"),
+  "noeud-papillon": photo("noeud-papillon", 2, "Teckel assis avec le nœud papillon"),
+  "os-moelle": photo("os-moelle", 2, "Teckel couché rongeant un os"),
+  "panier-terrier": photo("panier-terrier", 2, "Teckel blotti dans le panier terrier"),
+  "peluche-blaireau": photo("peluche-blaireau", 2, "Teckel couché, la peluche blaireau dans la gueule"),
+  "pull-marin": photo("pull-marin", 2, "Teckel assis en pull marinière"),
+  "pull-torsade": photo("pull-torsade", 2, "Teckel couché en pull torsadé crème"),
+  "tapis-fouille": photo("tapis-fouille", 2, "Teckel le museau dans le tapis de fouille"),
+};
 
 export function productGallery(slug: string): ProductImage[] {
-  const main = PRODUCT_IMAGES[slug];
-  return [...(main ? [main] : []), ...(PRODUCT_GALLERY[slug] ?? [])];
+  return [PRODUCT_IMAGES[slug], PRODUCT_WORN[slug]].filter((im): im is ProductImage => Boolean(im));
 }

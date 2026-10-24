@@ -10,6 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
         <ProductPhoto
           slug={product.slug}
           alt=""
+          worn
           sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 90vw"
           className="aspect-square transition-transform duration-300 group-hover:scale-[1.015]"
         />

@@ -41,7 +41,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
         </div>
         <div className="border-t border-rouge-fonce">
           <p className="mx-auto max-w-[1400px] px-4 py-4 text-sm text-rose md:px-8">
-            Projet d&apos;école : le bar, ses résidents et sa boutique sont fictifs. Photos libres de Wikimedia Commons et Flickr.
+            Projet d&apos;école : le bar, ses résidents et sa boutique sont fictifs. Photos de teckels libres de Wikimedia Commons et Flickr, photos d&apos;articles générées par IA.
           </p>
         </div>
       </footer>
