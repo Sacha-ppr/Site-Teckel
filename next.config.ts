@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     agentFeedback: true,
+    // Sur Vercel, le cache de build a resservi un ancien CSS (palette d'avant la refonte) : on repart de zéro à chaque build.
+    turbopackFileSystemCacheForBuild: false,
   },
   cacheComponents: true,
   partialPrefetching: true,
