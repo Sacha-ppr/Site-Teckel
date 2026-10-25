@@ -3,6 +3,8 @@ import type { PhotoId } from "./photos";
 export type Resident = {
   name: string;
   photo: PhotoId;
+  // Autres poses, affichées sous la fiche.
+  more?: PhotoId[];
   age: string;
   coat: string;
   personality: string;
@@ -42,7 +44,7 @@ export const RESIDENTS: Resident[] = [
     name: "Praline",
     photo: "praline",
     age: "8 ans",
-    coat: "Poil ras, noir et feu",
+    coat: "Poil mi-long, blanc crème",
     personality: "Retraitée active. Fait la sieste au soleil près de la vitrine et accepte les grattouilles avec dignité.",
     loves: "Le rayon de soleil de 15 h",
     schedule: "Jeu, sam",
@@ -64,5 +66,16 @@ export const RESIDENTS: Resident[] = [
     personality: "Le petit dernier, en apprentissage auprès de Chorizo. Découvre le monde un client à la fois.",
     loves: "Mâchouiller les lacets",
     schedule: "Sam, dim",
+  },
+  {
+    name: "Blanca",
+    photo: "blanca",
+    more: ["blanca-oreilles"],
+    age: "5 mois",
+    coat: "Poil mi-long, blanc crème",
+    personality:
+      "La petite dernière de la bande, septième teckel du bar : très câline et pleine d'énergie, elle grimpe sur le premier genou qui se penche.",
+    loves: "Les câlins et les courses-poursuites dans la salle",
+    schedule: "Mer → ven, 10 h-12 h · sam, jusqu'à 16 h",
   },
 ];

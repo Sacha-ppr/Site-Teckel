@@ -1,3 +1,4 @@
+import { Pose } from "@/components/pose";
 import { SAMPLE_REVIEWS } from "@/lib/extras";
 
 // Bandeau d'avis qui défile. Contenu d'exemple, signalé comme tel.
@@ -13,6 +14,7 @@ export function ReviewsMarquee() {
         <ul className="defile flex w-max gap-5 px-4 md:px-8">
           {loop.map((r, i) => (
             <li key={i} aria-hidden={i >= SAMPLE_REVIEWS.length} className="tirage w-[19rem] shrink-0 bg-tirage p-5">
+              {r.photo ? <Pose photo={r.photo} sizes="304px" className="mb-4 aspect-[4/3]" /> : null}
               <p className="text-lg leading-snug font-bold">« {r.text} »</p>
               <p className="legende mt-4 text-encre-douce">{r.name} · {r.dog}</p>
             </li>

@@ -35,6 +35,10 @@ export const PHOTOS = {
   "balade": { src: "/photos/balade.jpg", width: 1280, height: 723, alt: "Teckel roux en promenade dans l'herbe", title: "Dachshund LUna in Petrozavodsk.jpg", author: "Thence5", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Dachshund_LUna_in_Petrozavodsk.jpg" },
   "poil-long": { src: "/photos/poil-long.jpg", width: 1280, height: 829, alt: "Teckel à poil long roux, de profil", title: "Dachshundstandard-longhair.jpg", author: "Canarian", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Dachshundstandard-longhair.jpg" },
   "jardin": { src: "/photos/jardin.jpg", width: 1280, height: 853, alt: "Teckel noir et feu dans les herbes hautes", title: "Dachshund 2.jpg", author: "Tony Alter", license: "CC BY 2.0", source: "https://commons.wikimedia.org/wiki/File:Dachshund_2.jpg" },
+  // Photos originales de Blanca, prises pour le projet (pas de source externe).
+  "blanca": { src: "/photos/blanca.jpg", width: 1000, height: 1286, alt: "Blanca, jeune teckel crème, allongée dans une flaque de soleil sur un parquet", title: "Blanca au soleil", author: "Le Bar à Teckels", license: "Photo originale", source: "" },
+  "blanca-oreilles": { src: "/photos/blanca-oreilles.jpg", width: 1000, height: 1286, alt: "Blanca sur le dos, grandes oreilles dressées, la patte en l'air", title: "Blanca et ses oreilles", author: "Le Bar à Teckels", license: "Photo originale", source: "" },
+  "blanca-sieste": { src: "/photos/blanca-sieste.jpg", width: 1000, height: 1286, alt: "Blanca endormie sur le dos dans une couverture crème", title: "Blanca fait la sieste", author: "Le Bar à Teckels", license: "Photo originale", source: "" },
 } satisfies Record<string, Photo>;
 
 export type PhotoId = keyof typeof PHOTOS;

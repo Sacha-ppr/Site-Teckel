@@ -11,9 +11,9 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto grid max-w-[1400px] gap-10 px-4 pt-14 pb-10 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
           <div>
             <p className="enseigne text-[clamp(2.2rem,5vw,4rem)]">
-              Souriez,
+              On vous garde
               <br />
-              c&apos;est dans la boîte.
+              une place à l&apos;étal.
             </p>
             <Link href="/reserver" className="btn btn-jeton mt-8">
               Réserver un créneau

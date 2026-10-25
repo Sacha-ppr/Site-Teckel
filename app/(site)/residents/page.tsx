@@ -7,12 +7,12 @@ export const metadata: Metadata = { title: "Nos résidents" };
 
 export default function Page() {
   return (
-    <>
+    <div className="curseur-patte">
       <section className="bg-rouge text-tirage">
         <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-20">
           <h1 className="enseigne text-[clamp(3rem,8vw,6rem)]">Nos résidents</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-rose">
-            Six caractères bien trempés, tous adoptés auprès d&apos;éleveurs et d&apos;associations partenaires.
+            Sept caractères bien trempés, comme les sept nains, tous adoptés auprès d&apos;éleveurs et d&apos;associations partenaires.
             Regardez leurs jours de présence avant de réserver si vous avez un chouchou.
           </p>
         </div>
@@ -45,6 +45,15 @@ export default function Page() {
                   <dd className="mt-1 text-lg font-bold">{r.schedule}</dd>
                 </div>
               </dl>
+              {r.more?.length ? (
+                <ul className="mt-8 flex flex-wrap gap-4">
+                  {r.more.map((id, k) => (
+                    <li key={id} className={`tirage w-36 sm:w-44 ${k % 2 ? "rotate-[1.5deg]" : "rotate-[-1deg]"}`}>
+                      <Pose photo={id} sizes="180px" className="aspect-[7/9]" />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           </li>
         ))}
@@ -58,6 +67,6 @@ export default function Page() {
           </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -12,7 +12,7 @@ Stack : Next.js 16 (App Router, Cache Components), Tailwind CSS 4, Supabase (Aut
 - `/reserver` réservation d'un créneau (16 places par créneau, 5 créneaux par jour, fermé lundi et mardi),
   places restantes en temps réel
 - `/boutique` catalogue filtrable, fiches produit, panier et commande (paiement simulé)
-- `/residents` les six teckels du bar · `/ateliers` ateliers et événements
+- `/residents` les sept teckels du bar · `/ateliers` ateliers et événements
 - `/compte` réservations (annulables) et commandes du client
 
 **Espace pro** (`/admin`, rôle `admin` uniquement)

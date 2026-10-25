@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
-/* Univers « Photomaton » : rouge rideau de cabine, blanc tirage, panneau chromé et jetons jaunes. */
+/* Univers « Marché & Céramique » : vert botanique, crème cassé, bois de caisse et terre cuite. */
 :root {
-  --rouge: #b3122a;
-  --rouge-fonce: #8c0c1f;
-  --rose: #f6d3d8;
-  --tirage: #f7f5f0;
-  --tirage-2: #ebe7de;
-  --encre: #111111;
-  --encre-douce: #57534c;
-  --chrome: #b9bcc0;
-  --chrome-clair: #dfe1e3;
-  --panneau: #1a1a1a;
-  --case: #2a2a2a;
-  --jeton: #ffd400;
+  --rouge: #35503f;
+  --rouge-fonce: #243a2c;
+  --rose: #e3e8d5;
+  --tirage: #f2ebda;
+  --tirage-2: #e7dcc2;
+  --encre: #231b12;
+  --encre-douce: #6e6250;
+  --chrome: #b9915c;
+  --chrome-clair: #e2cea0;
+  --panneau: #2b1f14;
+  --case: #3b2b1b;
+  --jeton: #ce6f42;
 }
 
 @theme inline {
@@ -57,10 +57,10 @@ a {
   text-underline-offset: 0.2em;
 }
 
-/* Titres d'enseigne : capitales larges et très grasses. */
+/* Titres d'affiche de marché : capitales condensées et très grasses, comme pochoirs sur une caisse. */
 @utility enseigne {
   font-weight: 900;
-  font-stretch: 112%;
+  font-stretch: 86%;
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 0.92;
@@ -120,7 +120,7 @@ a {
     inset 0 -3px 0 rgb(0 0 0 / 0.18),
     0 6px 14px -6px rgb(0 0 0 / 0.45);
   &:hover:not(:disabled) {
-    background: #ffe14d;
+    background: #e08a5f;
   }
 }
 
@@ -139,29 +139,29 @@ a {
   }
 }
 
-/* Panneau chromé façon monnayeur de cabine. */
+/* Panneau en bois de caisse, façon étal du marché. */
 @utility panneau {
   background: var(--panneau);
   color: var(--tirage);
   border: 6px solid var(--chrome);
-  border-radius: 20px;
+  border-radius: 14px;
   box-shadow:
     inset 0 0 0 2px #5d6064,
     0 28px 50px -24px rgb(0 0 0 / 0.6);
 }
 
-/* Tirage : papier photo blanc à marge épaisse. */
+/* Tirage : papier kraft à marge épaisse. */
 @utility tirage {
-  background: #fffefa;
+  background: #fbf6ea;
   padding: 10px 10px 14px;
   box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.55);
 }
 
 @utility field {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 2px solid var(--encre);
-  background: white;
+  background: #fdfbf5;
   color: var(--encre);
   padding: 0.65rem 0.85rem;
   font-size: 1rem;
@@ -175,9 +175,9 @@ a {
   }
 }
 
-/* Photo de cabine : noir et blanc contrasté. */
+/* Pose en couleur, lumière naturelle : on montre la vraie robe du teckel. */
 .pose-photo {
-  filter: grayscale(1) contrast(1.12) brightness(1.02);
+  filter: contrast(1.05) saturate(1.1) brightness(1.02);
 }
 
 /* Le flash : chaque pose s'expose à son tour. La photo reste visible, seul l'éclair passe dessus. */
@@ -195,10 +195,10 @@ a {
 
 @keyframes developpe {
   0% {
-    filter: grayscale(1) contrast(0.7) brightness(1.9);
+    filter: contrast(0.65) saturate(0.25) brightness(1.95);
   }
   100% {
-    filter: grayscale(1) contrast(1.12) brightness(1.02);
+    filter: contrast(1.05) saturate(1.1) brightness(1.02);
   }
 }
 
@@ -314,4 +314,56 @@ a {
 .defile-zone:hover .defile, .defile-zone:focus-within .defile { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .defile { animation: none; }
+}
+
+/* Curseur patte : seulement sur la home et les pages vitrines (voir usages de .curseur-patte). */
+.curseur-patte,
+.curseur-patte * {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='14' cy='18' rx='7.2' ry='6' fill='%23231b12'/%3E%3Cellipse cx='6.2' cy='10.5' rx='2.4' ry='3.1' fill='%23231b12'/%3E%3Cellipse cx='11.6' cy='7.3' rx='2.6' ry='3.4' fill='%23231b12'/%3E%3Cellipse cx='16.9' cy='7.3' rx='2.6' ry='3.4' fill='%23231b12'/%3E%3Cellipse cx='22' cy='10.5' rx='2.4' ry='3.1' fill='%23231b12'/%3E%3C/svg%3E")
+      14 18,
+    auto;
+}
+
+/* Trace de pattes : écran de chargement des pages vitrines (voir app/(site)/loading.tsx). */
+.trace-pattes .patte {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='14' cy='18' rx='7.2' ry='6' fill='%23ce6f42'/%3E%3Cellipse cx='6.2' cy='10.5' rx='2.4' ry='3.1' fill='%23ce6f42'/%3E%3Cellipse cx='11.6' cy='7.3' rx='2.6' ry='3.4' fill='%23ce6f42'/%3E%3Cellipse cx='16.9' cy='7.3' rx='2.6' ry='3.4' fill='%23ce6f42'/%3E%3Cellipse cx='22' cy='10.5' rx='2.4' ry='3.1' fill='%23ce6f42'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  opacity: 0.85;
+}
+.trace-pattes .patte:nth-child(odd) {
+  transform: translateY(10px);
+}
+.trace-pattes .patte:nth-child(even) {
+  transform: translateY(-4px);
+}
+@keyframes patte-pulse {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8) translateY(var(--ty, 0));
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.08) translateY(var(--ty, 0));
+  }
+  70% {
+    opacity: 0.35;
+    transform: scale(0.92) translateY(var(--ty, 0));
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .trace-pattes .patte {
+    --ty: 0px;
+    animation: patte-pulse 1600ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 180ms) infinite;
+  }
+  .trace-pattes .patte:nth-child(odd) {
+    --ty: 10px;
+  }
+  .trace-pattes .patte:nth-child(even) {
+    --ty: -4px;
+  }
 }

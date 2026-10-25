@@ -34,7 +34,7 @@ export function ReservationForm({ defaultName, initialDate, initialSlot }: Props
     return (
       <div className="panneau max-w-2xl p-8 sm:p-10">
         <p className="compteur text-[4rem]">OK</p>
-        <h2 className="enseigne mt-2 text-[2.4rem]">C&apos;est dans la boîte</h2>
+        <h2 className="enseigne mt-2 text-[2.4rem]">C&apos;est noté sur l&apos;ardoise</h2>
         <p className="mt-3 text-lg text-chrome-clair">
           On vous attend {formatDate(state.date)} à {slotLabel(state.slot)}. Chorizo est prévenu.
         </p>

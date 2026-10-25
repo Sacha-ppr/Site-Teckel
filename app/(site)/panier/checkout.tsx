@@ -31,7 +31,7 @@ export function Checkout({ suggestions = [] }: { suggestions?: Product[] }) {
   if (items.length === 0) {
     return (
       <div className="max-w-2xl border-y-2 border-encre py-10">
-        <p className="enseigne text-[2rem]">Rien dans la boîte pour l&apos;instant</p>
+        <p className="enseigne text-[2rem]">Le panier est vide pour l&apos;instant</p>
         <p className="mt-3 text-lg text-encre-douce">Harnais, rampes, manteaux : tout est pensé pour les dos longs.</p>
         <Link href="/boutique" className="btn btn-encre mt-7">Découvrir la boutique</Link>
       </div>

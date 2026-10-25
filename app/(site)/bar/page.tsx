@@ -23,13 +23,13 @@ const FAQ = [
 
 export default function Page() {
   return (
-    <>
+    <div className="curseur-patte">
       <section className="bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-4 py-16 md:px-8 md:py-20 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <h1 className="enseigne text-[clamp(2.8rem,6.4vw,5.5rem)]">Un café où les clients ont des pattes courtes</h1>
             <p className="mt-6 max-w-[38rem] text-lg leading-relaxed text-rose">
-              Inspiré des cafés à chats de Tokyo, le Bar à Teckels réunit six teckels résidents dans un salon du 11e
+              Inspiré des cafés à chats de Tokyo, le Bar à Teckels réunit sept teckels résidents (oui, comme les sept nains) dans un salon du 11e
               arrondissement. On y vient pour un café, un goûter ou un apéro, et on repart avec des poils sur le
               pantalon et le sourire.
             </p>
@@ -127,6 +127,6 @@ export default function Page() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

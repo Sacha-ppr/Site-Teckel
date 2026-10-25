@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/product-card";
 import { ReviewsMarquee } from "@/components/reviews-marquee";
 import { Reveal } from "@/components/reveal";
 import { SlotBoard } from "@/components/slot-board";
+import { ASSOCIATIONS } from "@/lib/extras";
 import { FORMULAS, formatPrice } from "@/lib/catalog";
 import type { PhotoId } from "@/lib/photos";
 import { getProducts } from "@/lib/products";
@@ -14,7 +15,7 @@ const HERO_STRIP: PhotoId[] = ["merguez", "chorizo", "knacki", "praline"];
 
 export default function Home() {
   return (
-    <>
+    <div className="curseur-patte">
       <section className="relative overflow-hidden bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-4 pt-8 pb-14 md:px-8 lg:min-h-[calc(100svh-68px)] lg:grid-cols-[minmax(250px,320px)_1fr] lg:gap-16 lg:py-0">
           {/* La bande de quatre poses : horizontale sur mobile, verticale et débordante sur grand écran. */}
@@ -37,7 +38,7 @@ export default function Home() {
             <h1 className="enseigne text-[clamp(3rem,6.6vw,5.5rem)]">
               4 poses,
               <br />
-              6 teckels,
+              7 teckels,
               <br />
               1 café.
             </h1>
@@ -63,7 +64,7 @@ export default function Home() {
               Faire connaissance
             </Link>
           </Reveal>
-          <Reveal as="ul" className="bande-flash leger mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+          <Reveal as="ul" className="bande-flash leger mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-7">
             {RESIDENTS.map((r, i) => (
               <li key={r.name} className={i % 2 ? "lg:translate-y-8" : ""}>
                 <div
@@ -146,7 +147,35 @@ export default function Home() {
           </Suspense>
         </div>
       </section>
-    </>
+
+      <section className="bg-case text-tirage">
+        <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+          <Reveal className="reveal-rise">
+            <h2 className="enseigne text-[clamp(2.4rem,5vw,4.5rem)]">Un coup de patte aux autres</h2>
+            <p className="mt-4 max-w-xl text-lg text-chrome-clair">
+              Nos résidents ont tous une histoire avant le bar. On soutient les associations qui écrivent les
+              premiers chapitres pour d&apos;autres.
+            </p>
+          </Reveal>
+          <Reveal as="ul" className="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ASSOCIATIONS.map((a, i) => (
+              <li
+                key={a.id}
+                className="reveal-rise panneau p-6"
+                style={{ "--i": i } as React.CSSProperties}
+              >
+                <p className="legende text-chrome">Association partenaire</p>
+                <h3 className="enseigne mt-2 text-[1.6rem]">{a.name}</h3>
+                <p className="mt-2 text-chrome-clair">{a.text}</p>
+                <a href={a.url} target="_blank" rel="noreferrer" className="btn btn-ligne mt-5">
+                  Découvrir
+                </a>
+              </li>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+    </div>
   );
 }
 
