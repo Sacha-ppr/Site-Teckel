@@ -210,14 +210,25 @@ a {
   pointer-events: none;
 }
 
+/* La bande ne s'expose qu'une fois entrée dans le cadre (voir components/reveal.tsx). */
 @media (prefers-reduced-motion: no-preference) {
-  .bande-flash .pose-flash {
+  .bande-flash.is-in .pose-flash {
     animation: flash 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(350ms + var(--i) * 650ms);
+    animation-delay: calc(200ms + var(--i) * 550ms);
   }
-  .bande-flash .pose-photo {
+  .bande-flash.is-in .pose-photo {
     animation: developpe 1400ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(350ms + var(--i) * 650ms);
+    animation-delay: calc(200ms + var(--i) * 550ms);
+  }
+
+  /* Reprise plus brève du même geste pour les bandes secondaires : un écho, pas un bis répété à l'identique. */
+  .bande-flash.leger.is-in .pose-flash {
+    animation: flash 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(60ms + var(--i) * 110ms);
+  }
+  .bande-flash.leger.is-in .pose-photo {
+    animation: developpe 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(60ms + var(--i) * 110ms);
   }
 }
 
@@ -225,5 +236,72 @@ a {
 @media (prefers-reduced-motion: no-preference) {
   .pose-flash-clic {
     animation: flash 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* Un tirage, ça se décroche : léger relief au survol, comme un papier qu'on soulève. */
+.tirage-vive {
+  transition:
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) {
+  .tirage-vive:hover,
+  .tirage-vive:focus-within {
+    transform: translateY(-5px);
+    box-shadow: 0 26px 44px -20px rgb(0 0 0 / 0.6);
+  }
+}
+
+/* Entrée discrète d'un bloc de texte : un filet, jamais la vedette. Visible par défaut si JS ou l'animation manquent. */
+.reveal-rise {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-rise {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .reveal-rise.is-in,
+  .reveal-group.is-in .reveal-rise {
+    animation: rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+}
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Un tirage qui se pose sur la pile, légèrement en biais puis à plat. */
+.tirage-settle {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tirage-settle {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  .reveal-group.is-in .tirage-settle {
+    animation: settle 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 100ms);
+  }
+}
+@keyframes settle {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Pose } from "@/components/pose";
 import { ProductCard } from "@/components/product-card";
+import { Reveal } from "@/components/reveal";
 import { SlotBoard } from "@/components/slot-board";
 import { FORMULAS, formatPrice } from "@/lib/catalog";
 import type { PhotoId } from "@/lib/photos";
@@ -16,7 +17,7 @@ export default function Home() {
       <section className="relative overflow-hidden bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-4 pt-8 pb-14 md:px-8 lg:min-h-[calc(100svh-68px)] lg:grid-cols-[minmax(250px,320px)_1fr] lg:gap-16 lg:py-0">
           {/* La bande de quatre poses : horizontale sur mobile, verticale et débordante sur grand écran. */}
-          <div className="bande-flash -mx-1 rotate-[-2deg] lg:mx-0 lg:mt-10 lg:-mb-24">
+          <Reveal className="bande-flash -mx-1 rotate-[-2deg] lg:mx-0 lg:mt-10 lg:-mb-24">
             <div className="tirage grid grid-cols-4 gap-2 lg:grid-cols-1 lg:gap-3 lg:p-4 lg:pb-16">
               {HERO_STRIP.map((photo, i) => (
                 <Pose
@@ -29,7 +30,7 @@ export default function Home() {
                 />
               ))}
             </div>
-          </div>
+          </Reveal>
 
           <div className="flex flex-col justify-center lg:py-10">
             <h1 className="enseigne text-[clamp(3rem,6.6vw,5.5rem)]">
@@ -55,17 +56,19 @@ export default function Home() {
 
       <section className="border-t-[6px] border-rouge-fonce bg-rouge text-tirage">
         <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <Reveal className="reveal-rise flex flex-wrap items-end justify-between gap-6">
             <h2 className="enseigne text-[clamp(2.4rem,5vw,4.5rem)]">Ils vous attendent</h2>
             <Link href="/residents" className="btn btn-ligne">
               Faire connaissance
             </Link>
-          </div>
-          <ul className="mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+          </Reveal>
+          <Reveal as="ul" className="bande-flash leger mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
             {RESIDENTS.map((r, i) => (
               <li key={r.name} className={i % 2 ? "lg:translate-y-8" : ""}>
-                <div className={`tirage text-encre ${i % 3 === 0 ? "rotate-[-1.5deg]" : i % 3 === 1 ? "rotate-[1deg]" : "rotate-[-0.5deg]"}`}>
-                  <Pose photo={r.photo} alt="" sizes="(min-width: 1024px) 200px, 45vw" className="aspect-[7/9]" />
+                <div
+                  className={`tirage tirage-vive text-encre ${i % 3 === 0 ? "rotate-[-1.5deg]" : i % 3 === 1 ? "rotate-[1deg]" : "rotate-[-0.5deg]"}`}
+                >
+                  <Pose photo={r.photo} index={i} alt="" sizes="(min-width: 1024px) 200px, 45vw" className="aspect-[7/9]" />
                   <p className="enseigne mt-3 text-[1.35rem]">{r.name}</p>
                   <p className="legende mt-1 text-encre-douce">
                     {r.age} · {r.schedule}
@@ -73,21 +76,25 @@ export default function Home() {
                 </div>
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </section>
 
       <section className="bg-encre text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-12 px-4 py-20 md:px-8 md:py-28 lg:grid-cols-[1fr_1.6fr]">
-          <div>
+          <Reveal className="reveal-rise">
             <h2 className="enseigne text-[clamp(2.4rem,5vw,4.5rem)]">Trois formules</h2>
             <p className="mt-5 max-w-md text-lg text-chrome-clair">
               Prix par personne, boisson comprise. Le temps passé avec les teckels, lui, n&apos;a pas de prix.
             </p>
-          </div>
-          <ul className="divide-y divide-[#333] border-y border-[#333]">
-            {FORMULAS.map((f) => (
-              <li key={f.id} className="grid grid-cols-[auto_1fr] items-baseline gap-x-6 gap-y-2 py-7 sm:gap-x-10">
+          </Reveal>
+          <Reveal as="ul" className="reveal-group divide-y divide-[#333] border-y border-[#333]">
+            {FORMULAS.map((f, i) => (
+              <li
+                key={f.id}
+                className="reveal-rise grid grid-cols-[auto_1fr] items-baseline gap-x-6 gap-y-2 py-7 sm:gap-x-10"
+                style={{ "--i": i } as React.CSSProperties}
+              >
                 <span className="compteur row-span-2 text-[clamp(3.4rem,7vw,6rem)]">
                   {formatPrice(f.priceCents).replace(",00", "")}
                 </span>
@@ -98,13 +105,13 @@ export default function Home() {
                 </p>
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </section>
 
       <section className="bg-tirage">
         <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <Reveal className="reveal-rise flex flex-wrap items-end justify-between gap-6">
             <div>
               <h2 className="enseigne text-[clamp(2.4rem,5vw,4.5rem)]">La boutique des dos longs</h2>
               <p className="mt-4 max-w-xl text-lg text-encre-douce">
@@ -115,7 +122,7 @@ export default function Home() {
             <Link href="/boutique" className="btn btn-ligne">
               Tout le catalogue
             </Link>
-          </div>
+          </Reveal>
           <Suspense fallback={<div className="mt-12 h-96 animate-pulse bg-tirage-2" />}>
             <FeaturedProducts />
           </Suspense>
@@ -136,10 +143,12 @@ async function FeaturedProducts() {
     return <p className="mt-12 text-encre-douce">Le catalogue arrive bientôt.</p>;
   }
   return (
-    <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {list.map((p) => (
-        <ProductCard key={p.id} product={p} />
+    <Reveal className="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {list.map((p, i) => (
+        <div key={p.id} className="tirage-settle" style={{ "--i": i } as React.CSSProperties}>
+          <ProductCard product={p} />
+        </div>
       ))}
-    </div>
+    </Reveal>
   );
 }
