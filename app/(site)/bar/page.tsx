@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Pose } from "@/components/pose";
 import { FORMULAS, formatPrice } from "@/lib/catalog";
+import { DOG_MENU, HUMAN_MENU } from "@/lib/extras";
 import type { PhotoId } from "@/lib/photos";
 
 export const metadata: Metadata = { title: "Le bar" };
@@ -55,6 +56,37 @@ export default function Page() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="bg-jeton text-encre">
+        <div className="mx-auto grid max-w-[1400px] gap-12 px-4 py-16 md:px-8 md:py-20 lg:grid-cols-2">
+          <div>
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">La carte des chiens</h2>
+            <ul className="mt-8 divide-y-2 divide-encre border-y-2 border-encre">
+              {DOG_MENU.map((m) => (
+                <li key={m.name} className="py-4">
+                  <p className="flex items-baseline justify-between gap-4">
+                    <span className="enseigne text-[1.4rem]">{m.name}</span>
+                    <span className="text-xl font-extrabold tabular-nums">{m.price}</span>
+                  </p>
+                  <p className="mt-1">{m.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="enseigne text-[clamp(2.2rem,4.5vw,3.8rem)]">La carte des humains</h2>
+            <ul className="mt-8 divide-y-2 divide-encre border-y-2 border-encre">
+              {HUMAN_MENU.map((m) => (
+                <li key={m.name} className="flex items-baseline justify-between gap-4 py-4">
+                  <span className="text-lg font-bold">{m.name}</span>
+                  <span className="text-xl font-extrabold tabular-nums">{m.price}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="legende mt-4">Réglé sur place. Prix d&apos;exemple pour la démo.</p>
+          </div>
         </div>
       </section>
 

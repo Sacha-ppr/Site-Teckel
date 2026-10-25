@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { useCart } from "@/components/cart-provider";
+import { ShippingProgress } from "@/components/shipping-progress";
 import { formatPrice, type Product } from "@/lib/catalog";
 import { SIZES, recommendSize, type ProductDetails, type SizeId } from "@/lib/product-details";
 import type { ProductImage } from "@/lib/product-images";
@@ -12,7 +13,7 @@ import type { ProductImage } from "@/lib/product-images";
 type Props = { product: Product; details: ProductDetails | null; images: ProductImage[] };
 
 export function ProductView({ product, details, images }: Props) {
-  const { add } = useCart();
+  const { add, totalCents } = useCart();
   const [size, setSize] = useState<SizeId | null>(null);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState<{ size: SizeId | null; qty: number } | null>(null);
@@ -87,6 +88,9 @@ export function ProductView({ product, details, images }: Props) {
             <Link href="/panier" className="btn btn-jeton px-5 py-2.5 text-[0.8rem]">
               Voir le panier
             </Link>
+            <div className="basis-full">
+              <ShippingProgress totalCents={totalCents} />
+            </div>
           </div>
         ) : null}
 

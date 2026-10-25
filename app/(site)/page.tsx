@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Pose } from "@/components/pose";
 import { ProductCard } from "@/components/product-card";
+import { ReviewsMarquee } from "@/components/reviews-marquee";
 import { Reveal } from "@/components/reveal";
 import { SlotBoard } from "@/components/slot-board";
 import { FORMULAS, formatPrice } from "@/lib/catalog";
@@ -108,6 +109,23 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      <section className="bg-tirage">
+        <div className="mx-auto grid max-w-[1400px] gap-5 px-4 py-14 md:px-8 md:grid-cols-3">
+          {[
+            { href: "/carte-cadeau", title: "Carte cadeau", text: "Offrez une heure avec les teckels." },
+            { href: "/fidelite", title: "Carte de fidélité", text: "8 visites, un Café câlin offert." },
+            { href: "/don", title: "Un coup de patte", text: "Soutenez une association, si le cœur vous en dit." },
+          ].map((c) => (
+            <Link key={c.href} href={c.href} className="tirage block p-5 hover:bg-jeton">
+              <span className="enseigne text-[1.6rem]">{c.title}</span>
+              <span className="mt-2 block text-encre-douce">{c.text}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <ReviewsMarquee />
 
       <section className="bg-tirage">
         <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">

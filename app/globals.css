@@ -305,3 +305,13 @@ a {
     transform: translateY(0) scale(1);
   }
 }
+
+/* Avis qui défilent : s'arrêtent au survol, au focus et pour qui préfère moins de mouvement. */
+@keyframes defile {
+  to { transform: translateX(-50%); }
+}
+.defile { animation: defile 60s linear infinite; }
+.defile-zone:hover .defile, .defile-zone:focus-within .defile { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .defile { animation: none; }
+}

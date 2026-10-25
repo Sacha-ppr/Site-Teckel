@@ -5,12 +5,11 @@ import { useActionState, useEffect } from "react";
 import { placeOrder, type CheckoutState } from "@/app/actions/orders";
 import { cartKey, useCart } from "@/components/cart-provider";
 import { ProductPhoto } from "@/components/product-photo";
-import { formatPrice } from "@/lib/catalog";
+import { AddToCart } from "@/components/add-to-cart";
+import { ShippingProgress } from "@/components/shipping-progress";
+import { FREE_SHIPPING_CENTS, SHIPPING_CENTS, formatPrice, type Product } from "@/lib/catalog";
 
-const FREE_SHIPPING_CENTS = 6000;
-const SHIPPING_CENTS = 590;
-
-export function Checkout() {
+export function Checkout({ suggestions = [] }: { suggestions?: Product[] }) {
   const { items, totalCents, setQuantity, clear } = useCart();
   const [state, action, pending] = useActionState<CheckoutState, FormData>(placeOrder, { status: "idle" });
 
@@ -40,9 +39,23 @@ export function Checkout() {
   }
 
   const shipping = totalCents >= FREE_SHIPPING_CENTS ? 0 : SHIPPING_CENTS;
+  const missing = FREE_SHIPPING_CENTS - totalCents;
+  // Pour compléter : articles sans taille, absents du panier, les plus proches du montant manquant.
+  const inCart = new Set(items.map((i) => i.productId));
+  const topUp =
+    missing > 0
+      ? suggestions
+          .filter((p) => !inCart.has(p.id) && p.stock > 0)
+          .sort((a, b) => Math.abs(a.price_cents - missing) - Math.abs(b.price_cents - missing))
+          .slice(0, 3)
+      : [];
 
   return (
     <div className="grid items-start gap-8 lg:grid-cols-[1.4fr_1fr]">
+      <div className="flex flex-col gap-6">
+      <div className="tirage p-4 sm:p-5">
+        <ShippingProgress totalCents={totalCents} />
+      </div>
       <ul className="tirage divide-y-2 divide-tirage-2 p-2 sm:p-3">
         {items.map((item) => (
           <li key={cartKey(item)} className="flex flex-wrap items-center gap-x-4 gap-y-3 p-2 sm:flex-nowrap">
@@ -67,6 +80,24 @@ export function Checkout() {
           </li>
         ))}
       </ul>
+      {topUp.length ? (
+        <section aria-labelledby="completer">
+          <h2 id="completer" className="enseigne text-[1.5rem]">Pour compléter</h2>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+            {topUp.map((p) => (
+              <li key={p.id} className="tirage flex flex-col gap-2 p-2">
+                <ProductPhoto slug={p.slug} alt="" sizes="160px" className="aspect-square" />
+                <Link href={`/boutique/${p.slug}`} className="text-sm leading-snug font-bold hover:text-rouge">{p.name}</Link>
+                <div className="mt-auto flex items-center justify-between gap-2">
+                  <span className="font-extrabold tabular-nums">{formatPrice(p.price_cents)}</span>
+                  <AddToCart product={p} compact />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      </div>
 
       <form action={action} className="panneau flex h-fit flex-col gap-4 p-6">
         <input

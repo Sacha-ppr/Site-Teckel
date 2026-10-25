@@ -6,6 +6,9 @@ export type Slot = (typeof SLOTS)[number];
 
 export const SLOT_CAPACITY = 16;
 
+export const FREE_SHIPPING_CENTS = 6000;
+export const SHIPPING_CENTS = 590;
+
 export const FORMULAS = [
   {
     id: "cafe-calin",

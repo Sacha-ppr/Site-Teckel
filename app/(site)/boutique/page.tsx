@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Packs } from "@/components/packs";
 import { ProductGrid } from "@/components/product-grid";
 import { getProducts } from "@/lib/products";
 
@@ -33,5 +34,10 @@ async function Catalog() {
   if (products.length === 0) {
     return <p className="text-lg text-encre-douce">Le catalogue est vide pour le moment.</p>;
   }
-  return <ProductGrid products={products} />;
+  return (
+    <>
+      <Packs products={products} />
+      <ProductGrid products={products} />
+    </>
+  );
 }
