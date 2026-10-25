@@ -23,7 +23,7 @@ const FAQ = [
 
 export default function Page() {
   return (
-    <div className="curseur-patte">
+    <>
       <section className="bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-4 py-16 md:px-8 md:py-20 lg:grid-cols-[1.2fr_1fr]">
           <div>
@@ -127,6 +127,6 @@ export default function Page() {
           ))}
         </div>
       </section>
-    </div>
+    </>
   );
 }

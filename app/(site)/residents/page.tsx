@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Nos résidents" };
 
 export default function Page() {
   return (
-    <div className="curseur-patte">
+    <>
       <section className="bg-rouge text-tirage">
         <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-20">
           <h1 className="enseigne text-[clamp(3rem,8vw,6rem)]">Nos résidents</h1>
@@ -67,6 +67,6 @@ export default function Page() {
           </Link>
         </div>
       </section>
-    </div>
+    </>
   );
 }

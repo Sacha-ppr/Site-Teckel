@@ -15,7 +15,7 @@ const HERO_STRIP: PhotoId[] = ["merguez", "chorizo", "knacki", "praline"];
 
 export default function Home() {
   return (
-    <div className="curseur-patte">
+    <>
       <section className="relative overflow-hidden bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-4 pt-8 pb-14 md:px-8 lg:min-h-[calc(100svh-68px)] lg:grid-cols-[minmax(250px,320px)_1fr] lg:gap-16 lg:py-0">
           {/* La bande de quatre poses : horizontale sur mobile, verticale et débordante sur grand écran. */}
@@ -175,7 +175,7 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

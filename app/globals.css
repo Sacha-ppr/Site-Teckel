@@ -316,13 +316,45 @@ a {
   .defile { animation: none; }
 }
 
-/* Curseur patte : seulement sur la home et les pages vitrines (voir usages de .curseur-patte). */
+/* Curseur patte : sur tout le site public (voir app/(site)/layout.tsx). !important pour gagner sur les curseurs
+   natifs des boutons/liens/résumés qui, sinon, reprennent le dessus sur les titres et les contrôles. */
 .curseur-patte,
 .curseur-patte * {
   cursor:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='14' cy='18' rx='7.2' ry='6' fill='%23231b12'/%3E%3Cellipse cx='6.2' cy='10.5' rx='2.4' ry='3.1' fill='%23231b12'/%3E%3Cellipse cx='11.6' cy='7.3' rx='2.6' ry='3.4' fill='%23231b12'/%3E%3Cellipse cx='16.9' cy='7.3' rx='2.6' ry='3.4' fill='%23231b12'/%3E%3Cellipse cx='22' cy='10.5' rx='2.4' ry='3.1' fill='%23231b12'/%3E%3C/svg%3E")
       14 18,
-    auto;
+    auto !important;
+}
+
+/* Tampon de patte au clic (voir components/paw-clicks.tsx). */
+.patte-tampon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='14' cy='18' rx='7.2' ry='6' fill='%23ce6f42'/%3E%3Cellipse cx='6.2' cy='10.5' rx='2.4' ry='3.1' fill='%23ce6f42'/%3E%3Cellipse cx='11.6' cy='7.3' rx='2.6' ry='3.4' fill='%23ce6f42'/%3E%3Cellipse cx='16.9' cy='7.3' rx='2.6' ry='3.4' fill='%23ce6f42'/%3E%3Cellipse cx='22' cy='10.5' rx='2.4' ry='3.1' fill='%23ce6f42'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  opacity: 0;
+  transform: rotate(var(--r, 0deg)) scale(0.3);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .patte-tampon {
+    animation: patte-tampon 480ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+@keyframes patte-tampon {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--r, 0deg)) scale(0.35);
+  }
+  22% {
+    opacity: 0.95;
+    transform: rotate(var(--r, 0deg)) scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--r, 0deg)) scale(1.35) translateY(8px);
+  }
 }
 
 /* Trace de pattes : écran de chargement des pages vitrines (voir app/(site)/loading.tsx). */
