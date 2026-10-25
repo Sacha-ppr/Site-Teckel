@@ -54,11 +54,11 @@ export const DONATION_AMOUNTS = [2, 5, 10, 20] as const;
 // AVIS D'EXEMPLE : textes fictifs de démonstration (projet scolaire), à remplacer par de vrais avis.
 export type Review = { name: string; dog: string; text: string; photo?: PhotoId };
 export const SAMPLE_REVIEWS: Review[] = [
-  { name: "Camille, 28 ans", dog: "avec Olive, teckel", text: "Olive a trouvé sa place sur les genoux de Brioche en cinq minutes. On revient samedi." },
-  { name: "Maxime, 31 ans", dog: "premier rendez-vous", text: "Le Goûter teckel, c'est le meilleur moyen de briser la glace. Ça a marché." },
-  { name: "Inès et Léo", dog: "famille", text: "Les enfants ne voulaient plus partir. Chorizo leur a fait la tournée des câlins." },
-  { name: "Sophie, 44 ans", dog: "avec Gaston, teckel", text: "Le harnais en H est parfait pour le dos de Gaston. Taille conseillée juste du premier coup." },
-  { name: "Nadia, 36 ans", dog: "entre amies", text: "L'Apéro saucisse avec les teckels autour de la table : on a oublié nos téléphones." },
-  { name: "Théo, 25 ans", dog: "anniversaire", text: "On a fêté mon anniversaire ici. Merguez a volé la vedette sur toutes les photos." },
+  { name: "Camille, 28 ans", dog: "avec Olive, teckel", text: "Olive a trouvé sa place sur les genoux de Brioche en cinq minutes. On revient samedi.", photo: "seuil" },
+  { name: "Maxime, 31 ans", dog: "premier rendez-vous", text: "Le Goûter teckel, c'est le meilleur moyen de briser la glace. Ça a marché.", photo: "rue" },
+  { name: "Inès et Léo", dog: "famille", text: "Les enfants ne voulaient plus partir. Chorizo leur a fait la tournée des câlins.", photo: "jardin" },
+  { name: "Sophie, 44 ans", dog: "avec Gaston, teckel", text: "Le harnais en H est parfait pour le dos de Gaston. Taille conseillée juste du premier coup.", photo: "harnais" },
+  { name: "Nadia, 36 ans", dog: "entre amies", text: "L'Apéro saucisse avec les teckels autour de la table : on a oublié nos téléphones.", photo: "tshirt" },
+  { name: "Théo, 25 ans", dog: "anniversaire", text: "On a fêté mon anniversaire ici. Merguez a volé la vedette sur toutes les photos.", photo: "poil-long" },
   { name: "Lola, 33 ans", dog: "avec Pomme, teckel", text: "Blanca s'est endormie sur le dos, patte en l'air, en plein milieu du goûter. Le bar le plus apaisant de Paris.", photo: "blanca-sieste" },
 ];
