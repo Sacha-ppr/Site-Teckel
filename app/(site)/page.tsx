@@ -20,8 +20,8 @@ export default function Home() {
       <section className="relative overflow-hidden bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-4 pt-8 pb-14 md:px-8 lg:min-h-[calc(100svh-68px)] lg:grid-cols-[minmax(250px,320px)_1fr] lg:gap-16 lg:py-0">
           {/* La bande des sept teckels : déborde à gauche, défile à l'horizontale sur mobile, à la verticale sur grand écran. */}
-          <Reveal className="-ml-4 rotate-[-2deg] sm:-ml-8 md:-ml-12 lg:-ml-16 lg:self-start">
-            <div className="tirage overflow-hidden lg:h-[620px] lg:p-4">
+          <Reveal className="-ml-4 rotate-[-2deg] sm:-ml-8 md:-ml-12 lg:-ml-16">
+            <div className="tirage overflow-hidden lg:h-full lg:p-4">
               <div className="defile-chiens flex gap-2 lg:flex-col lg:gap-3">
                 {HERO_LOOP.map((photo, i) => (
                   <Pose
