@@ -51,8 +51,7 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
   );
 }
 
-// Défense en profondeur : la page /admin/teckels est un composant client sans contrôle propre,
-// et le proxy ne vérifie que la connexion, pas le rôle.
+// Défense en profondeur : le proxy ne vérifie que la connexion, pas le rôle.
 async function AdminGuard({ children }: { children: React.ReactNode }) {
   await requireAdmin();
   return children;
