@@ -30,7 +30,9 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     id: data.user.id,
     email: data.user.email ?? "",
     fullName: profile?.full_name ?? null,
-    role: profile?.role === "admin" ? "admin" : "client",
+    // Le rôle admin n'est valable que pour une adresse confirmée : sinon n'importe qui pourrait
+    // s'inscrire avec l'email d'un administrateur sans en posséder la boîte.
+    role: profile?.role === "admin" && data.user.email_confirmed_at ? "admin" : "client",
   };
 }
 

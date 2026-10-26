@@ -35,20 +35,33 @@ export async function createReservation(
     return { status: "error", error: "Entre 1 et 6 personnes par réservation." };
   }
   if (!contactName) return { status: "error", error: "Indiquez un nom pour la réservation." };
+  if (contactName.length > 80) return { status: "error", error: "Le nom est trop long (80 caractères maximum)." };
+
+  const phone = String(formData.get("phone") ?? "").trim();
+  const notes = String(formData.get("notes") ?? "").trim();
+  if (phone && !/^\+?[\d\s().-]{6,30}$/.test(phone)) {
+    return { status: "error", error: "Numéro de téléphone invalide." };
+  }
+  if (notes.length > 500) return { status: "error", error: "La note est trop longue (500 caractères maximum)." };
 
   const supabase = await getSupabase();
   const { error } = await supabase.from("reservations").insert({
     user_id: user.id,
     contact_name: contactName,
-    phone: String(formData.get("phone") ?? "").trim() || null,
+    phone: phone || null,
     date,
     slot,
     guests,
     formula,
     with_own_dog: formData.get("with_own_dog") === "on",
-    notes: String(formData.get("notes") ?? "").trim() || null,
+    notes: notes || null,
   });
-  if (error) return { status: "error", error: error.message };
+  if (error) {
+    // Seuls les messages que nous levons nous-mêmes en base sont montrés ; le reste reste dans les logs.
+    const known = /complet|fermé|passé|trop de réservations|trop loin/i.test(error.message);
+    if (!known) console.error("Réservation refusée :", error.message);
+    return { status: "error", error: known ? error.message : "La réservation n'a pas pu être enregistrée. Réessayez dans un instant." };
+  }
 
   return { status: "success", date, slot };
 }

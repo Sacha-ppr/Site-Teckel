@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { signOut } from "@/app/actions/auth";
+import { requireAdmin } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: { default: "Espace pro", template: "%s · Espace pro" },
@@ -37,8 +39,19 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
         </div>
       </aside>
       <main className="flex-1 px-4 py-8 md:px-10">
-        <div className="mx-auto max-w-6xl">{children}</div>
+        <div className="mx-auto max-w-6xl">
+          <Suspense fallback={null}>
+            <AdminGuard>{children}</AdminGuard>
+          </Suspense>
+        </div>
       </main>
     </div>
   );
+}
+
+// Défense en profondeur : la page /admin/teckels est un composant client sans contrôle propre,
+// et le proxy ne vérifie que la connexion, pas le rôle.
+async function AdminGuard({ children }: { children: React.ReactNode }) {
+  await requireAdmin();
+  return children;
 }

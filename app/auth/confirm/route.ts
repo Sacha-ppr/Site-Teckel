@@ -1,12 +1,12 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/auth";
+import { safeNext } from "@/lib/safe-redirect";
 
 // Lien de confirmation envoyé par Supabase à l'inscription.
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const next = searchParams.get("next") ?? "";
-  const destination = next.startsWith("/") && !next.startsWith("//") ? next : "/compte";
+  const destination = safeNext(searchParams.get("next")) ?? "/compte";
 
   const supabase = await getSupabase();
   const code = searchParams.get("code");

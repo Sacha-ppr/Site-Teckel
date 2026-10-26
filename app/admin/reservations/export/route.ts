@@ -2,8 +2,12 @@ import { listReservations, parseReservationFilters } from "@/lib/admin-data";
 import { RESERVATION_STATUS, formulaName } from "@/lib/catalog";
 
 function csvCell(value: string | number | null) {
-  const s = String(value ?? "");
-  return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  let s = String(value ?? "");
+  // Injection de formules : Excel exécute une cellule qui commence par = + - @ (ou tabulation / retour chariot).
+  // Ces champs sont saisis par les clients : on neutralise avec une apostrophe.
+  // Un numéro de téléphone (« +33 6 12… ») ne contient aucun caractère exploitable : on le laisse intact.
+  if (/^[=+\-@\t\r]/.test(s) && !/^\+?[\d\s().-]+$/.test(s)) s = "'" + s;
+  return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 export async function GET(request: Request) {
@@ -29,7 +33,9 @@ export async function GET(request: Request) {
   return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="reservations-${params.date ?? "a-venir"}.csv"`,
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+      "Content-Disposition": `attachment; filename="reservations-${/^\d{4}-\d{2}-\d{2}$/.test(params.date ?? "") ? params.date : "a-venir"}.csv"`,
     },
   });
 }

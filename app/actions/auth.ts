@@ -3,14 +3,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSupabase } from "@/lib/auth";
+import { safeNext, trustedOrigin } from "@/lib/safe-redirect";
 
 export type FormState = { error?: string; message?: string } | undefined;
-
-function safeNext(value: FormDataEntryValue | null) {
-  const next = typeof value === "string" ? value : "";
-  // N'accepte que des chemins internes pour éviter les redirections ouvertes.
-  return next.startsWith("/") && !next.startsWith("//") ? next : null;
-}
 
 export async function signIn(_prev: FormState, formData: FormData): Promise<FormState> {
   const supabase = await getSupabase();
@@ -37,10 +32,10 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
 export async function signUp(_prev: FormState, formData: FormData): Promise<FormState> {
   const password = String(formData.get("password") ?? "");
   if (password.length < 8) return { error: "Le mot de passe doit faire au moins 8 caractères." };
+  if (password.length > 72) return { error: "Le mot de passe est trop long (72 caractères maximum)." };
 
-  // Le lien de confirmation doit revenir sur le domaine courant (localhost, preview ou production).
-  const h = await headers();
-  const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("x-forwarded-host") ?? h.get("host")}`;
+  // Le lien de confirmation revient sur le site, jamais sur un hôte fourni par la requête.
+  const origin = trustedOrigin((await headers()).get("host"));
   const next = safeNext(formData.get("next"));
 
   const supabase = await getSupabase();
@@ -48,11 +43,11 @@ export async function signUp(_prev: FormState, formData: FormData): Promise<Form
     email: String(formData.get("email") ?? ""),
     password,
     options: {
-      data: { full_name: String(formData.get("full_name") ?? "").trim() },
+      data: { full_name: String(formData.get("full_name") ?? "").trim().slice(0, 100) },
       emailRedirectTo: `${origin}/auth/confirm${next ? `?next=${encodeURIComponent(next)}` : ""}`,
     },
   });
-  if (error) return { error: error.message };
+  if (error) return { error: "Inscription impossible. Vérifiez l'adresse email et le mot de passe, ou connectez-vous si vous avez déjà un compte." };
 
   // Si la confirmation par email est activée dans Supabase, pas de session tout de suite.
   if (!data.session) {
