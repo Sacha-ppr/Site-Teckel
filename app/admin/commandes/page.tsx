@@ -5,6 +5,7 @@ import { StatusSelect } from "@/components/admin/status-select";
 import { Kpi, PageTitle, Panel, Skeleton, Table } from "@/components/admin/ui";
 import { getSupabase, requireAdmin } from "@/lib/auth";
 import { ORDER_STATUS, formatPrice, type Order } from "@/lib/catalog";
+import { getDemoOrders } from "@/lib/demo-data";
 
 export const metadata: Metadata = { title: "Commandes" };
 
@@ -27,7 +28,7 @@ async function Orders() {
     .select("*, order_items(product_name, quantity, unit_price_cents)")
     .order("created_at", { ascending: false })
     .limit(200);
-  const orders = (data ?? []) as Order[];
+  const orders = data && data.length > 0 ? (data as Order[]) : getDemoOrders();
 
   const valid = orders.filter((o) => o.status !== "annulee");
   const revenue = valid.reduce((n, o) => n + o.total_cents, 0);

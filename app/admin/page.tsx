@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Kpi, PageTitle, Panel, Skeleton, Table } from "@/components/admin/ui";
 import { getSupabase, requireAdmin } from "@/lib/auth";
+import { getDemoOrders, getDemoReservations } from "@/lib/demo-data";
 import {
   ORDER_STATUS,
   SLOTS,
@@ -52,8 +53,8 @@ async function Dashboard() {
       .order("created_at", { ascending: false }),
     supabase.from("products").select("*").lte("stock", 5).order("stock"),
   ]);
-  const reservations = (resData ?? []) as Reservation[];
-  const orders = (orderData ?? []) as Order[];
+  const reservations = resData && resData.length > 0 ? (resData as Reservation[]) : getDemoReservations();
+  const orders = orderData && orderData.length > 0 ? (orderData as Order[]) : getDemoOrders();
   const lowStock = (productData ?? []) as Product[];
 
   const todays = reservations.filter((r) => r.date === today);

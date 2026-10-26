@@ -6,6 +6,7 @@ import { StatusSelect } from "@/components/admin/status-select";
 import { Kpi, PageTitle, Panel, Skeleton, Table } from "@/components/admin/ui";
 import { listReservations, parseReservationFilters } from "@/lib/admin-data";
 import { RESERVATION_STATUS, formatDate, formatPrice, formulaName, formulaPriceCents } from "@/lib/catalog";
+import { getDemoReservations } from "@/lib/demo-data";
 
 export const metadata: Metadata = { title: "Réservations" };
 
@@ -23,7 +24,9 @@ export default function Page({ searchParams }: PageProps<"/admin/reservations">)
 async function Reservations({ searchParams }: Pick<PageProps<"/admin/reservations">, "searchParams">) {
   const params = await searchParams;
   const filters = parseReservationFilters(params);
-  const reservations = await listReservations(filters);
+  const fetched = await listReservations(filters);
+  const hasFilter = Boolean(filters.date || filters.status || filters.q);
+  const reservations = !hasFilter && fetched.length === 0 ? getDemoReservations() : fetched;
 
   const active = reservations.filter((r) => r.status !== "annulee");
   const guests = active.reduce((n, r) => n + r.guests, 0);
