@@ -58,6 +58,69 @@ export const ORDER_STATUS = {
 } as const;
 export type OrderStatus = keyof typeof ORDER_STATUS;
 
+export const CASH_KINDS = { recette: "Recette", depense: "Dépense" } as const;
+export type CashKind = keyof typeof CASH_KINDS;
+
+export const CASH_METHODS = { especes: "Espèces", carte: "Carte" } as const;
+export type CashMethod = keyof typeof CASH_METHODS;
+
+export const CASH_CATEGORIES = {
+  bar: "Bar",
+  boutique: "Boutique",
+  fournisseur: "Fournisseur",
+  charges: "Charges",
+  autre: "Autre",
+} as const;
+export type CashCategory = keyof typeof CASH_CATEGORIES;
+
+export const STOCK_REASONS = {
+  livraison: "Livraison",
+  casse: "Casse ou péremption",
+  vente_bar: "Vente au bar",
+  autre: "Autre",
+} as const;
+export type StockReason = keyof typeof STOCK_REASONS;
+
+// Un teckel ne travaille jamais plus de 4 h par jour (engagement affiché sur le site).
+export const MAX_DOG_MINUTES = 240;
+
+export type CashEntry = {
+  id: number;
+  business_day: string;
+  kind: CashKind;
+  category: CashCategory;
+  method: CashMethod;
+  amount_cents: number;
+  label: string;
+  created_at: string;
+};
+
+export type CashClosing = {
+  business_day: string;
+  opening_float_cents: number;
+  counted_cash_cents: number;
+  note: string | null;
+};
+
+export type DogPresence = {
+  id: number;
+  business_day: string;
+  dog: string;
+  status: "presente" | "absente";
+  start_time: string | null;
+  end_time: string | null;
+};
+
+export type StockMovement = {
+  id: number;
+  product_id: number;
+  delta: number;
+  reason: StockReason;
+  note: string | null;
+  created_at: string;
+  products: { name: string } | null;
+};
+
 export type Product = {
   id: number;
   slug: string;
@@ -123,6 +186,13 @@ export function isOpenOn(isoDate: string) {
 // Date du jour à Paris, au format AAAA-MM-JJ.
 export function parisToday() {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(new Date());
+}
+
+// Premier et dernier jour d'un mois « AAAA-MM ».
+export function monthBounds(month: string) {
+  const [year, monthNumber] = month.split("-").map(Number);
+  const last = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
+  return { from: `${month}-01`, to: `${month}-${String(last).padStart(2, "0")}` };
 }
 
 export function addDays(isoDate: string, days: number) {

@@ -17,7 +17,7 @@ const RULES: { title: string; text: string; photo: PhotoId }[] = [
 const FAQ = [
   { q: "Puis-je venir avec mon chien ?", a: "Oui, s'il est sociable et à jour de ses vaccins. Cochez la case lors de la réservation pour que nous préparions son accueil." },
   { q: "Les enfants sont-ils acceptés ?", a: "Dès 6 ans, accompagnés d'un adulte. Nous organisons aussi des goûters d'anniversaire." },
-  { q: "Et si je suis allergique ?", a: "Brioche et Saucisson ont le poil long ; les autres sont à poil ras. Le bar est aéré et nettoyé entre chaque créneau." },
+  { q: "Et si je suis allergique ?", a: "Brioche et Saucisson ont le poil long, Praline et Blanca le poil mi-long, Merguez le poil dur, Chorizo et Knacki le poil ras. Le bar est aéré et nettoyé entre chaque créneau." },
   { q: "Vos teckels sont-ils bien traités ?", a: "Ils vivent avec notre équipe, travaillent quatre heures maximum par jour et disposent d'un espace de repos fermé au public." },
 ];
 

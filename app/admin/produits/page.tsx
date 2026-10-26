@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { updateProduct } from "@/app/actions/admin";
+import { adjustStock, updateProduct } from "@/app/actions/admin";
 import { Kpi, PageTitle, Panel, Skeleton, Table } from "@/components/admin/ui";
 import { getSupabase, requireAdmin } from "@/lib/auth";
-import { CATEGORIES, formatPrice, type Product } from "@/lib/catalog";
+import { CATEGORIES, STOCK_REASONS, formatPrice, type Product, type StockMovement } from "@/lib/catalog";
 
 export const metadata: Metadata = { title: "Produits & stock" };
 
@@ -21,8 +21,12 @@ export default function Page() {
 async function Products() {
   await requireAdmin();
   const supabase = await getSupabase();
-  const { data } = await supabase.from("products").select("*").order("category").order("name");
+  const [{ data }, { data: movementData }] = await Promise.all([
+    supabase.from("products").select("*").order("category").order("name"),
+    supabase.from("stock_movements").select("*, products(name)").order("created_at", { ascending: false }).limit(20),
+  ]);
   const products = (data ?? []) as Product[];
+  const movements = (movementData ?? []) as StockMovement[];
 
   const stockValue = products.reduce((n, p) => n + p.stock * p.price_cents, 0);
   const outOfStock = products.filter((p) => p.stock === 0).length;
@@ -72,6 +76,67 @@ async function Products() {
           ))}
         </Table>
       </Panel>
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+        <Panel title="Mouvement de stock">
+          <form action={adjustStock} className="grid gap-3 p-4 text-sm">
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-slate-500">Produit</span>
+              <select name="product_id" required className="rounded-md border border-slate-300 bg-white px-2 py-1.5">
+                {products.map((p) => (
+                  <option key={p.id} value={p.id}>{p.name} (stock {p.stock})</option>
+                ))}
+              </select>
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-slate-500">Sens</span>
+                <select name="direction" defaultValue="entree" className="rounded-md border border-slate-300 bg-white px-2 py-1.5">
+                  <option value="entree">Entrée</option>
+                  <option value="sortie">Sortie</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-slate-500">Quantité</span>
+                <input name="quantity" type="number" min={1} required defaultValue={1} className="rounded-md border border-slate-300 px-2 py-1.5 tabular-nums" />
+              </label>
+            </div>
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-slate-500">Motif</span>
+              <select name="reason" defaultValue="livraison" className="rounded-md border border-slate-300 bg-white px-2 py-1.5">
+                {Object.entries(STOCK_REASONS).map(([k, v]) => (
+                  <option key={k} value={k}>{v}</option>
+                ))}
+              </select>
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-slate-500">Note (facultative)</span>
+              <input name="note" maxLength={200} className="rounded-md border border-slate-300 px-2 py-1.5" />
+            </label>
+            <button className="justify-self-start rounded-md bg-slate-900 px-4 py-1.5 font-medium text-white hover:bg-slate-700">
+              Enregistrer le mouvement
+            </button>
+          </form>
+        </Panel>
+
+        <Panel title="Derniers mouvements">
+          <Table head={["Date", "Produit", "Mouvement", "Motif", "Note"]} empty={movements.length === 0}>
+            {movements.map((m) => (
+              <tr key={m.id}>
+                <td className="whitespace-nowrap px-4 py-2 tabular-nums text-slate-500">
+                  {new Date(m.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short", timeZone: "Europe/Paris" })}
+                </td>
+                <td className="px-4 py-2 font-medium">{m.products?.name ?? "Produit supprimé"}</td>
+                <td className={`px-4 py-2 font-semibold tabular-nums ${m.delta > 0 ? "text-emerald-700" : "text-red-600"}`}>
+                  {m.delta > 0 ? `+${m.delta}` : m.delta}
+                </td>
+                <td className="px-4 py-2">{STOCK_REASONS[m.reason]}</td>
+                <td className="max-w-48 truncate px-4 py-2 text-slate-500" title={m.note ?? ""}>{m.note ?? ""}</td>
+              </tr>
+            ))}
+          </Table>
+        </Panel>
+      </div>
     </div>
   );
 }

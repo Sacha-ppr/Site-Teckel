@@ -27,8 +27,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
               <p>12 rue des Longs-Dos, 75011 Paris</p>
               <p>Du mercredi au dimanche, 10 h – 20 h</p>
               <p className="mt-3">
-                Nos teckels sont suivis par un vétérinaire et ne travaillent jamais plus de quatre heures par
-                jour. Siestes obligatoires.
+                Nos teckels ne travaillent jamais plus de quatre heures par jour. Siestes obligatoires.
               </p>
             </div>
             <nav aria-label="Pied de page" className="flex flex-col gap-1.5 text-rose">

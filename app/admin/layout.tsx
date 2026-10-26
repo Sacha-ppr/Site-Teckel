@@ -14,6 +14,8 @@ const NAV = [
   { href: "/admin/reservations", label: "Réservations" },
   { href: "/admin/commandes", label: "Commandes" },
   { href: "/admin/produits", label: "Produits & stock" },
+  { href: "/admin/caisse", label: "Caisse" },
+  { href: "/admin/presence", label: "Teckels : présence" },
 ];
 
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {
