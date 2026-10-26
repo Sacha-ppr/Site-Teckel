@@ -1,8 +1,9 @@
 -- =====================================================================
 -- Données de démonstration : commandes boutique + réservations du bar,
 -- pour peupler les graphiques et tableaux du back-office (/admin).
--- À exécuter manuellement dans Supabase > SQL Editor, après schema.sql,
--- une fois qu'au moins un compte existe (le tien suffit).
+-- Attachées au compte admin spoupier@eugeniaschool.com (doit déjà exister,
+-- donc être déjà inscrit sur le site, avant de lancer ce script).
+-- À exécuter manuellement dans Supabase > SQL Editor, après schema.sql.
 -- Pas idempotent : relancer ce script ajoute d'autres commandes et
 -- réservations en plus des précédentes (sans casser quoi que ce soit).
 -- =====================================================================
@@ -50,13 +51,14 @@ declare
   d integer;
   k integer;
 begin
-  select array_agg(id) into v_user_ids from auth.users;
+  select id into v_user from auth.users where lower(email) = 'spoupier@eugeniaschool.com';
   select array_agg(id) into v_product_ids from public.products where active;
 
-  if v_user_ids is null or array_length(v_user_ids, 1) = 0 then
-    raise notice 'Aucun compte existant : crée au moins un compte sur le site puis relance ce script.';
+  if v_user is null then
+    raise notice 'Compte spoupier@eugeniaschool.com introuvable : inscris-toi sur le site avec cet email puis relance ce script.';
     return;
   end if;
+  v_user_ids := array[v_user];
   if v_product_ids is null or array_length(v_product_ids, 1) = 0 then
     raise notice 'Aucun produit actif : vérifie que schema.sql a bien inséré le catalogue.';
     return;
