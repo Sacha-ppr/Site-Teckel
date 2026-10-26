@@ -11,7 +11,7 @@ import type { PhotoId } from "@/lib/photos";
 import { getProducts } from "@/lib/products";
 import { RESIDENTS } from "@/lib/residents";
 
-const HERO_STRIP: PhotoId[] = ["merguez", "chorizo", "knacki", "praline"];
+const HERO_STRIP: PhotoId[] = ["merguez", "chorizo", "knacki", "chiot-herbe"];
 
 export default function Home() {
   return (
@@ -36,8 +36,6 @@ export default function Home() {
 
           <div className="flex flex-col justify-center lg:py-10">
             <h1 className="enseigne text-[clamp(3rem,6.6vw,5.5rem)]">
-              4 poses,
-              <br />
               7 teckels,
               <br />
               1 café.

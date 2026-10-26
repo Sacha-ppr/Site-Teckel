@@ -23,6 +23,7 @@ export function Pose({ photo, sizes, className = "aspect-[4/5]", index = 0, prio
         sizes={sizes}
         priority={priority}
         className="pose-photo object-cover"
+        style={"position" in p && p.position ? { objectPosition: p.position } : undefined}
       />
       <span className="pose-flash" aria-hidden />
     </div>

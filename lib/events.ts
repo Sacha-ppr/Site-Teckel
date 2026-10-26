@@ -57,7 +57,7 @@ export const WORKSHOPS: Workshop[] = [
   },
   {
     title: "Club des futurs adoptants",
-    photo: "enfant",
+    photo: "chiot-mur",
     when: "Dernier mercredi du mois · 18 h 30",
     priceLabel: "Gratuit",
     tag: "Adoption",

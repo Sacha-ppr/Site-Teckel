@@ -16,7 +16,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
               <p className="enseigne text-[clamp(2.2rem,5vw,4rem)]">
                 On vous garde
                 <br />
-                une place à l&apos;étal.
+                une place au comptoir.
               </p>
               <Link href="/reserver" className="btn btn-jeton mt-8">
                 Réserver un créneau
