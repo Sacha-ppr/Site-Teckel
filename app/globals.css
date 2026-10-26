@@ -316,6 +316,24 @@ a {
   .defile { animation: none; }
 }
 
+/* La bande des sept teckels tourne en boucle : à l'horizontale sur mobile, à la verticale à partir de lg. */
+@keyframes defile-chiens-x {
+  to { transform: translateX(-50%); }
+}
+@keyframes defile-chiens-y {
+  to { transform: translateY(-50%); }
+}
+.defile-chiens { animation: defile-chiens-x 36s linear infinite; }
+@media (min-width: 1024px) {
+  .defile-chiens { animation: defile-chiens-y 36s linear infinite; }
+}
+.defile-chiens:hover, .defile-chiens:focus-within {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .defile-chiens { animation: none; }
+}
+
 /* Curseur patte : sur tout le site public (voir app/(site)/layout.tsx). !important pour gagner sur les curseurs
    natifs des boutons/liens/résumés qui, sinon, reprennent le dessus sur les titres et les contrôles. */
 .curseur-patte,

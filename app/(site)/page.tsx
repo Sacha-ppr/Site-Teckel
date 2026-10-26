@@ -11,26 +11,29 @@ import type { PhotoId } from "@/lib/photos";
 import { getProducts } from "@/lib/products";
 import { RESIDENTS } from "@/lib/residents";
 
-const HERO_STRIP: PhotoId[] = ["merguez", "chorizo", "knacki", "chiot-herbe"];
+const HERO_STRIP: PhotoId[] = RESIDENTS.map((r) => r.photo);
+const HERO_LOOP: PhotoId[] = [...HERO_STRIP, ...HERO_STRIP];
 
 export default function Home() {
   return (
     <>
       <section className="relative overflow-hidden bg-rouge text-tirage">
         <div className="mx-auto grid max-w-[1400px] gap-8 px-4 pt-8 pb-14 md:px-8 lg:min-h-[calc(100svh-68px)] lg:grid-cols-[minmax(250px,320px)_1fr] lg:gap-16 lg:py-0">
-          {/* La bande de quatre poses : horizontale sur mobile, verticale et débordante sur grand écran. */}
+          {/* La bande des sept teckels : défile à l'horizontale sur mobile, à la verticale sur grand écran. */}
           <Reveal className="bande-flash -mx-1 rotate-[-2deg] lg:mx-0 lg:mt-10 lg:-mb-24">
-            <div className="tirage grid grid-cols-4 gap-2 lg:grid-cols-1 lg:gap-3 lg:p-4 lg:pb-16">
-              {HERO_STRIP.map((photo, i) => (
-                <Pose
-                  key={photo}
-                  photo={photo}
-                  index={i}
-                  priority={i < 2}
-                  sizes="(min-width: 1024px) 290px, 24vw"
-                  className="aspect-[4/5] lg:aspect-[5/4]"
-                />
-              ))}
+            <div className="tirage overflow-hidden lg:h-[620px] lg:p-4">
+              <div className="defile-chiens flex gap-2 lg:flex-col lg:gap-3">
+                {HERO_LOOP.map((photo, i) => (
+                  <Pose
+                    key={`${photo}-${i}`}
+                    photo={photo}
+                    index={i % HERO_STRIP.length}
+                    priority={i < 2}
+                    sizes="(min-width: 1024px) 290px, 24vw"
+                    className="aspect-[4/5] w-[23vw] shrink-0 lg:aspect-[5/4] lg:w-full"
+                  />
+                ))}
+              </div>
             </div>
           </Reveal>
 
